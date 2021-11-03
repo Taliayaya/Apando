@@ -1,0 +1,27 @@
+.header {
+    /* Les radients sur https://cssgradient.io/ sont vraiment super beau :D */
+    background: rgb(131,58,180);
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,0.43879558659401263) 50%, rgba(252,176,69,1) 100%);
+
+    
+    display: flex;
+    flex-direction: column;
+    flex: 0.25;
+}
+.header__components {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__title{
+    color: white;
+    font-family: "Tuffy-Bold";
+    padding: 20px;
+}
+.header__avatar {
+    padding: 20px;
+}
+.user__avatar {
+    color:blueviolet;
+}
