@@ -1,0 +1,22 @@
+.user__list {
+    background-color: antiquewhite;
+
+    display:flex;
+    flex-direction: column;
+    flex:0.15;
+}
+.user__list__top {
+    background-color: black;
+    align-items: center;
+    padding: 20px;
+    color:white;
+    border-bottom: 2px solid gray;
+}
+
+.user__list__top__icons {
+    background-color: darkgray;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
