@@ -14,7 +14,6 @@ export default function UsersList() {
                     <SettingsIcon />
                 </div>
             <CategorieUser 
-                categorieName="Online"
                 UserList={UserList}
             />
         </div>   

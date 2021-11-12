@@ -20,3 +20,20 @@
     align-items: center;
     justify-content: center;
 }
+.offline {
+    color: darkgray;
+    opacity: 0.5;
+}
+.online {
+    color:green;
+}
+.categorie {
+    font-weight: bold;
+    padding: 10px;
+    font-size: larger;
+}
+.user__list p {
+    padding-left: 20px;
+    font-weight: normal;
+    font-size: medium;
+}
