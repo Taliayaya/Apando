@@ -1,19 +1,19 @@
 .channel__list {
-    display: flex;
-    flex-direction: column;
-    flex:0.15;
-    height: 100vh;
-    background-color: blueviolet;
+  display: flex;
+  flex-direction: column;
+  flex: 0.15;
+  height: 100vh;
+  background-color: blueviolet;
 }
 
 .channel__list__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
 
-    color: white;
-    font-family: "Tuffy-Bold";
+  color: white;
+  font-family: "Tuffy-Bold";
 
-    border-bottom: 3px solid purple;
+  border-bottom: 3px solid purple;
 }
