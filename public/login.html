@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8"/>
-		<title>Login test</title>
-		<script src="signupscript.js"></script>
+		<meta charset="utf-8">
 	</head>
-	<body>
-		<h1>Pango</h1>
-		<div>
-			<h2>S'inscrire</h2>
-			<form action="/Project-Plateforme/src/php/signin.php" method="post">
-				<p>
-				    <!-- Je fais pas de frontend, mais quelques idÃ©es pour amÃ©liorer cette page : mettre des title pour dÃ©crire ce qu'on doit entrer dans chaque
-			    input, mettre un autofocus sur le premier Ã©lÃ©ment -->
-				    <input type="email" placeholder="Email de connexion" name="mail" required title="Entrez une adresse email qui vous permettra de vous connecter, et sur laquelle vous pourrez répondre à un mail de vérification"/></br> <!-- Format OK -->
-				    <input placeholder="Pseudo" name="pseudo" required title="Veuillez entrer un pseudo contenant au moins X lettres,underscores ou chiffres ou whatever"/></br> <!-- Regex de format Ã  dÃ©terminer ! -->
-				    <input class="password" placeholder="Mot de passe"type="password" name="password" required title="Veuillez entrer un mot de passe d'au moins 8 lettres, chiffres, underscores ou whatever"/></br> <!-- Regex de format Ã  dÃ©terminer ! -->
-				    <input class="passwordcheck" placeholder="Confirmez votre mot de passe" type="password" name="password_check" required title="Veuillez confirmer votre mot de passe"/><p class="passwordsame"></p></br>
-					<input type="submit" value="Confirmer"/></br>
-				<p>
-			</form>
-		</div>
-	</body>
+	<h1>Pango</h1>
+	<div>
+		<h2>Se connecter</h2>
+		<p><a href="">S'incrire</a></p>
+		<form>
+		<form action="/src/php/login.php" method="post">
+			<p>
+				<input placeholder="Email ou pseudo" name="id"/> </br>
+				<input placeholder="Mot de passe"type="password" name="password"/></br>
+				<label> <input type="checkbox" value="Rester connecté" name="stay"/>Rester connecté</label></p><br>
+				<input type="submit" value="Confirmer"/></br>
+			<p>
+		</form>
+	</div>
+</html>
