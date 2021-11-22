@@ -37,7 +37,7 @@ class Login extends Component {
           online: result.data.logged,
         });
         {
-          this.state.online ? this.parent.toggleOnline() : "";
+          this.state.online && this.parent.toggleOnline();
         }
       })
       .catch((error) =>

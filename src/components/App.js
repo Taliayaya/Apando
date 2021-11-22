@@ -8,7 +8,7 @@ import Login from "./Login";
 import SignIn from "./SignIn";
 import UsersList from "./UsersList";
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
