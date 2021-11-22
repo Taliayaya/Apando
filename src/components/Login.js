@@ -36,9 +36,7 @@ class Login extends Component {
         this.setState({
           online: result.data.logged,
         });
-        {
-          this.state.online && this.parent.toggleOnline();
-        }
+        this.state.online && this.parent.toggleOnline();
       })
       .catch((error) =>
         this.setState({
