@@ -1,14 +1,19 @@
-import React, { Component } from 'react';
-import '../styles/UsersList.css';
+import React from "react";
+import SettingsIcon from "@material-ui/icons/Settings";
+import "../styles/UsersList.css";
+import CategorieUser from "./CategorieUser";
+import { UserList } from "../datas/userList";
 
-class UsersList extends Component {
-    render() {
-        return (
-            <div>
-                
-            </div>
-        );
-    }
+export default function UsersList() {
+  return (
+    <div className="user__list">
+      <div className="user__list__top">
+        <h2># Général</h2>
+      </div>
+      <div className="user__list__top__icons">
+        <SettingsIcon />
+      </div>
+      <CategorieUser UserList={UserList} />
+    </div>
+  );
 }
-
-export default UsersList;
