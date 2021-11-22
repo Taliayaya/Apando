@@ -20,8 +20,11 @@ if ($_POST)
     
     $db = getDB();
 
-    $signup=$db->prepare('INSERT INTO login (pseudo,mail,password) VALUES (?,?,?)');
-    $signup->execute(array($_POST['username'],$_POST['email'],$_POST['u_password']));
+    $signup=$db->prepare('INSERT INTO login (pseudo,mail,password) VALUES (:pseudo,:mail,:password)');
+	$signup->bindParam(":pseudo", $_POST['username'], PDO::PARAM_STR);
+	$signup->bindParam(":mail", $_POST['email'], PDO::PARAM_STR);
+	$signup->bindParam(":password", $_POST['u_password'], PDO::PARAM_STR);
+    $signup->execute();
     
 	echo json_encode(array(
         "sent" => true
