@@ -6,7 +6,7 @@ export default function CategorieUser({ UserList }) {
   ).sort((a, b) => (a.online === b.online ? 0 : a.online ? -1 : 1));
   let categorie = "";
   return (
-    <div className="user__list">
+    <div className="users__list">
       {sortedUserList.map(({ id, user, online, role }) =>
         categorie !== role && categorie !== "Offline" ? (
           ((categorie = !online ? "Offline" : role),

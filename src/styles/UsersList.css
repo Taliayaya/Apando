@@ -1,9 +1,10 @@
 .user__list {
   background-color: antiquewhite;
-
   display: flex;
   flex-direction: column;
   flex: 0.15;
+  overflow: scroll;
+  height: 100vh;
 }
 .user__list__top {
   background-color: black;

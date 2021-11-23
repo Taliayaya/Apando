@@ -23,7 +23,6 @@
 }
 
 .chat__input > form > input {
-  padding: 15px;
   background: transparent;
   border: none;
   outline-width: 0;
