@@ -1,117 +1,158 @@
 @font-face {
-    font-family:Tuffy-Bold;
-    src: url('./fonts/Tuffy-Bold.ttf') format('ttf');
+  font-family: Tuffy-Bold;
+  src: url("./fonts/Tuffy-Bold.ttf") format("ttf");
 }
 * {
-    margin: 0;
+  margin: 0;
 }
 
 .login__page {
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    height: 100vh;
-    text-align: center;
-    content: "";
-    position: relative;
-    background-size: cover;
-    background: rgb(63,94,251);
-    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
-
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  height: 100vh;
+  text-align: center;
+  content: "";
+  position: relative;
+  background-size: cover;
+  background: rgb(63, 94, 251);
+  background: radial-gradient(
+    circle,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(252, 70, 107, 1) 100%
+  );
+  vertical-align: middle;
 }
 .login__page::before {
-    content: "";
-    position: absolute;
+  content: "";
+  position: absolute;
 }
 .header__title {
-    font-family: Tuffy-Bold;
-
+  font-family: Tuffy-Bold;
 }
 .wrapper ::selection {
-    background: #4158d0;
-    color: #fff;
+  background: #4158d0;
+  color: #fff;
 }
 .login__title {
-    font-size: 35px;
-    font-weight: 600;
-    text-align: center;
-    line-height: 100px;
-    color: #fff;
-    user-select: none;
-    border-radius: 15px 15px 0 0;
-    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,0.43879558659401263) 50%, rgba(252,176,69,1) 100%);
+  font-size: 35px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 100px;
+  color: #fff;
+  user-select: none;
+  border-radius: 15px 15px 0 0;
+  background: linear-gradient(
+    90deg,
+    rgba(131, 58, 180, 1) 0%,
+    rgba(253, 29, 29, 0.43879558659401263) 50%,
+    rgba(252, 176, 69, 1) 100%
+  );
 }
 
 form {
-    padding: 10px 30px 50px 30px;
+  padding: 10px 30px 50px 30px;
 }
 .field {
-    height: 50px;
-    width: 100%;
-    margin-top: 20px;
-    position: relative;
+  height: 50px;
+  width: 100%;
+  margin-top: 20px;
+  position: relative;
 }
 .field input {
-    height: 100%;
-    width: 100%;
-    outline: none;
-    font-size: medium;
-    padding-left: 20px;
-    border: 1px solid lightgrey;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-
+  height: 100%;
+  width: 100%;
+  outline: none;
+  font-size: medium;
+  padding-left: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 25px;
+  transition: all 0.3s ease;
 }
-.field input:focus, .field input:valid {
-    border-color: #4158d0;
+.field input:focus,
+.field input:valid {
+  border-color: #4158d0;
 }
 .field label {
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    color: #999999;
-    font-weight: 400;
-    font-size: small;
-    pointer-events: none;
-    transform: translateY(-50%);
-    text-transform: uppercase;
-    transition: all 300ms ease;
-
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  color: #999999;
+  font-weight: 400;
+  font-size: small;
+  pointer-events: none;
+  transform: translateY(-50%);
+  text-transform: uppercase;
+  transition: all 300ms ease;
 }
 .field input:valid ~ label,
 .field input:focus ~ label {
-    top:0%;
-    font-size: smaller;
-    color: #4158d0;
-    background: #fff;
-    transform: translateY(-50%);
+  top: 0%;
+  font-size: smaller;
+  color: #4158d0;
+  background: #fff;
+  transform: translateY(-50%);
 }
-.field input[type=submit] {
-    color: #fff;
-    border: none;
-    padding-left: 0;
-    margin-top: -10px;
-    font-size: 20px;
-    font-weight: 500;
-    cursor: pointer;
-    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,0.43879558659401263) 50%, rgba(252,176,69,1) 100%);
-    transition: all 300ms ease;
+.field input[type="submit"] {
+  color: #fff;
+  border: none;
+  padding-left: 0;
+  margin-top: -10px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(
+    90deg,
+    rgba(131, 58, 180, 1) 0%,
+    rgba(253, 29, 29, 0.43879558659401263) 50%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  transition: all 300ms ease;
 }
 
-.field input[type=submit]:active {
-    transform: scale(0.95);
+.field input[type="submit"]:active {
+  transform: scale(0.95);
 }
 
 .wrapper {
-    width: 380px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 15 20px rgba(0, 0, 0, 0.1);
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    place-items: center;
+  width: 380px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 33px 40px 33px rgba(0, 0, 0, 0.2);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+}
+
+.swap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px;
+  border-bottom: white 2px solid;
+}
+
+/* Interaction avec le swap entre Login et SignIn*/
+.login__button:hover,
+.signin__button:hover {
+  cursor: pointer;
+  border-bottom: blue 2px solid;
+  font-size: larger;
+  transition: all 300ms ease;
+}
+.login__button:hover + .selected,
+.signin__button:hover + .selected {
+  border-bottom: white 2px solid;
+  font-size: medium;
+  transition: all 300ms ease;
+}
+.selected {
+  cursor: pointer;
+  border-bottom: blue 2px solid;
+  font-size: larger;
+  transition: all 300ms ease;
 }

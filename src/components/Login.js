@@ -46,46 +46,41 @@ class Login extends Component {
   }
   render() {
     return (
-      <div className="login__page">
-        <h1 className="header__title">Pango</h1>
-        <div className="wrapper">
-          <h2 className="login__title">Se connecter</h2>
-          {/* Quand on clique dessus, active le signup form*/}
-          <p onClick={this.parent.toggleSignIn}>S'inscrire</p>
-          <form action="#">
-            <div className="field">
-              <input
-                type="text"
-                name="username_or_email"
-                required
-                value={this.state.username_or_email}
-                onChange={(e) =>
-                  this.setState({ username_or_email: e.target.value })
-                }
-              />
-              <label>e-mail ou pseudo</label>
-            </div>
-            <div className="field">
-              <input
-                type="password"
-                name="password"
-                required
-                value={this.state.u_password}
-                onChange={(e) => this.setState({ u_password: e.target.value })}
-              />
-              <label>mot de passe</label>
-            </div>
-            <input type="checkbox" value="Rester connecté" />
-            <div className="field">
-              <input
-                type="submit"
-                onClick={(e) => this.handleFormSubmit(e)}
-                value="Valider"
-              />
-            </div>
-            {this.props.online && <div>Logged in</div>}
-          </form>
-        </div>
+      <div>
+        <h2 className="login__title">Connexion</h2>
+        <form action="#">
+          <div className="field">
+            <input
+              type="text"
+              name="username_or_email"
+              required
+              value={this.state.username_or_email}
+              onChange={(e) =>
+                this.setState({ username_or_email: e.target.value })
+              }
+            />
+            <label>e-mail ou pseudo</label>
+          </div>
+          <div className="field">
+            <input
+              type="password"
+              name="password"
+              required
+              value={this.state.u_password}
+              onChange={(e) => this.setState({ u_password: e.target.value })}
+            />
+            <label>mot de passe</label>
+          </div>
+          <input type="checkbox" value="Rester connecté" />
+          <div className="field">
+            <input
+              type="submit"
+              onClick={(e) => this.handleFormSubmit(e)}
+              value="Valider"
+            />
+          </div>
+          {this.props.online && <div>Logged in</div>}
+        </form>
       </div>
     );
   }

@@ -5,7 +5,7 @@ import Chat from "./Chat";
 import Footer from "./Footer";
 import Header from "./Header";
 import Login from "./Login";
-import SignIn from "./SignIn";
+import LoginSignIn from "./LoginSignIn";
 import UsersList from "./UsersList";
 
 class App extends React.Component {
@@ -48,13 +48,10 @@ class App extends React.Component {
               <Footer />
             </div>
     
-        ) : (!this.state.wantToSignIn ?
-          <Login
-              online={this.state.online}
-              toggleOnline={this.toggleOnline}
-              toggleSignIn={this.toggleSignIn}
-            /> : <SignIn />
-          ) 
+        ) :
+          <LoginSignIn online={this.state.online}
+          toggleOnline={this.toggleOnline}
+          toggleSignIn={this.toggleSignIn}/>
         }
       </div>
     );
