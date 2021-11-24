@@ -8,6 +8,7 @@
 
 .chat__messages {
   flex: 1;
+  overflow-y: scroll;
 }
 
 .chat__input {

@@ -22,7 +22,6 @@ class Login extends Component {
   // Fonction qui s'active lorsqu'on envoie le formulaire
   handleFormSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
     // On envoie les données au php avec axios
     axios({
       method: "post",
@@ -36,7 +35,13 @@ class Login extends Component {
         this.setState({
           online: result.data.logged,
         });
-        this.state.online && this.parent.toggleOnline();
+        if (this.state.online) {
+          localStorage.setItem(
+            "user_data",
+            JSON.stringify(result.data.logged_user_data)
+          );
+          this.parent.toggleOnline();
+        }
       })
       .catch((error) =>
         this.setState({

@@ -3,15 +3,15 @@ import React, { Component } from "react";
 import "../styles/Message.css";
 
 class Message extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      ...props
+      ...props,
     };
-  };
+  }
   render() {
     return (
-      <div className="message">
+      <div className="message" key={this.state.key}>
         <Avatar src={this.state.avatar} />
         <div className="message__info">
           <h4>

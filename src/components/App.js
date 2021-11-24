@@ -4,7 +4,6 @@ import ChannelList from "./ChannelList";
 import Chat from "./Chat";
 import Footer from "./Footer";
 import Header from "./Header";
-import Login from "./Login";
 import LoginSignIn from "./LoginSignIn";
 import UsersList from "./UsersList";
 
@@ -19,10 +18,6 @@ class App extends React.Component {
   toggleOnline = () => {
     // Permet de mettre en ligne
     this.setState({ online: true });
-  };
-  toggleSignIn = () => {
-    // Permet d'active le form de signin
-    this.setState({ wantToSignIn: !this.state.wantToSignIn });
   };
 
   render() {
@@ -50,8 +45,7 @@ class App extends React.Component {
     
         ) :
           <LoginSignIn online={this.state.online}
-          toggleOnline={this.toggleOnline}
-          toggleSignIn={this.toggleSignIn}/>
+          toggleOnline={this.toggleOnline}/>
         }
       </div>
     );
