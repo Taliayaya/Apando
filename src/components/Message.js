@@ -3,16 +3,22 @@ import React, { Component } from "react";
 import "../styles/Message.css";
 
 class Message extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      ...props
+    };
+  };
   render() {
     return (
       <div className="message">
-        <Avatar src="https://i.pinimg.com/originals/9c/db/6b/9cdb6b5c751948d045322a3ded02b6ef.jpg" />
+        <Avatar src={this.state.avatar} />
         <div className="message__info">
           <h4>
-            taliayayah
-            <span className="message__timestamp">03-11-21</span>
+            {this.state.username}
+            <span className="message__timestamp">{this.state.timestamp}</span>
           </h4>
-          <p>Ettttt noussss sommmesssss partiiii</p>
+          <p>{this.state.message}</p>
         </div>
       </div>
     );
