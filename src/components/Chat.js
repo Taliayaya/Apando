@@ -26,6 +26,7 @@ class Chat extends Component {
       },
       activeChat: 0,
     };
+    this.listRef = React.createRef();
     this.loadMessage = this.loadMessage.bind(this);
   }
   handleSubmit(e) {
@@ -70,13 +71,13 @@ class Chat extends Component {
         // console.log(result);
         this.setState((prevState) => ({
           load_message: {
-            ...prevState.loadMessage,
+            ...prevState.load_message,
             loaded: result.data.loaded,
             messages_list: result.data.messages_list,
           },
         }));
-        // console.log(result);
-        // console.log(this.state);
+        console.log(result);
+        console.log(this.state);
       })
       .catch((error) =>
         this.setState((prevState) => ({
@@ -93,12 +94,33 @@ class Chat extends Component {
     this.loadMessage();
     this.interval = setInterval(
       () => this.setState({ time: Date.now() }),
-      1000
+      2000
     );
   }
 
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    // Sommes-nous en train d’ajouter de nouveaux éléments à la liste ?
+    // Sauvegardons la position de défilement pour la recaler plus tard.
+    if (
+      prevState.load_message.messages_list.length <
+      this.state.load_message.messages_list.length
+    ) {
+      const list = this.listRef.current;
+      return list.scrollHeight - list.scrollTop;
+    }
+    return null;
+  }
+
   // Reset la page à chaque fois qu'il y a une modifcation dans message_lists
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // Si nous avons une valeur sauvegardée, c’est que nous venons d’ajouter des
+    // éléments. Ajustons le défilement pour que ces nouveaux éléments ne
+    // décalent pas les anciens hors du champ de vision. (ici `snapshot` est la
+    // valeur renvoyée par getSnapshotBeforeUpdate.)
+    if (snapshot != null) {
+      const list = this.listRef.current;
+      list.scrollTop = list.scrollHeight - snapshot;
+    }
     let result = Object.is(
       prevState.load_message.messages_list,
       this.state.load_message.messages_list
@@ -109,14 +131,14 @@ class Chat extends Component {
   }
 
   componentWillUnmount() {
+    // On reset l'interval après la destruction du composant
     clearInterval(this.interval);
   }
   render() {
     return (
       <div className="chat">
         {/* Chat Header ? */}
-        {console.log(JSON.parse(localStorage.getItem("user_data")))}
-        <div className="chat__messages">
+        <div className="chat__messages" ref={this.listRef}>
           {this.state.load_message.messages_list
             .reverse()
             .map(({ id_message, message, message_date, pseudo }) => (

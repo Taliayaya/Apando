@@ -20,13 +20,11 @@ if ($_POST)
         $messages_list[]=$row;
     }
 
-    if(!empty($messages_list))
-    {
+    
     echo json_encode(array(
         "loaded" => true,
         "messages_list"=>$messages_list
     ));
-    }
 }
 else {
     // tell the user about error
