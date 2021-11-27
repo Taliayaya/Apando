@@ -17,3 +17,18 @@
 
   border-bottom: 3px solid purple;
 }
+.selected_channel {
+  color: #fff;
+  font-size: larger;
+  border-top:#fff 1px dotted ;
+  padding-bottom: 10px;
+}
+.normal {
+  color: #000;
+  padding-bottom: 10px;
+}
+.channel__list__bottom {
+  padding-left: 20px;
+  padding-bottom: 20px;
+  overflow-y: scroll;
+}

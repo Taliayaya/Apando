@@ -13,12 +13,18 @@ class App extends React.Component {
     this.state = {
       online: false,
       wantToSignIn: false,
+      currentChannel:null,
     };
   }
   toggleOnline = () => {
     // Permet de mettre en ligne
     this.setState({ online: true });
   };
+  // Permet de changer entre les différents salons
+  changeChannel = (e, id_channel) => {
+    this.setState({currentChannel: id_channel})
+    console.log(e.target, this.state.currentChannel, id_channel);
+  }
 
   render() {
     return (
@@ -31,10 +37,11 @@ class App extends React.Component {
               <Header />
               <div className="structure">
                 {/* CHANNEL LIST*/}
-                <ChannelList />
+                <ChannelList currentChannel={this.state.currentChannel}
+                changeChannel={this.changeChannel} />
 
                 {/* CHAT */}
-                <Chat />
+                <Chat currentChannel={this.state.currentChannel} />
 
                 {/* USERS LIST */}
                 <UsersList />
