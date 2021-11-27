@@ -29,18 +29,20 @@ class Chat extends Component {
     this.listRef = React.createRef();
     this.loadMessage = this.loadMessage.bind(this);
   }
+
   handleSubmit(e) {
     e.preventDefault();
+    console.log(this.state.send_message.currentChannel);
     console.log(this.state.send_message.user_id);
     axios({
       method: "post",
       url: `${API_SEND_MESSAGE}`,
       headers: { "content-type": "application/json" },
-      data: this.state.send_message,
+      data: [this.state.send_message,this.props.currentChannel]
     })
       .then((result) => {
         // On récupère les states d'avant, on les remets, et on les modifies
-        console.log(result);
+        console.log(111111111111,result);
         this.setState((prevState) => ({
           send_message: {
             ...prevState.send_message,
@@ -61,14 +63,15 @@ class Chat extends Component {
   }
 
   loadMessage() {
+    // console.log(this.props.currentChannel);
     axios({
       method: "post",
       url: `${API_LOAD_MESSAGES}`,
       headers: { "content-type": "application/json" },
-      data: this.state.load_message,
+      data: [this.state.load_message, this.props.currentChannel],
     })
       .then((result) => {
-        // console.log(result);
+        console.log(result);
         this.setState((prevState) => ({
           load_message: {
             ...prevState.load_message,
@@ -76,8 +79,8 @@ class Chat extends Component {
             messages_list: result.data.messages_list,
           },
         }));
-        console.log(result);
-        console.log(this.state);
+        // console.log(result);
+        // console.log(this.state);
       })
       .catch((error) =>
         this.setState((prevState) => ({
@@ -139,6 +142,7 @@ class Chat extends Component {
       <div className="chat">
         {/* Chat Header ? */}
         <div className="chat__messages" ref={this.listRef}>
+          {this.props.currentChannel===null && <p>Choisissez un salon pour commencer à discuter</p>}
           {this.state.load_message.messages_list
             .reverse()
             .map(({ id_message, message, message_date, pseudo }) => (
