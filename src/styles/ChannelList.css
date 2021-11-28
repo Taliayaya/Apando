@@ -22,15 +22,19 @@
   font-size: larger;
   border-top:#fff 1px dotted ;
   padding-bottom: 10px;
-  cursor: pointer;
 }
 .normal {
   color: #000;
   padding-bottom: 10px;
-  cursor: pointer;
 }
 .channel__list__bottom {
   padding-left: 20px;
   padding-bottom: 20px;
   overflow-y: scroll;
+}
+
+.normal:hover {
+  cursor: pointer;
+  color: #999;
+  font-size: large;
 }
