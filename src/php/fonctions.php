@@ -1,7 +1,6 @@
 <?php
 function checksignup($post){
 // Vérifications de routine, avec renvoi d'erreur par $_SESSION["signuperror"] : vérification de présence et de regex
-    $post =json_decode($post, true);
     $error = match(true){
         !($post) => "nopost",
         (!(isset($post["mail"]) && isset($post["pseudo"]) && isset($post["password"]) && isset($post["password_check"]))) => "badpost",

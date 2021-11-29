@@ -1,10 +1,8 @@
 <?php
 require "fonctions.php";
-$postinfo = file_get_contents("php://input");
-checksignup($postinfo);
-$postinfo = json_decode($postinfo, true);
+checksignup($_POST);
 // Suppression des specialchars
-$credentials=htchange($postinfo);
+$credentials=htchange($_POST);
 
 
 // try
@@ -31,7 +29,6 @@ $credentials=htchange($postinfo);
         <?= $credentials["mail"] ?>
         <?= $credentials["pseudo"] ?>
         <?= $credentials["password"]==$credentials["password_check"] ?>
-        <?= $_SESSION["signuperror"] ?>
     </div>
 </body>
 </html>
