@@ -30,6 +30,13 @@ class App extends React.Component {
     console.log(channel_list)
     console.log('here');
   }
+  componentDidMount() {
+    if(localStorage.getItem('online')) {
+      this.setState({
+        online: true
+      });
+    }
+  }
 
   render() {
     return (
@@ -50,7 +57,8 @@ class App extends React.Component {
                       channelList={this.state.channel_list} />
 
                 {/* USERS LIST */}
-                <UsersList />
+                <UsersList channelList={this.state.channel_list}
+                currentChannel={this.state.currentChannel} />
               </div>
               {/* FOOTER */}
               {/* <Footer /> */}

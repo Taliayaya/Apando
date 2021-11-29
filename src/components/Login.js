@@ -40,6 +40,7 @@ class Login extends Component {
             "user_data",
             JSON.stringify(result.data.logged_user_data)
           );
+          localStorage.setItem('online', this.state.online);
           this.parent.toggleOnline();
         }
       })
