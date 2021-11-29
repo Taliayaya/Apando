@@ -46,7 +46,7 @@ class Chat extends Component {
       })
         .then((result) => {
           // On récupère les states d'avant, on les remets, et on les modifies
-          console.log(111111111111, result);
+          // console.log(111111111111, result);
           this.setState((prevState) => ({
             send_message: {
               ...prevState.send_message,
@@ -77,7 +77,7 @@ class Chat extends Component {
       data: [this.state.load_message, this.props.currentChannel],
     })
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         this.setState((prevState) => ({
           load_message: {
             ...prevState.load_message,
@@ -86,7 +86,7 @@ class Chat extends Component {
           },
         }));
         // console.log(result);
-        console.log(this.state);
+        // console.log(this.state);
       })
       .catch((error) =>
         this.setState((prevState) => ({
@@ -176,7 +176,6 @@ class Chat extends Component {
           <form>
             <textarea
               placeholder={`Écrivez à ${channelName}`}
-              type="text"
               value={this.state.send_message.message}
               onChange={(e) =>
                 this.setState((prevState) => ({
