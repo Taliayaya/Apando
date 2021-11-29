@@ -18,7 +18,7 @@ class Message extends Component {
             {this.state.username}
             <span className="message__timestamp">{this.state.timestamp}</span>
           </h4>
-          <p>{this.state.message}</p>
+          <p className="user__message">{this.state.message}</p>
         </div>
       </div>
     );

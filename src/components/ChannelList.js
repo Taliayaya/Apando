@@ -59,6 +59,7 @@ class ChannelList extends Component {
             channels_list: result.data.channels_data,
           },
         }));
+        this.props.setChannelList(result.data.channels_data);
       })
       .catch((error) =>
         this.setState((prevState) => ({

@@ -14,6 +14,7 @@ class App extends React.Component {
       online: false,
       wantToSignIn: false,
       currentChannel:null,
+      channel_list: []
     };
   }
   toggleOnline = () => {
@@ -23,31 +24,36 @@ class App extends React.Component {
   // Permet de changer entre les différents salons
   changeChannel = (e, id_channel) => {
     this.setState({currentChannel: id_channel})
-    console.log(e.target, this.state.currentChannel, id_channel);
+  }
+  setChannelList = (channel_list) => {
+    this.setState({channel_list: channel_list})
+    console.log(channel_list)
+    console.log('here');
   }
 
   render() {
     return (
       
       <div className="app">
-        {console.log(this.state.wantToSignIn)}
         {this.state.online ? (
         
             <div>
-              <Header />
+              {/* <Header /> */}
               <div className="structure">
                 {/* CHANNEL LIST*/}
                 <ChannelList currentChannel={this.state.currentChannel}
-                changeChannel={this.changeChannel} />
+                changeChannel={this.changeChannel}
+                setChannelList={this.setChannelList} />
 
                 {/* CHAT */}
-                <Chat currentChannel={this.state.currentChannel} />
+                <Chat currentChannel={this.state.currentChannel}
+                      channelList={this.state.channel_list} />
 
                 {/* USERS LIST */}
                 <UsersList />
               </div>
               {/* FOOTER */}
-              <Footer />
+              {/* <Footer /> */}
             </div>
     
         ) :

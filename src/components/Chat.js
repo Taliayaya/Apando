@@ -25,45 +25,51 @@ class Chat extends Component {
         error: null,
       },
       activeChat: 0,
+      channelInfo: [],
     };
     this.listRef = React.createRef();
     this.loadMessage = this.loadMessage.bind(this);
   }
 
   handleSubmit(e) {
-    e.preventDefault();
-    console.log(this.state.send_message.currentChannel);
-    console.log(this.state.send_message.user_id);
-    axios({
-      method: "post",
-      url: `${API_SEND_MESSAGE}`,
-      headers: { "content-type": "application/json" },
-      data: [this.state.send_message,this.props.currentChannel]
-    })
-      .then((result) => {
-        // On récupère les states d'avant, on les remets, et on les modifies
-        console.log(111111111111,result);
-        this.setState((prevState) => ({
-          send_message: {
-            ...prevState.send_message,
-            sent: result.data.sent,
-            message: "",
-          },
-        }));
-        // console.log(this.state.send_message.message);
+    const keyCode = e.which || e.keyCode;
+    // Si ENTER et SHIFT ne sont pas press en même temps,
+    // alors on considère ça comme un envoie de message ;)
+    if (keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
+      console.log(this.state.send_message.user_id);
+      axios({
+        method: "post",
+        url: `${API_SEND_MESSAGE}`,
+        headers: { "content-type": "application/json" },
+        data: [this.state.send_message, this.props.currentChannel],
       })
-      .catch((error) =>
-        this.setState((prevState) => ({
-          send_message: {
-            ...prevState.send_message,
-            error: error.message,
-          },
-        }))
-      );
+        .then((result) => {
+          // On récupère les states d'avant, on les remets, et on les modifies
+          console.log(111111111111, result);
+          this.setState((prevState) => ({
+            send_message: {
+              ...prevState.send_message,
+              sent: result.data.sent,
+              message: "",
+            },
+          }));
+          // console.log(this.state.send_message.message);
+        })
+        .catch((error) =>
+          this.setState((prevState) => ({
+            send_message: {
+              ...prevState.send_message,
+              error: error.message,
+            },
+          }))
+        );
+    }
   }
 
   loadMessage() {
     // console.log(this.props.currentChannel);
+    // console.log(this.props);
     axios({
       method: "post",
       url: `${API_LOAD_MESSAGES}`,
@@ -80,7 +86,7 @@ class Chat extends Component {
           },
         }));
         // console.log(result);
-        // console.log(this.state);
+        console.log(this.state);
       })
       .catch((error) =>
         this.setState((prevState) => ({
@@ -131,6 +137,13 @@ class Chat extends Component {
     if (result) {
       this.loadMessage();
     }
+    if (prevProps.currentChannel!==this.props.currentChannel) {
+      this.setState({
+        channelInfo: this.props.channelList.find(channel => channel.id_channel===this.props.currentChannel)
+      })
+      console.log(this.state.channelInfo.id_channel)
+    
+    }
   }
 
   componentWillUnmount() {
@@ -138,11 +151,14 @@ class Chat extends Component {
     clearInterval(this.interval);
   }
   render() {
+    const channelName = this.state.channelInfo.channel_name
     return (
       <div className="chat">
         {/* Chat Header ? */}
         <div className="chat__messages" ref={this.listRef}>
-          {this.props.currentChannel===null && <p>Choisissez un salon pour commencer à discuter</p>}
+          {this.props.currentChannel === null && (
+            <p>Choisissez un salon pour commencer à discuter</p>
+          )}
           {this.state.load_message.messages_list
             .reverse()
             .map(({ id_message, message, message_date, pseudo }) => (
@@ -158,8 +174,8 @@ class Chat extends Component {
         <div className="chat__input">
           <AddCircle fontSize="large" />
           <form>
-            <input
-              placeholder={`Ecrivez à tous`}
+            <textarea
+              placeholder={`Écrivez à ${channelName}`}
               type="text"
               value={this.state.send_message.message}
               onChange={(e) =>
@@ -170,14 +186,8 @@ class Chat extends Component {
                   },
                 }))
               }
-            />
-            <button
-              className="chat__inputButton"
-              onClick={(e) => this.handleSubmit(e)}
-              type="submit"
-            >
-              Envoyer
-            </button>
+              onKeyDown={(e) => this.handleSubmit(e)}
+            ></textarea>
           </form>
         </div>
       </div>

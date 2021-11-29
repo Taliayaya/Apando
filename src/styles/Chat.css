@@ -23,13 +23,21 @@
   background-color: rebeccapurple;
 }
 
-.chat__input > form > input {
+.chat__input > form > textarea {
+  padding-left: 15px;
   background: transparent;
   border: none;
   outline-width: 0;
   color: white;
   font-size: large;
-  width: 95%;
+  width: 100%;
+  font-size: large;
+  resize: vertical;
+}
+.chat__input > form > textarea:focus {
+  outline: none;
+  border: none;
+  outline-width: 0;
 }
 
 .chat__input > form {
