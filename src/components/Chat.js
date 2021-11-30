@@ -85,7 +85,7 @@ class Chat extends Component {
             messages_list: result.data.messages_list,
           },
         }));
-        // console.log(result);
+        console.log(result);
         // console.log(this.state);
       })
       .catch((error) =>
@@ -161,12 +161,13 @@ class Chat extends Component {
           )}
           {this.state.load_message.messages_list
             .reverse()
-            .map(({ id_message, message, message_date, pseudo }) => (
+            .map(({ id_message, message, message_date, pseudo, avatar }) => (
               <Message
                 key={id_message}
                 username={pseudo === null ? "Utilisateur supprimé" : pseudo}
                 message={message}
                 timestamp={message_date}
+                avatar={avatar}
               />
             ))}
         </div>

@@ -20,7 +20,7 @@ if ($_POST)
     $db = getDB();
 
     
-    $login=$db->prepare("SELECT pseudo, mail, id FROM login WHERE (pseudo=:pseudo OR mail=:mail) AND password=:password");
+    $login=$db->prepare("SELECT pseudo, mail, id, avatar FROM login WHERE (pseudo=:pseudo OR mail=:mail) AND password=:password");
     $login->bindParam(":pseudo",$_POST['username_or_email'], PDO::PARAM_STR);
     $login->bindParam(":mail",$_POST['username_or_email'], PDO::PARAM_STR);
     $login->bindParam(":password",$_POST['u_password'], PDO::PARAM_STR);

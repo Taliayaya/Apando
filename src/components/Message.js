@@ -12,7 +12,7 @@ class Message extends Component {
   render() {
     return (
       <div className="message" key={this.state.key}>
-        <Avatar src={this.state.avatar} />
+        <Avatar src={`http://localhost/Project-Plateforme/src/images/avatars/${this.state.avatar}`} />
         <div className="message__info">
           <h4>
             {this.state.username}

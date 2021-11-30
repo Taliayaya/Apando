@@ -16,7 +16,7 @@ if ($_POST)
 
     // data (ça marche ???!!!)
     $db = getDB();
-    $load = $db->prepare('SELECT pseudo, id_message, message, message_date, u_id FROM messages LEFT JOIN login ON id=u_id WHERE id_channel=:id_channel ORDER BY message_date DESC');
+    $load = $db->prepare('SELECT pseudo, id_message, message, message_date, u_id, avatar FROM messages LEFT JOIN login ON id=u_id WHERE id_channel=:id_channel ORDER BY message_date DESC');
     $load->bindParam("id_channel", $id_channel, PDO::PARAM_INT);
     $load->execute();
     $messages_list = array();

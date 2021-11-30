@@ -38,3 +38,15 @@
   font-weight: normal;
   font-size: medium;
 }
+
+#settings {
+  color: #000;
+  cursor: pointer;
+
+}
+
+#settings:hover {
+  color: #777;
+  transform: scale(1.2);
+  transition: all 300ms ease;
+}
