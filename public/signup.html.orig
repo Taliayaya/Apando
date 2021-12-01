@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Login test</title>
+		<script src="signupscript.js"></script>
+		<!-- Il faudra ajouter un script permettant de bloquer si les mots de passes sont différents, et mettre quad il sont bons. -->
+		<!-- De plus, des erreurs sont enregistrées en php sur la session, à vous de les implémenter comme vous le souhaitez. Ces erreurs sont enregistrées dans $_SESSION["signuperror"] -->
+	</head>
+	<body>
+		<h1>Pango</h1>
+		<div>
+			<h2>S'inscrire</h2>
+			<form action="/Project-Plateforme/src/php/signup.php" method="post">
+				<p>
+				    <!-- Je fais pas de frontend, mais quelques idées pour améliorer cette page : mettre des title pour décrire ce qu'on doit entrer dans chaque
+			    input, mettre un autofocus sur le premier élément, ajouter les regex présentes dans le php -->
+				    <input type="email" placeholder="Email de connexion" name="mail" required title="Entrez une adresse email qui vous permettra de vous connecter, et sur laquelle vous pourrez r�pondre � un mail de v�rification"/></br> <!-- Format OK -->
+				    <input placeholder="Pseudo" name="pseudo" required title="Veuillez entrer un pseudo contenant au moins X lettres,underscores ou chiffres ou whatever"/></br> <!-- Regex de format à déterminer ! -->
+				    <input class="password" placeholder="Mot de passe"type="password" name="password" required title="Veuillez entrer un mot de passe d'au moins 8 lettres, chiffres, underscores ou whatever"/></br> <!-- Regex de format à déterminer ! -->
+				    <input class="passwordcheck" placeholder="Confirmez votre mot de passe" type="password" name="password_check" required title="Veuillez confirmer votre mot de passe"/><p class="passwordsame"></p></br>
+					<input type="submit" value="Confirmer"/></br>
+				<p>
+			</form>
+		</div>
+	</body>
+
