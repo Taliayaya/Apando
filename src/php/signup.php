@@ -3,18 +3,11 @@ require "fonctions.php";
 checksignup($_POST);
 // Suppression des specialchars
 $credentials=htchange($_POST);
-
-
-// try
-// {
-//     $db=new PDO('mysql:host=localhost;dbname=logins','root','');
-// }
-// catch (Exception $e)
-// {
-//     die('Error : ' . $e->getMessage());
-// }
-// $signup=$db->prepare('INSERT INTO login (pseudo,mail,password) VALUES (?,?,?)');
-// $signup->execute(array($credentials['pseudo'],$credentials['mail'],$credentials['password']));
+inserdatabase($credentials);
+// Redirection temporaire : sera redirigée à l'avenir vers la page d'instructions pour la confirmation du compte
+echo json_encode(["finished" => true]);
+// header('Location: /Project-Plateforme/public/signup.html');
+// exit();
 ?>
 
 <!DOCTYPE html>
@@ -26,9 +19,7 @@ $credentials=htchange($_POST);
 
 <body>
     <div>
-        <?= $credentials["mail"] ?>
-        <?= $credentials["pseudo"] ?>
-        <?= $credentials["password"]==$credentials["password_check"] ?>
+        <?= "Merci de vous être inscrit !"?>
     </div>
 </body>
 </html>
