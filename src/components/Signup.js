@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../styles/Login.css";
 import axios from "axios";
 
-const API_PATH = "http://localhost/Project-Plateforme/src/php/index.php";
+const API_PATH = "https://localhost/Project-Plateforme/src/php/signup.php";
 
 class SignIn extends Component {
   constructor(props) {
@@ -28,6 +28,7 @@ class SignIn extends Component {
         this.setState({
           valueAdded: result.data.sent,
         });
+        console.log(result);
       })
       .catch((error) =>
         this.setState({

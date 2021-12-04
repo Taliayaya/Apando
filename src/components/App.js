@@ -4,7 +4,7 @@ import ChannelList from "./ChannelList";
 import Chat from "./Chat";
 import Footer from "./Footer";
 import Header from "./Header";
-import LoginSignIn from "./LoginSignIn";
+import LoginSignIn from "./LoginSignup";
 import Profile from "./Profile";
 import UsersList from "./UsersList";
 

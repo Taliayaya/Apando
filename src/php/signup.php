@@ -1,13 +1,16 @@
 <?php
 require "fonctions.php";
+// A CHANGER UNE FOIS INSTALLE
+header('Access-Control-Allow-Origin: http://localhost');
+$rest_json = file_get_contents("php://input");
+$_POST = json_decode($rest_json, true);
 checksignup($_POST);
 // Suppression des specialchars
 $credentials=htchange($_POST);
 inserdatabase($credentials);
 // Redirection temporaire : sera redirigée à l'avenir vers la page d'instructions pour la confirmation du compte
 echo json_encode(["finished" => true]);
-// header('Location: /Project-Plateforme/public/signup.html');
-// exit();
+exit();
 ?>
 
 <!DOCTYPE html>
