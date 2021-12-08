@@ -10,11 +10,13 @@ import SignIn from './pages/SignIn'
 import RequireAuth from './components/RequireAuth'
 import { AuthProvider } from './utils/context'
 import NotFound from './components/NotFound'
+import GlobalStyle from './utils/style/GlobalStyle'
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <AuthProvider>
+                <GlobalStyle />
                 <Header />
                 <Routes>
                     <Route path="/" element={<Home />} />
