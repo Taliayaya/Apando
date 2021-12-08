@@ -9,6 +9,7 @@ import Settings from './pages/Settings'
 import SignIn from './pages/SignIn'
 import RequireAuth from './components/RequireAuth'
 import { AuthProvider } from './utils/context'
+import NotFound from './components/NotFound'
 
 ReactDOM.render(
     <React.StrictMode>
@@ -35,7 +36,7 @@ ReactDOM.render(
                         }
                     />
                     <Route path="/login" element={<Login />} />
-                    <Route path="*" />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>
