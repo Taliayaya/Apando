@@ -22,7 +22,7 @@ function Login() {
     const handleLogin = (e) => {
         e.preventDefault()
         login().then(() => {
-            navigate(state?.path || '/dashboard')
+            navigate(state?.path || '/app')
         })
     }
     return (
