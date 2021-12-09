@@ -16,7 +16,6 @@ export const StyledChannelListTop = styled.div`
     padding: 20px;
 
     color: ${colors.channelList_font_color};
-    font-family: 'Tuffy-Bold';
 
     border-bottom: 3px solid purple;
 `
