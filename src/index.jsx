@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
-import Dashboard from './pages/Dashboard'
+import App from './pages/App'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Settings from './pages/Settings'
@@ -22,10 +22,10 @@ ReactDOM.render(
                     <Route path="/" element={<Home />} />
                     <Route path="/signin" element={<SignIn />} />
                     <Route
-                        path="/dashboard"
+                        path="/app"
                         element={
                             <RequireAuth>
-                                <Dashboard />
+                                <App />
                             </RequireAuth>
                         }
                     />
