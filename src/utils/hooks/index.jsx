@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { AuthContext } from '../context'
+import { AuthContext, UserDataContext } from '../context'
 import axios from 'axios'
 export function useAuth() {
     const { authed, setAuthed } = useContext(AuthContext)
@@ -44,4 +44,9 @@ export function useApi() {
             })
         },
     }
+}
+
+export function useData() {
+    const { userData, setuserData } = useContext(UserDataContext)
+    return { userData, setuserData }
 }

@@ -8,7 +8,7 @@ import Login from './pages/Login'
 import Settings from './pages/Settings'
 import SignIn from './pages/SignIn'
 import RequireAuth from './components/RequireAuth'
-import { AuthProvider } from './utils/context'
+import { AuthProvider, UserDataProvider } from './utils/context'
 import NotFound from './components/NotFound'
 import GlobalStyle from './utils/style/GlobalStyle'
 
@@ -16,30 +16,32 @@ ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <AuthProvider>
-                <GlobalStyle />
-                <Header />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/signin" element={<SignIn />} />
-                    <Route
-                        path="/app"
-                        element={
-                            <RequireAuth>
-                                <App />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path="/settings"
-                        element={
-                            <RequireAuth>
-                                <Settings />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
+                <UserDataProvider>
+                    <GlobalStyle />
+                    <Header />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/signin" element={<SignIn />} />
+                        <Route
+                            path="/app"
+                            element={
+                                <RequireAuth>
+                                    <App />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/settings"
+                            element={
+                                <RequireAuth>
+                                    <Settings />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </UserDataProvider>
             </AuthProvider>
         </BrowserRouter>
     </React.StrictMode>,

@@ -11,3 +11,15 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     )
 }
+
+export const UserDataContext = createContext()
+
+export const UserDataProvider = ({ children }) => {
+    const [userData, setuserData] = useState([])
+
+    return (
+        <UserDataContext.Provider value={{ userData, setuserData }}>
+            {children}
+        </UserDataContext.Provider>
+    )
+}
