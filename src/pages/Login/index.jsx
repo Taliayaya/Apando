@@ -12,8 +12,9 @@ import {
     StyledSubmit,
     StyledHeaderTitle,
     StyleLink,
+    StyleError,
 } from '../../utils/style/LoginSignStyle'
-import { useApi } from '../../utils/hooks'
+import { useApi, useData } from '../../utils/hooks'
 import { useState } from 'react'
 
 function Login() {
@@ -21,6 +22,7 @@ function Login() {
     const { login } = useAuth()
     const { state } = useLocation()
     const { sender } = useApi()
+    const { setuserData } = useData()
     const [nameEmail, setnameEmail] = useState('')
     const [password, setpassword] = useState('')
     const [error, seterror] = useState(null)
@@ -33,8 +35,10 @@ function Login() {
         formData.append('u_password', password)
 
         const data = await sender('http://localhost/API/login.php', formData)
+        console.log(data)
         data?.logged
             ? login().then(() => {
+                  setuserData(data?.logged_user_data)
                   navigate(state?.path || '/app')
               })
             : seterror(true)
@@ -45,6 +49,11 @@ function Login() {
             <StyledLoginWrapper>
                 <StyledLoginTitle>Connexion</StyledLoginTitle>
                 <StyledForm action="#">
+                    {error && (
+                        <StyleError>
+                            Votre identifiant ou mot de passe est incorrect
+                        </StyleError>
+                    )}
                     <StyledField>
                         <StyledFieldInput
                             type="text"
@@ -80,8 +89,6 @@ function Login() {
                         Nouveau ?{' '}
                         <StyleLink to="/signin"> S'inscrire</StyleLink>
                     </StyledField>
-                    {error && <StyledField>Il y a eu une erreur</StyledField> &&
-                        console.log(error)}
                 </StyledForm>
             </StyledLoginWrapper>
         </StyledLoginPage>

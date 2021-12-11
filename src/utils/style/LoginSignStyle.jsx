@@ -136,3 +136,10 @@ export const StyleLink = styled(Link)`
         transition: all 300ms ease;
     }
 `
+export const StyleError = styled.div`
+    color: #ba3939;
+    background: #ffe0e0;
+    border: 1px solid #a33a3a;
+    padding: 10px 0 10px;
+    border-radius: 25px;
+`
