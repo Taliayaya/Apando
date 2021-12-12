@@ -18,9 +18,17 @@ ReactDOM.render(
             <AuthProvider>
                 <UserDataProvider>
                     <GlobalStyle />
-                    <Header />
+
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <Header />
+                                    <Home />
+                                </>
+                            }
+                        />
                         <Route path="/signin" element={<SignIn />} />
                         <Route
                             path="/app"
