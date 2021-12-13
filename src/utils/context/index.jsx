@@ -23,3 +23,17 @@ export const UserDataProvider = ({ children }) => {
         </UserDataContext.Provider>
     )
 }
+
+export const CurrentChannelContext = createContext()
+
+export const CurrentChannelProvider = ({ children }) => {
+    const [currentChannelId, setCurrentChannelId] = useState(null)
+
+    return (
+        <CurrentChannelContext.Provider
+            value={{ currentChannelId, setCurrentChannelId }}
+        >
+            {children}
+        </CurrentChannelContext.Provider>
+    )
+}
