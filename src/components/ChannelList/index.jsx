@@ -34,7 +34,9 @@ function ChannelList() {
             setError("Il y a eu une erreur lors de l'ajout du salon")
         } else {
             console.log('SUCCESS')
+            setNewChannelName('')
         }
+        return () => clearInterval()
     }
 
     // Load Channels
@@ -53,7 +55,8 @@ function ChannelList() {
         return () => clearInterval(loadChannels)
     })
 
-    // Ne s'active que lors du premier chargement de la page (ou quand ya pas de salon)
+    // Ne s'active que lors du premier chargement de la page
+    // (ou quand ya pas de salon)
     useEffect(() => {
         const firstLoadChannel = async () => {
             if (channelList.length === 0) {

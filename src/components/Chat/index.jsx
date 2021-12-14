@@ -5,7 +5,7 @@ import {
     StyledChatTextarea,
 } from './ChatStyle'
 import { useEffect, useState, useRef } from 'react'
-import { useApi } from '../../utils/hooks'
+import { useApi, useChannel, useData } from '../../utils/hooks'
 import Message from '../Message'
 
 const API_GET_MESSAGE = 'http://localhost/API/load_messages.php'
@@ -16,11 +16,30 @@ function Chat() {
     const { sender } = useApi()
     const [message, setMessage] = useState('')
     const messageEndRef = useRef(null)
+    const { currentChannelId } = useChannel()
+    const { userData } = useData()
 
+    console.log(userData)
     useEffect(() => {
         const loadMessage = setInterval(async () => {
             const loadFormData = new FormData()
-            loadFormData.append('currentChannel', 26)
+            loadFormData.append('currentChannel', currentChannelId)
+            const fetchMessage = await sender(API_GET_MESSAGE, loadFormData)
+            const message_list = fetchMessage?.messages_list
+            message_list.reverse()
+            if (message_list?.length !== messageList?.length) {
+                console.log(message_list)
+                setMessageList(message_list)
+                // Scroll en bas dès un nouveau message
+                messageEndRef.current?.scrollIntoView()
+            }
+        }, 2500)
+        return () => clearInterval(loadMessage)
+    }, [messageList?.length, sender, currentChannelId])
+    useEffect(() => {
+        const loadMessage = async () => {
+            const loadFormData = new FormData()
+            loadFormData.append('currentChannel', currentChannelId)
             const fetchMessage = await sender(API_GET_MESSAGE, loadFormData)
             const message_list = fetchMessage?.messages_list
             console.log(1)
@@ -30,9 +49,9 @@ function Chat() {
                 // Scroll en bas dès un nouveau message
                 messageEndRef.current?.scrollIntoView()
             }
-        }, 2500)
-        return () => clearInterval(loadMessage)
-    }, [messageList?.length, sender])
+        }
+        return loadMessage()
+    }, [messageList?.length, sender, currentChannelId])
 
     // Permet de scroll en bas du chat dès qu'on commence à écrire un message
     useEffect(() => {
@@ -47,8 +66,8 @@ function Chat() {
             e.preventDefault()
             const sendFormData = new FormData()
             sendFormData.append('message', message)
-            sendFormData.append('user_id', 1)
-            sendFormData.append('id_channel', 26)
+            sendFormData.append('user_id', userData.id)
+            sendFormData.append('id_channel', currentChannelId)
             const sendMessage = await sender(API_SEND_MESSAGE, sendFormData)
             sendMessage?.sent && setMessage('')
         }
