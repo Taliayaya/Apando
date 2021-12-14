@@ -10,8 +10,10 @@ import {
 import { StyleError } from '../../utils/style/LoginSignStyle'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-const API_LOAD_CHANNELS = 'http://localhost/API/load_channels.php'
-const API_ADD_CHANNEL = 'http://localhost/API/add_channel.php'
+const API_LOAD_CHANNELS =
+    'http://localhost/project-plateforme-api/load_channels.php'
+const API_ADD_CHANNEL =
+    'http://localhost/project-plateforme-api/add_channel.php'
 
 function ChannelList() {
     const { sender } = useApi()

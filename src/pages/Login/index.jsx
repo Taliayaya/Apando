@@ -34,7 +34,10 @@ function Login() {
         formData.append('username_or_email', nameEmail)
         formData.append('u_password', password)
 
-        const data = await sender('http://localhost/API/login.php', formData)
+        const data = await sender(
+            'http://localhost/project-plateforme-api/login.php',
+            formData
+        )
         console.log(data)
         data?.logged
             ? login().then(() => {
