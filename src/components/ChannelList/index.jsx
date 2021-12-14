@@ -8,6 +8,7 @@ import {
     StyledChannel,
 } from './ChannelListStyle'
 import { StyleError } from '../../utils/style/LoginSignStyle'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const API_LOAD_CHANNELS = 'http://localhost/API/load_channels.php'
 const API_ADD_CHANNEL = 'http://localhost/API/add_channel.php'
@@ -17,8 +18,10 @@ function ChannelList() {
     const [newChannelName, setNewChannelName] = useState('')
     const [error, setError] = useState(null)
     const [channelList, setChannelList] = useState([])
+    const [showMenu, setShowMenu] = useState(false)
     const { currentChannelId, setCurrentChannelId } = useChannel()
 
+    console.log(showMenu)
     const addChannel = async (e) => {
         e.preventDefault()
         if (!newChannelName) {
@@ -75,41 +78,58 @@ function ChannelList() {
         }
         firstLoadChannel()
     })
-
-    const selectChannel = (e, id_channel) => {
-        console.log(currentChannelId, id_channel)
-        setCurrentChannelId(id_channel)
+    console.log(currentChannelId)
+    const selectChannel = (id_channel, channel_name) => {
+        setCurrentChannelId({ id: id_channel, name: channel_name })
     }
 
-    console.log(channelList)
+    let currentChannel = currentChannelId.id ? currentChannelId.id : null
     return (
         <StyledChannelList>
-            <StyledChannelListTop>
+            <StyledChannelListTop
+                onMouseEnter={() => setShowMenu(true)}
+                onMouseLeave={() => setShowMenu(false)}
+                hovered={showMenu}
+            >
                 <h2>Le Bon Sauveur</h2>
+                <ExpandMoreIcon />
             </StyledChannelListTop>
             {error && <StyleError>{error}</StyleError>}
-            <form action="#">
-                <input
-                    type="text"
-                    name="new_channel"
-                    value={newChannelName}
-                    onChange={(e) => setNewChannelName(e.target.value)}
-                    placeholder="Nouveau salon"
-                />
-                <input
-                    type="submit"
-                    value="Ajouter"
-                    onClick={(e) => addChannel(e)}
-                />
-            </form>
+            {showMenu && (
+                <form
+                    action="#"
+                    onMouseEnter={() => setShowMenu(true)}
+                    onMouseLeave={() => setShowMenu(false)}
+                >
+                    <input
+                        type="text"
+                        name="new_channel"
+                        value={newChannelName}
+                        onChange={(e) => setNewChannelName(e.target.value)}
+                        placeholder="Nouveau salon"
+                    />
+                    <input
+                        type="submit"
+                        value="Ajouter"
+                        onClick={(e) => addChannel(e)}
+                    />
+                </form>
+            )}
+
             <StyledChannelListBottom>
                 {channelList &&
                     channelList.map(({ id_channel, channel_name }) => (
                         <StyledChannel
                             key={id_channel.toString()}
-                            onClick={(e) => selectChannel(e, id_channel)}
-                            Selected={currentChannelId === id_channel}
+                            onClick={() =>
+                                selectChannel(id_channel, channel_name)
+                            }
+                            Selected={
+                                currentChannel === id_channel || !currentChannel
+                            }
                         >
+                            {!currentChannel &&
+                                selectChannel(id_channel, channel_name)}
                             {channel_name}
                         </StyledChannel>
                     ))}

@@ -1,4 +1,5 @@
 const colors = {
+    // Purple mode
     userList_bg_color: '#4b3869',
     userList_font_color: '#f0e9d2',
     userList_top_bg_color: '#1c0c5b',
@@ -7,8 +8,8 @@ const colors = {
     channelList_font_color: '#f3f1f5',
 
     chat_bg_color: '#3d2c8d',
-    chat_font_color: '#ffeded',
-    chat_input_bg_color: '#6166b3',
+    chat_font_color: '#ffffff',
+    chat_input_bg_color: '#4b509d',
 }
 
 export default colors

@@ -23,7 +23,7 @@ function Chat() {
     useEffect(() => {
         const loadMessage = setInterval(async () => {
             const loadFormData = new FormData()
-            loadFormData.append('currentChannel', currentChannelId)
+            loadFormData.append('currentChannel', currentChannelId.id)
             const fetchMessage = await sender(API_GET_MESSAGE, loadFormData)
             const message_list = fetchMessage?.messages_list
             message_list.reverse()
@@ -35,11 +35,11 @@ function Chat() {
             }
         }, 2500)
         return () => clearInterval(loadMessage)
-    }, [messageList?.length, sender, currentChannelId])
+    }, [messageList?.length, sender, currentChannelId.id])
     useEffect(() => {
         const loadMessage = async () => {
             const loadFormData = new FormData()
-            loadFormData.append('currentChannel', currentChannelId)
+            loadFormData.append('currentChannel', currentChannelId.id)
             const fetchMessage = await sender(API_GET_MESSAGE, loadFormData)
             const message_list = fetchMessage?.messages_list
             console.log(1)
@@ -51,7 +51,7 @@ function Chat() {
             }
         }
         return loadMessage()
-    }, [messageList?.length, sender, currentChannelId])
+    }, [messageList?.length, sender, currentChannelId.id])
 
     // Permet de scroll en bas du chat dès qu'on commence à écrire un message
     useEffect(() => {
@@ -67,7 +67,7 @@ function Chat() {
             const sendFormData = new FormData()
             sendFormData.append('message', message)
             sendFormData.append('user_id', userData.id)
-            sendFormData.append('id_channel', currentChannelId)
+            sendFormData.append('id_channel', currentChannelId.id)
             const sendMessage = await sender(API_SEND_MESSAGE, sendFormData)
             sendMessage?.sent && setMessage('')
         }
@@ -100,7 +100,7 @@ function Chat() {
                     <StyledChatTextarea
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        placeholder={`Écrivez à tous`}
+                        placeholder={`Écrivez dans le salon ${currentChannelId.name}`}
                         onKeyDown={(e) => handleSubmit(e)}
                     ></StyledChatTextarea>
                 </form>

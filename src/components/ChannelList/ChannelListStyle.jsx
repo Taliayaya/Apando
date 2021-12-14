@@ -14,15 +14,17 @@ export const StyledChannelListTop = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-
+    ${(props) =>
+        props.hovered &&
+        `
+    background-color: #241172;
+    border: 1px solid ${colors.channelList_bg_color};`}
     color: ${colors.channelList_font_color};
-
     border-bottom: 3px solid purple;
 `
 
 export const StyledChannelListBottom = styled.div`
-    padding-left: 20px;
-    padding-bottom: 20px;
+    padding: 20px;
     overflow-y: scroll;
 `
 export const StyledChannel = styled.div`

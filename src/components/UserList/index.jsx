@@ -1,3 +1,4 @@
+import { useChannel } from '../../utils/hooks'
 import CategorieUser from '../CategorieUser'
 import {
     StyleUserList,
@@ -6,10 +7,11 @@ import {
 } from './UserListStyle'
 
 function UserList() {
+    const { currentChannelId } = useChannel()
     return (
         <StyleUserList>
             <StyleUserListTop>
-                <h2># Général</h2>
+                <h2># {currentChannelId ? currentChannelId.name : 'Vide'}</h2>
             </StyleUserListTop>
             <StyleUserListTopIcons></StyleUserListTopIcons>
             <CategorieUser />
