@@ -43,3 +43,5 @@ color: #999999;
     font-size: large;
 }`}
 `
+export const StyledInput = styled.input`
+width: 100%;`

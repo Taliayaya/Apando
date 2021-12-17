@@ -6,6 +6,7 @@ import {
     StyledChannelListTop,
     StyledChannelListBottom,
     StyledChannel,
+    StyledInput
 } from './ChannelListStyle'
 import { StyleError } from '../../utils/style/LoginSignStyle'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -23,7 +24,6 @@ function ChannelList() {
     const [showMenu, setShowMenu] = useState(false)
     const { currentChannelId, setCurrentChannelId } = useChannel()
 
-    console.log(showMenu)
     const addChannel = async (e) => {
         e.preventDefault()
         if (!newChannelName) {
@@ -72,15 +72,20 @@ function ChannelList() {
                     loadChannelsFormData
                 )
                 console.log('used')
-                channelListData?.loaded &&
-                    channelListData.channels_data.length !==
-                        channelList.length &&
+                if (channelListData?.loaded && channelListData.channels_data.length !== channelList.length) {
+                    console.log('here')
+                    let channelsData = channelListData.channels_data
+                    // On ajoute ici le premier channel de la liste
+                    // pour faire un salon selected par défaut
+                    setCurrentChannelId({id: channelsData[0].id_channel, name:channelsData[0].name})
                     setChannelList(channelListData.channels_data)
+                }
             }
         }
         firstLoadChannel()
     })
     console.log(currentChannelId)
+    console.log(channelList)
     const selectChannel = (id_channel, channel_name) => {
         setCurrentChannelId({ id: id_channel, name: channel_name })
     }
@@ -103,14 +108,14 @@ function ChannelList() {
                     onMouseEnter={() => setShowMenu(true)}
                     onMouseLeave={() => setShowMenu(false)}
                 >
-                    <input
+                    <StyledInput
                         type="text"
                         name="new_channel"
                         value={newChannelName}
                         onChange={(e) => setNewChannelName(e.target.value)}
                         placeholder="Nouveau salon"
                     />
-                    <input
+                    <StyledInput
                         type="submit"
                         value="Ajouter"
                         onClick={(e) => addChannel(e)}
