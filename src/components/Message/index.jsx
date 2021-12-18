@@ -5,17 +5,22 @@ import {
     StyledMessageTimestamp,
     StyledUserMessage,
 } from './MessageStyle'
+import ReactMarkdown from 'react-markdown'
 
-function Message({ username, timestamp, message }) {
+function Message({ username, timestamp, message, avatar }) {
     return (
         <StyledMessage>
-            <Avatar />
+            <Avatar
+                src={`http://localhost/project-plateforme-api/assets/images/avatars/${avatar}`}
+            />
             <StyledMessageInfo>
                 <p>
                     {username}
                     <StyledMessageTimestamp>{timestamp}</StyledMessageTimestamp>
                 </p>
-                <StyledUserMessage>{message}</StyledUserMessage>
+                <StyledUserMessage>
+                    <ReactMarkdown>{message}</ReactMarkdown>
+                </StyledUserMessage>
             </StyledMessageInfo>
         </StyledMessage>
     )

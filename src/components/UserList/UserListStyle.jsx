@@ -8,6 +8,8 @@ export const StyleUserList = styled.div`
     flex: 0.15;
     overflow: scroll;
     height: 100vh;
+    position: relative;
+    margin: 0;
 `
 
 export const StyleUserListTop = styled.div`

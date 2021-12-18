@@ -143,3 +143,17 @@ export const StyleError = styled.div`
     padding: 10px 0 10px;
     border-radius: 25px;
 `
+
+export const StyleAlert = styled.div`
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    ${props => props.success &&
+        `background-color: rgba(227, 253, 235, 1);
+    border-color: rgba(38, 179, 3, 1);
+    color: rgba(60, 118, 61, 1);`}
+  `

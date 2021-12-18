@@ -8,6 +8,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useApi, useChannel, useData } from '../../utils/hooks'
 import Message from '../Message'
 
+
 const API_GET_MESSAGE =
     'http://localhost/project-plateforme-api/load_messages.php'
 const API_SEND_MESSAGE =

@@ -1,7 +1,8 @@
 import React from 'react'
+import Account from '../../components/Account'
 
 function Settings() {
-    return <div>Settings (Private)</div>
+    return <div><Account /></div>
 }
 
 export default Settings

@@ -132,11 +132,10 @@ function ChannelList() {
                                 selectChannel(id_channel, channel_name)
                             }
                             Selected={
-                                currentChannel === id_channel || !currentChannel
+                                currentChannel === id_channel
                             }
                         >
-                            {!currentChannel &&
-                                selectChannel(id_channel, channel_name)}
+                
                             {channel_name}
                         </StyledChannel>
                     ))}
