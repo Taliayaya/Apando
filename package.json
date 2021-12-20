@@ -15,6 +15,10 @@
     "react-markdown": "^7.1.1",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
+    "react-syntax-highlighter": "^15.4.5",
+    "rehype-katex": "^6.0.2",
+    "remark-gfm": "^3.0.1",
+    "remark-math": "^5.1.1",
     "styled-components": "^5.3.3",
     "web-vitals": "^1.0.1",
     "yarn": "^1.22.17"

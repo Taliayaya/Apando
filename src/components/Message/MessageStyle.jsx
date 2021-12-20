@@ -22,4 +22,11 @@ export const StyledMessageTimestamp = styled.span`
 
 export const StyledUserMessage = styled.span`
     white-space: pre-line;
+
+    blockquote {
+        color: #aaa;
+        margin: 0;
+        padding-left: 3em;
+        border-left: 0.5em #aaaaaa solid;
+    }
 `
