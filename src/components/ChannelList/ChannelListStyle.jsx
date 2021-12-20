@@ -14,6 +14,7 @@ export const StyledChannelListTop = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 20px;
+    cursor: pointer;
     ${(props) =>
         props.hovered &&
         `
@@ -44,4 +45,5 @@ color: #999999;
 }`}
 `
 export const StyledInput = styled.input`
-width: 100%;`
+    width: 100%;
+`

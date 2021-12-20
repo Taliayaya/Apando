@@ -1,5 +1,10 @@
 import { useContext } from 'react'
-import { AuthContext, UserDataContext, CurrentChannelContext } from '../context'
+import {
+    AuthContext,
+    UserDataContext,
+    CurrentChannelContext,
+    CurrentServerContext,
+} from '../context'
 import axios from 'axios'
 export function useAuth() {
     const { authed, setAuthed } = useContext(AuthContext)
@@ -55,6 +60,12 @@ export function useChannel() {
     const { currentChannelId, setCurrentChannelId } = useContext(
         CurrentChannelContext
     )
+    const { currentServer, setCurrentServer } = useContext(CurrentServerContext)
 
-    return { currentChannelId, setCurrentChannelId }
+    return {
+        currentChannelId,
+        setCurrentChannelId,
+        currentServer,
+        setCurrentServer,
+    }
 }

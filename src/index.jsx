@@ -12,6 +12,7 @@ import {
     AuthProvider,
     CurrentChannelProvider,
     UserDataProvider,
+    CurrentServerProvider,
 } from './utils/context'
 import NotFound from './components/NotFound'
 import GlobalStyle from './utils/style/GlobalStyle'
@@ -21,40 +22,42 @@ ReactDOM.render(
         <BrowserRouter>
             <AuthProvider>
                 <UserDataProvider>
-                    <CurrentChannelProvider>
-                        <GlobalStyle />
+                    <CurrentServerProvider>
+                        <CurrentChannelProvider>
+                            <GlobalStyle />
 
-                        <Routes>
-                            <Route
-                                path="/"
-                                element={
-                                    <>
-                                        <Header />
-                                        <Home />
-                                    </>
-                                }
-                            />
-                            <Route path="/signin" element={<SignIn />} />
-                            <Route
-                                path="/app"
-                                element={
-                                    <RequireAuth>
-                                        <App />
-                                    </RequireAuth>
-                                }
-                            />
-                            <Route
-                                path="/settings"
-                                element={
-                                    <RequireAuth>
-                                        <Settings />
-                                    </RequireAuth>
-                                }
-                            />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="*" element={<NotFound />} />
-                        </Routes>
-                    </CurrentChannelProvider>
+                            <Routes>
+                                <Route
+                                    path="/"
+                                    element={
+                                        <>
+                                            <Header />
+                                            <Home />
+                                        </>
+                                    }
+                                />
+                                <Route path="/signin" element={<SignIn />} />
+                                <Route
+                                    path="/app"
+                                    element={
+                                        <RequireAuth>
+                                            <App />
+                                        </RequireAuth>
+                                    }
+                                />
+                                <Route
+                                    path="/settings"
+                                    element={
+                                        <RequireAuth>
+                                            <Settings />
+                                        </RequireAuth>
+                                    }
+                                />
+                                <Route path="/login" element={<Login />} />
+                                <Route path="*" element={<NotFound />} />
+                            </Routes>
+                        </CurrentChannelProvider>
+                    </CurrentServerProvider>
                 </UserDataProvider>
             </AuthProvider>
         </BrowserRouter>

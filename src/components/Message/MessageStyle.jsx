@@ -3,8 +3,11 @@ import styled from 'styled-components'
 export const StyledMessage = styled.div`
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 0 20px;
     color: white;
+    &:hover {
+        background-color: blue;
+    }
 `
 
 export const StyledMessageInfo = styled.div`
@@ -17,6 +20,6 @@ export const StyledMessageTimestamp = styled.span`
     font-size: x-small;
 `
 
-export const StyledUserMessage = styled.p`
+export const StyledUserMessage = styled.span`
     white-space: pre-line;
 `

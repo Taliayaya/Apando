@@ -14,10 +14,10 @@ function Message({ username, timestamp, message, avatar }) {
                 src={`http://localhost/project-plateforme-api/assets/images/avatars/${avatar}`}
             />
             <StyledMessageInfo>
-                <p>
+                <span>
                     {username}
                     <StyledMessageTimestamp>{timestamp}</StyledMessageTimestamp>
-                </p>
+                </span>
                 <StyledUserMessage>
                     <ReactMarkdown>{message}</ReactMarkdown>
                 </StyledUserMessage>
