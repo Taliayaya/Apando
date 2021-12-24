@@ -21,7 +21,7 @@ function Header() {
                     <Link to="/signin">SignIn</Link>
                 </li>
             </ul>
-            {authed && <button onClick={handleLogout}>Logout</button>}
+            {authed && <button onClick={() => handleLogout}>Logout</button>}
         </nav>
     )
 }

@@ -10,8 +10,7 @@ import Username from '../Username'
 
 function UserList() {
     const { currentChannelId } = useChannel()
-    const {userData} = useData()
-    console.log(useData)
+    const { userData } = useData()
     return (
         <StyleUserList>
             <StyleUserListTop>
@@ -19,10 +18,9 @@ function UserList() {
             </StyleUserListTop>
             <StyleUserListTopIcons></StyleUserListTopIcons>
             <div>
-            <CategorieUser />
+                <CategorieUser />
             </div>
-            <Username username={userData?.pseudo}/>
-
+            <Username username={userData?.pseudo} />
         </StyleUserList>
     )
 }

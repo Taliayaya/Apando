@@ -7,13 +7,7 @@ import {
 import { useEffect, useState, useRef } from 'react'
 import { useApi, useChannel, useData } from '../../utils/hooks'
 import Message from '../Message'
-
-
-const API_GET_MESSAGE =
-    'http://localhost/project-plateforme-api/load_messages.php'
-const API_SEND_MESSAGE =
-    'http://localhost/project-plateforme-api/send_message.php'
-
+import { API_SEND_MESSAGE, API_GET_MESSAGE } from '../../utils/paths'
 function Chat() {
     const [messageList, setMessageList] = useState([])
     const { sender } = useApi()
@@ -22,7 +16,6 @@ function Chat() {
     const { currentChannelId } = useChannel()
     const { userData } = useData()
 
-    console.log(userData)
     useEffect(() => {
         const loadMessage = setInterval(async () => {
             const loadFormData = new FormData()
@@ -45,7 +38,6 @@ function Chat() {
             loadFormData.append('currentChannel', currentChannelId.id)
             const fetchMessage = await sender(API_GET_MESSAGE, loadFormData)
             const message_list = fetchMessage?.messages_list
-            console.log(1)
             message_list.reverse()
             if (message_list?.length !== messageList?.length) {
                 setMessageList(message_list)
@@ -62,7 +54,6 @@ function Chat() {
         messageEndRef.current?.scrollIntoView()
     }, [message])
 
-    console.log(messageList)
     async function handleSubmit(e) {
         const keyCode = e.which || e.keyCode
         if (keyCode === 13 && !e.shiftKey) {
@@ -76,11 +67,21 @@ function Chat() {
         }
     }
 
+    let previousUser = -1
     return (
         <StyledChat>
             <StyledChatMessage>
                 {messageList.map(
-                    ({ id_message, message, message_date, pseudo, avatar }) => {
+                    ({
+                        id_message,
+                        message,
+                        message_date,
+                        pseudo,
+                        avatar,
+                        u_id,
+                    }) => {
+                        let repeat = u_id === previousUser
+                        previousUser = u_id
                         return (
                             <Message
                                 key={id_message}
@@ -90,6 +91,8 @@ function Chat() {
                                 message={message}
                                 timestamp={message_date}
                                 avatar={avatar}
+                                repeat={repeat}
+                                id={id_message}
                             />
                         )
                     }

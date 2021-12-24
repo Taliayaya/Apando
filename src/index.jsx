@@ -16,6 +16,7 @@ import {
 } from './utils/context'
 import NotFound from './components/NotFound'
 import GlobalStyle from './utils/style/GlobalStyle'
+import Join from './pages/Join'
 
 ReactDOM.render(
     <React.StrictMode>
@@ -50,6 +51,14 @@ ReactDOM.render(
                                     element={
                                         <RequireAuth>
                                             <Settings />
+                                        </RequireAuth>
+                                    }
+                                />
+                                <Route
+                                    path="/join"
+                                    element={
+                                        <RequireAuth>
+                                            <Join />
                                         </RequireAuth>
                                     }
                                 />

@@ -16,6 +16,7 @@ import {
 } from '../../utils/style/LoginSignStyle'
 import { useApi, useData } from '../../utils/hooks'
 import { useState } from 'react'
+import { API_LOGIN_PATH } from '../../utils/paths'
 
 function Login() {
     const navigate = useNavigate()
@@ -34,14 +35,15 @@ function Login() {
         formData.append('username_or_email', nameEmail)
         formData.append('u_password', password)
 
-        const data = await sender(
-            'http://localhost/project-plateforme-api/login.php',
-            formData
-        )
-        console.log(data)
+        const data = await sender(API_LOGIN_PATH, formData)
         data?.logged
             ? login().then(() => {
                   setuserData(data?.logged_user_data)
+                  sessionStorage.setItem(
+                      'userData',
+                      JSON.stringify(data?.logged_user_data)
+                  )
+
                   navigate(state?.path || '/app')
               })
             : seterror(true)
@@ -89,8 +91,7 @@ function Login() {
                         <StyledSubmit onClick={(e) => handleLogin(e)} />
                     </StyledField>
                     <StyledField>
-                        Nouveau ?{' '}
-                        <StyleLink to="/signin"> S'inscrire</StyleLink>
+                        Nouveau ?<StyleLink to="/signin"> S'inscrire</StyleLink>
                     </StyledField>
                 </StyledForm>
             </StyledLoginWrapper>

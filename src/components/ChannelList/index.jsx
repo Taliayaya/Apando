@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useApi, useChannel } from '../../utils/hooks'
+import { useApi, useChannel, useData } from '../../utils/hooks'
 import {
     StyledChannelList,
     StyledChannelListTop,
@@ -10,13 +10,12 @@ import {
 } from './ChannelListStyle'
 import { StyleError } from '../../utils/style/LoginSignStyle'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
-const API_LOAD_CHANNELS =
-    'http://localhost/project-plateforme-api/load_channels.php'
-const API_ADD_CHANNEL =
-    'http://localhost/project-plateforme-api/add_channel.php'
-const API_LOAD_SERVERS =
-    'http://localhost/project-plateforme-api/load_servers.php'
+import {
+    API_LOAD_CHANNELS,
+    API_ADD_CHANNEL,
+    API_LOAD_SERVERS,
+} from '../../utils/paths'
+import { Link } from 'react-router-dom'
 
 function ChannelList() {
     const { sender } = useApi()
@@ -24,6 +23,7 @@ function ChannelList() {
     const [error, setError] = useState(null)
     const [channelList, setChannelList] = useState([])
     const [showMenu, setShowMenu] = useState(false)
+    const { userData } = useData()
     const {
         currentChannelId,
         setCurrentChannelId,
@@ -79,12 +79,10 @@ function ChannelList() {
                     API_LOAD_CHANNELS,
                     loadChannelsFormData
                 )
-                console.log('used')
                 if (
                     channelListData?.loaded &&
                     channelListData.channels_data.length !== channelList.length
                 ) {
-                    console.log('here')
                     let channelsData = channelListData.channels_data
                     // On ajoute ici le premier channel de la liste
                     // pour faire un salon selected par défaut
@@ -100,12 +98,13 @@ function ChannelList() {
         const loadServerList = async () => {
             if (serverList.length === 0) {
                 const serverFormData = new FormData()
-                serverFormData.append('id_organisation', 1)
+                serverFormData.append('user_id', userData.id)
                 const serverList = await sender(
                     API_LOAD_SERVERS,
                     serverFormData
                 )
-                if (serverList?.loaded) {
+                console.log(serverList)
+                if (serverList?.loaded && serverList?.servers_list[0]) {
                     setCurrentServer(serverList?.servers_list[0].id_server)
                     setServerList(serverList?.servers_list)
                 }
@@ -118,7 +117,6 @@ function ChannelList() {
     const selectChannel = (id_channel, channel_name) => {
         setCurrentChannelId({ id: id_channel, name: channel_name })
     }
-    console.log(channelList, currentServer)
     let currentChannel = currentChannelId.id ? currentChannelId.id : null
     return (
         <StyledChannelList>
@@ -131,7 +129,7 @@ function ChannelList() {
             </StyledChannelListTop>
             {error && <StyleError>{error}</StyleError>}
             {showMenu && (
-                <div>
+                <>
                     <form action="#">
                         <StyledInput
                             type="text"
@@ -160,7 +158,8 @@ function ChannelList() {
                                 </option>
                             ))}
                     </select>
-                </div>
+                    <Link to="/join">Utiliser un code</Link>
+                </>
             )}
 
             <StyledChannelListBottom>

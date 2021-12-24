@@ -14,8 +14,7 @@ import {
 import { StyledSelect, StyledOption } from './SignInStyle'
 import { useState } from 'react'
 import { useApi } from '../../utils/hooks'
-
-const API_SIGNIN_PATH = 'http://localhost/project-plateforme-api/signup.php'
+import { API_SIGNIN_PATH } from '../../utils/paths'
 
 function SignIn() {
     const [username, setUsername] = useState('')
