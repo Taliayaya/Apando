@@ -18,3 +18,5 @@ export const API_CHANGE_AVATAR = `${PATH}avatarUploader.php`
 export const API_DELETE_MESSAGE = `${PATH}deleteMessage.php`
 
 export const API_USE_CODE = `${PATH}use_code.php`
+
+export const API_LOAD_USERS = `${PATH}load_online_user.php`

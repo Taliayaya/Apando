@@ -57,6 +57,7 @@ function ChannelList() {
         const loadChannels = setInterval(async () => {
             const loadChannelsFormData = new FormData()
             loadChannelsFormData.append('server_id', currentServer)
+            loadChannelsFormData.append('id_user', userData.id)
             const channelListData = await sender(
                 API_LOAD_CHANNELS,
                 loadChannelsFormData
@@ -75,6 +76,7 @@ function ChannelList() {
             if (channelList.length === 0) {
                 const loadChannelsFormData = new FormData()
                 loadChannelsFormData.append('server_id', currentServer)
+                loadChannelsFormData.append('id_user', userData.id)
                 const channelListData = await sender(
                     API_LOAD_CHANNELS,
                     loadChannelsFormData
