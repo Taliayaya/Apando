@@ -19,8 +19,22 @@ import MessageMore from '../MessageMore'
 
 function Message({ id, username, timestamp, message, avatar, repeat }) {
     const [more, setMore] = useState(false)
+    const [showMore, setShowMore] = useState(false)
+
+    // const tryRequire = (path) => {
+    //     try {
+    //         console.log(require(`${path}`))
+    //     } catch (err) {
+    //         return null
+    //     }
+    // }
+
     return (
-        <Container repeat>
+        <Container
+            repeat={repeat}
+            onMouseEnter={() => setShowMore(true)}
+            onMouseLeave={() => setShowMore(false)}
+        >
             <StyledMessage>
                 <Avatar
                     src={`${AVATAR_PATH}${avatar}`}
@@ -73,13 +87,15 @@ function Message({ id, username, timestamp, message, avatar, repeat }) {
                     </StyledUserMessage>
                 </StyledMessageInfo>
             </StyledMessage>
-            <div>
-                {more && <MessageMore id={id} />}
-                <MoreVert
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setMore(!more)}
-                />
-            </div>
+            {showMore && (
+                <div>
+                    {more && <MessageMore id={id} />}
+                    <MoreVert
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => setMore(!more)}
+                    />
+                </div>
+            )}
         </Container>
     )
 }
