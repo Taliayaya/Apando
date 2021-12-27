@@ -89,7 +89,7 @@ function Message({ id, username, timestamp, message, avatar, repeat }) {
             </StyledMessage>
             {showMore && (
                 <div>
-                    {more && <MessageMore id={id} />}
+                    {more && <MessageMore id={id} message={message} />}
                     <MoreVert
                         style={{ cursor: 'pointer' }}
                         onClick={() => setMore(!more)}

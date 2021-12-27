@@ -5,13 +5,13 @@ import {
     StyledChatTextarea,
 } from './ChatStyle'
 import { useEffect, useState, useRef } from 'react'
-import { useApi, useChannel, useData } from '../../utils/hooks'
+import { useApi, useChannel, useData, useMessage } from '../../utils/hooks'
 import Message from '../Message'
 import { API_SEND_MESSAGE, API_GET_MESSAGE } from '../../utils/paths'
 function Chat() {
     const [messageList, setMessageList] = useState([])
     const { sender } = useApi()
-    const [message, setMessage] = useState('')
+    const { message, setMessage } = useMessage()
     const messageEndRef = useRef(null)
     const { currentChannelId } = useChannel()
     const { userData } = useData()
@@ -93,6 +93,7 @@ function Chat() {
                                 avatar={avatar}
                                 repeat={repeat}
                                 id={id_message}
+                                setMessage={setMessage}
                             />
                         )
                     }

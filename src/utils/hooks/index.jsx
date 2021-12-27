@@ -4,6 +4,7 @@ import {
     UserDataContext,
     CurrentChannelContext,
     CurrentServerContext,
+    ChatMessageContext,
 } from '../context'
 import axios from 'axios'
 export function useAuth() {
@@ -68,4 +69,10 @@ export function useChannel() {
         currentServer,
         setCurrentServer,
     }
+}
+
+export function useMessage() {
+    const { message, setMessage } = useContext(ChatMessageContext)
+
+    return { message, setMessage }
 }

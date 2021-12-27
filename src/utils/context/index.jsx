@@ -51,3 +51,14 @@ export const CurrentServerProvider = ({ children }) => {
         </CurrentServerContext.Provider>
     )
 }
+export const ChatMessageContext = createContext()
+
+export const ChatMessageProvider = ({ children }) => {
+    const [message, setMessage] = useState('')
+
+    return (
+        <ChatMessageContext.Provider value={{ message, setMessage }}>
+            {children}
+        </ChatMessageContext.Provider>
+    )
+}

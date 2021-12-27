@@ -13,6 +13,7 @@ import {
     CurrentChannelProvider,
     UserDataProvider,
     CurrentServerProvider,
+    ChatMessageProvider,
 } from './utils/context'
 import NotFound from './components/NotFound'
 import GlobalStyle from './utils/style/GlobalStyle'
@@ -25,46 +26,51 @@ ReactDOM.render(
                 <UserDataProvider>
                     <CurrentServerProvider>
                         <CurrentChannelProvider>
-                            <GlobalStyle />
+                            <ChatMessageProvider>
+                                <GlobalStyle />
 
-                            <Routes>
-                                <Route
-                                    path="/"
-                                    element={
-                                        <>
-                                            <Header />
-                                            <Home />
-                                        </>
-                                    }
-                                />
-                                <Route path="/signin" element={<SignIn />} />
-                                <Route
-                                    path="/app"
-                                    element={
-                                        <RequireAuth>
-                                            <App />
-                                        </RequireAuth>
-                                    }
-                                />
-                                <Route
-                                    path="/settings"
-                                    element={
-                                        <RequireAuth>
-                                            <Settings />
-                                        </RequireAuth>
-                                    }
-                                />
-                                <Route
-                                    path="/join"
-                                    element={
-                                        <RequireAuth>
-                                            <Join />
-                                        </RequireAuth>
-                                    }
-                                />
-                                <Route path="/login" element={<Login />} />
-                                <Route path="*" element={<NotFound />} />
-                            </Routes>
+                                <Routes>
+                                    <Route
+                                        path="/"
+                                        element={
+                                            <>
+                                                <Header />
+                                                <Home />
+                                            </>
+                                        }
+                                    />
+                                    <Route
+                                        path="/signin"
+                                        element={<SignIn />}
+                                    />
+                                    <Route
+                                        path="/app"
+                                        element={
+                                            <RequireAuth>
+                                                <App />
+                                            </RequireAuth>
+                                        }
+                                    />
+                                    <Route
+                                        path="/settings"
+                                        element={
+                                            <RequireAuth>
+                                                <Settings />
+                                            </RequireAuth>
+                                        }
+                                    />
+                                    <Route
+                                        path="/join"
+                                        element={
+                                            <RequireAuth>
+                                                <Join />
+                                            </RequireAuth>
+                                        }
+                                    />
+                                    <Route path="/login" element={<Login />} />
+                                    <Route path="*" element={<NotFound />} />
+                                </Routes>
+                            </ChatMessageProvider>
                         </CurrentChannelProvider>
                     </CurrentServerProvider>
                 </UserDataProvider>
