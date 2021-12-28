@@ -61,7 +61,7 @@ function SignIn() {
                             required
                         />
                         <StyledFieldLabel htmlFor="username">
-                            pseudo
+                            nom d'utilisateur
                         </StyledFieldLabel>
                     </StyledField>
                     <StyledField>

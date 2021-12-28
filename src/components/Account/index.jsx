@@ -1,10 +1,32 @@
-import { Avatar } from '@material-ui/core'
 import { useApi, useAuth, useData } from '../../utils/hooks'
 import FileUploader from '../FileUploader'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowBack } from '@material-ui/icons'
-import { API_CHANGE_AVATAR, AVATAR_PATH } from '../../utils/paths'
+import { useNavigate } from 'react-router-dom'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import { API_CHANGE_AVATAR } from '../../utils/paths'
+import { StyledBody, StyledCompte, StyledField } from './AccountStyle'
+import { styled } from '@material-ui/styles'
+import colors from '../../utils/style/colors'
+
+const StyledExitToAppIcon = styled(ExitToAppIcon)(({ theme }) => ({
+    color: '#fff',
+    backgroundColor: colors.chat_input_bg_color,
+    width: '40px',
+    height: '40px',
+    cursor: 'pointer',
+    top: 30,
+    right: -200,
+    fontSize: 'large',
+    zIndex: 999,
+    borderRadius: 10,
+
+    '&:hover': {
+        opacity: 0.7,
+        backgroundColor: '#17094f',
+    },
+
+    position: 'relative',
+}))
 
 function Account() {
     const [success, setSuccess] = useState(false)
@@ -12,41 +34,39 @@ function Account() {
     const [selectedFile, setSelectedFile] = useState(null)
     const { sender } = useApi()
     const { logout } = useAuth()
-    const submitNewAvatar = async (e) => {
-        e.preventDefault()
+    const navigate = useNavigate()
+
+    const submitNewAvatar = async () => {
         const avatarFormData = new FormData()
         avatarFormData.append('user_id', userData.id)
         avatarFormData.append('file', selectedFile)
+        avatarFormData.append('acate', userData?.avatar)
         const sendAvatar = await sender(API_CHANGE_AVATAR, avatarFormData)
+        console.log(sendAvatar)
         if (sendAvatar?.done) {
             setSelectedFile(null)
             setSuccess(true)
+            setuserData({ ...userData, avatar: '' })
             setuserData({ ...userData, avatar: sendAvatar?.avatarName })
         }
     }
+
+    const handleNavigate = (e) => {
+        e.preventDefault()
+        navigate('/app')
+    }
+
+    if (selectedFile) {
+        submitNewAvatar()
+    }
     return (
-        <div>
-            <div className="compte">
-                <h1>Mon compte</h1>
-                <Link to="/app">
-                    <ArrowBack />
-                </Link>
-                <div>
-                    <Avatar src={`${AVATAR_PATH}${userData?.avatar}`} />
-                    <div id="pseudo">{userData?.pseudo}</div>
-                    <div id="mail">{userData?.mail}</div>
-                </div>
-            </div>
-            <div className="password">
-                <h1>Mot de passe</h1>
-                <button>Changer le mot de passe</button>
-                <button onClick={() => logout()}>Logout</button>
-                <button>Supprimer le compte</button>
-            </div>
+        <StyledBody>
+            <StyledExitToAppIcon onClick={(e) => handleNavigate(e)} />
             <div>
-                <h1>Avatar</h1>
-                <div className="avatar-uploader">
-                    <form action="#">
+                <StyledCompte>
+                    <h1>Mon compte</h1>
+
+                    <div>
                         <FileUploader
                             onFileSelectSuccess={(file) =>
                                 setSelectedFile(file)
@@ -55,13 +75,20 @@ function Account() {
                             selectedFile={selectedFile}
                             success={success}
                         />
-                        <button onClick={(e) => submitNewAvatar(e)}>
-                            Submit
-                        </button>
-                    </form>
+                        <StyledField>Nom d'utilisateur</StyledField>
+                        <div id="pseudo">{userData?.pseudo}</div>
+                        <StyledField>Adresse mail</StyledField>
+                        <div id="mail">{userData?.mail}</div>
+                    </div>
+                </StyledCompte>
+                <div className="password">
+                    <h1>Mot de passe</h1>
+                    <button>Changer le mot de passe</button>
+                    <button onClick={() => logout()}>Logout</button>
+                    <button>Supprimer le compte</button>
                 </div>
             </div>
-        </div>
+        </StyledBody>
     )
 }
 

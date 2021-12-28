@@ -1,27 +1,34 @@
 import React, { useRef } from 'react'
-import styled from 'styled-components'
 import { StyleAlert } from '../../utils/style/LoginSignStyle'
-const Button = styled.button`
-    outline: none;
-    font-size: medium;
-    padding: 0 20px;
-    border: 1px solid lightgrey;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    &:focus {
-        border-color: #4158d0;
-    }
-`
+import { AVATAR_PATH } from '../../utils/paths'
+import { useData } from '../../utils/hooks'
+import Avatar from '@mui/material/Avatar'
+import { styled } from '@material-ui/styles'
+import Badge from '@mui/material/Badge'
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
+import colors from '../../utils/style/colors'
 
-const FileUploader = ({
-    success,
-    selectedFile,
-    onFileSelectError,
-    onFileSelectSuccess,
-}) => {
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        color: '#fff',
+        backgroundColor: '#000',
+        width: '30px',
+        height: '30px',
+    },
+    cursor: 'pointer',
+    border: `2px solid ${colors.channelList_bg_color}`,
+    borderRadius: '60px',
+    '&:hover': {
+        opacity: 0.6,
+        borderColor: '#4158d0',
+    },
+}))
+
+const FileUploader = ({ success, onFileSelectError, onFileSelectSuccess }) => {
     console.log(success)
     // Create a reference to the hidden file input element
     const hiddenFileInput = useRef(null)
+    const { userData } = useData()
 
     // Programatically click the hidden file input element
     // when the Button component is clicked
@@ -39,9 +46,24 @@ const FileUploader = ({
     }
     return (
         <>
-            <Button onClick={(e) => handleClick(e)}>
-                {selectedFile ? selectedFile?.name : <>Changer mon avatar</>}
-            </Button>
+            <StyledBadge
+                overlap="circular"
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                badgeContent={<AddPhotoAlternateIcon />}
+            >
+                <Avatar
+                    src={`${AVATAR_PATH}${userData?.avatar}`}
+                    onClick={(e) => handleClick(e)}
+                    style={{
+                        height: '100px',
+                        width: '100px',
+                        hover: { borderColor: '#4158d0;' },
+                    }}
+                />
+            </StyledBadge>
             <input
                 type="file"
                 ref={hiddenFileInput}

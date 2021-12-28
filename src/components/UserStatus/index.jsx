@@ -1,17 +1,17 @@
 import React from 'react'
 import { StyledDiv, StyleUser } from './UserStatusStyle'
 import { AVATAR_PATH } from '../../utils/paths'
-import { Avatar } from '@material-ui/core'
+import Avatar from '@mui/material/Avatar'
 import { styled } from '@material-ui/core'
-import { Badge } from '@material-ui/core'
+import Badge from '@mui/material/Badge'
+import colors from '../../utils/style/colors'
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
         backgroundColor: (props) => (props.logged ? '#44b700' : '#888888'),
         color: (props) => (props.logged ? '#44b700' : '#888888'),
-        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+        boxShadow: `0 0 0 5px ${colors.userList_top_bg_color}`,
         animation: 'ripple 1s infinite ease',
-        top: 25,
         '&::after': {
             position: 'absolute',
             width: '100%',
@@ -36,7 +36,7 @@ export default function UserStatus({ avatar, datediff, pseudo, logged }) {
                 logged={logged}
             >
                 <Avatar
-                    sx={{ width: 24, height: 24 }}
+                    sx={{ width: 48, height: 48 }}
                     src={`${AVATAR_PATH}${avatar}`}
                 />
             </StyledBadge>

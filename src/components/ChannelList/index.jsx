@@ -9,7 +9,7 @@ import {
     StyledInput,
 } from './ChannelListStyle'
 import { StyleError } from '../../utils/style/LoginSignStyle'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
     API_LOAD_CHANNELS,
     API_ADD_CHANNEL,

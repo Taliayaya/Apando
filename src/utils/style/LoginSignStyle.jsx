@@ -1,25 +1,22 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import colors from './colors'
 export const StyledLoginPage = styled.div`
     align-items: center;
     justify-content: center;
-    margin: auto;
-    height: 100vh;
+    margin: 0;
     text-align: center;
-    content: '';
+    color: #fff
+    width: 100%;
+    height: 100vh;
     position: relative;
     background-size: cover;
     background: rgb(63, 94, 251);
     background: radial-gradient(
         circle,
-        rgba(63, 94, 251, 1) 0%,
-        rgba(252, 70, 107, 1) 100%
+        ${colors.channelList_bg_color} 0%,
+        ${colors.chat_input_bg_color} 80%
     );
-    vertical-align: middle;
-    ::before {
-        content: '';
-        position: absolute;
-    }
 `
 
 export const StyledLoginTitle = styled.h2`
@@ -32,9 +29,8 @@ export const StyledLoginTitle = styled.h2`
     border-radius: 15px 15px 0 0;
     background: linear-gradient(
         90deg,
-        rgba(131, 58, 180, 1) 0%,
-        rgba(253, 29, 29, 0.43879558659401263) 50%,
-        rgba(252, 176, 69, 1) 100%
+        ${colors.channelList_bg_color} 0%,
+        ${colors.chat_input_bg_color} 80%
     );
 `
 export const StyledForm = styled.form`
@@ -110,9 +106,8 @@ export const StyledSubmit = styled.input.attrs((props) => ({
     border-radius: 25px;
     background: linear-gradient(
         90deg,
-        rgba(131, 58, 180, 1) 0%,
-        rgba(253, 29, 29, 0.43879558659401263) 50%,
-        rgba(252, 176, 69, 1) 100%
+        ${colors.channelList_bg_color} 0%,
+        ${colors.chat_input_bg_color} 80%
     );
     transition: all 300ms ease;
     &:active {
@@ -121,7 +116,9 @@ export const StyledSubmit = styled.input.attrs((props) => ({
 `
 
 export const StyledHeaderTitle = styled.h1`
-    font-family: Tuffy-Bold;
+    color: #fff;
+
+    font-family: Arial;
     padding: 20px;
 `
 
@@ -152,8 +149,9 @@ export const StyleAlert = styled.div`
     border-width: 1px;
     margin-bottom: 12px;
     font-size: 16px;
-    ${props => props.success &&
+    ${(props) =>
+        props.success &&
         `background-color: rgba(227, 253, 235, 1);
     border-color: rgba(38, 179, 3, 1);
     color: rgba(60, 118, 61, 1);`}
-  `
+`

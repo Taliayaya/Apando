@@ -68,7 +68,7 @@ function Login() {
                             required
                         />
                         <StyledFieldLabel htmlFor="username_or_email">
-                            e-mail ou pseudo
+                            e-mail ou nom d'utilisateur
                         </StyledFieldLabel>
                     </StyledField>
                     <StyledField>

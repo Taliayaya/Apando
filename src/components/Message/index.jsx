@@ -1,4 +1,4 @@
-import { Avatar } from '@material-ui/core'
+import Avatar from '@mui/material/Avatar'
 import {
     StyledMessage,
     StyledMessageInfo,
@@ -13,7 +13,7 @@ import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import { AVATAR_PATH } from '../../utils/paths'
-import { MoreVert } from '@material-ui/icons'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { useState } from 'react'
 import MessageMore from '../MessageMore'
 
@@ -90,7 +90,7 @@ function Message({ id, username, timestamp, message, avatar, repeat }) {
             {showMore && (
                 <div>
                     {more && <MessageMore id={id} message={message} />}
-                    <MoreVert
+                    <MoreVertIcon
                         style={{ cursor: 'pointer' }}
                         onClick={() => setMore(!more)}
                     />

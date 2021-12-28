@@ -23,7 +23,7 @@ export const StyledChatInput = styled.div`
     padding: 15px;
     border-radius: 5px;
     margin: 20px;
-    border-top: 1px solid purple;
+    border-top: 1px solid ${colors.channelList_bg_color};
     & > form {
         flex: 1;
     }

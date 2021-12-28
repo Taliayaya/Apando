@@ -6,7 +6,6 @@ export const StyleUserList = styled.div`
     display: flex;
     flex-direction: column;
     flex: 0.15;
-    overflow: scroll;
     height: 100vh;
     position: relative;
     margin: 0;
@@ -20,7 +19,7 @@ export const StyleUserListTop = styled.div`
     align-items: center;
     padding: 20px;
     color: ${colors.userList_font_color};
-    border-bottom: 2px solid gray;
+    border-bottom: 2px solid ${colors.chat_bg_color};
 `
 
 export const StyleUserListTopIcons = styled.div`

@@ -21,7 +21,7 @@ export const StyledChannelListTop = styled.div`
     background-color: #241172;
     border: 1px solid ${colors.channelList_bg_color};`}
     color: ${colors.channelList_font_color};
-    border-bottom: 3px solid purple;
+    border-bottom: 3px solid ${colors.chat_bg_color};
 `
 
 export const StyledChannelListBottom = styled.div`
