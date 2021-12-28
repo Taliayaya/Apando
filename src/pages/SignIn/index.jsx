@@ -15,6 +15,7 @@ import { StyledSelect, StyledOption } from './SignInStyle'
 import { useState } from 'react'
 import { useApi } from '../../utils/hooks'
 import { API_SIGNIN_PATH } from '../../utils/paths'
+import { useNavigate } from 'react-router-dom'
 
 function SignIn() {
     const [username, setUsername] = useState('')
@@ -24,6 +25,7 @@ function SignIn() {
     const [verifPassword, setVerifPassword] = useState('')
     const [error, setError] = useState(null)
     const { sender } = useApi()
+    const navigate = useNavigate()
 
     async function handleSignIn(e) {
         e.preventDefault()
@@ -42,7 +44,7 @@ function SignIn() {
         signInFormData.append('u_password', password)
         signInFormData.append('u_password_verif', verifPassword)
         const sentForm = await sender(API_SIGNIN_PATH, signInFormData)
-        console.log(sentForm)
+        sentForm?.finished && navigate('/login')
     }
 
     return (
