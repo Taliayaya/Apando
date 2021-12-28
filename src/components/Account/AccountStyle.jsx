@@ -28,9 +28,40 @@ export const StyledCompte = styled.div`
     transform: translateX(-50%);
     position: relative;
     padding: 20px;
+    @media screen and (max-width: 480px);
 `
 export const StyledField = styled.p`
     text-transform: uppercase;
     font-size: medium;
     font-weight: 600;
+`
+export const Separator = styled.div`
+    padding: 10px;
+`
+
+export const StyledButton = styled.button`
+    color: #fff;
+    outline: none;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: ${colors.chat_input_bg_color};
+    margin: 5px;
+    &:hover {
+        background-color: #33398e;
+    }
+`
+export const StyledDangerousButton = styled.button`
+    color: #ca0b00;
+    font-size: 13px;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: ${colors.channelList_bg_color};
+    border: 1px solid #ca0b00;
+    margin: 5px;
 `

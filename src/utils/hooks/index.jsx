@@ -9,6 +9,8 @@ import {
 import axios from 'axios'
 export function useAuth() {
     const { authed, setAuthed } = useContext(AuthContext)
+    const { setuserData } = useData()
+    const { setCurrentChannelId, setCurrentServer } = useChannel()
     return {
         authed,
         login() {
@@ -19,7 +21,10 @@ export function useAuth() {
         },
         logout() {
             return new Promise((res) => {
+                setuserData([])
+                setCurrentChannelId({})
                 setAuthed(false)
+                setCurrentServer({})
                 res()
             })
         },

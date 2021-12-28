@@ -4,7 +4,14 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { API_CHANGE_AVATAR } from '../../utils/paths'
-import { StyledBody, StyledCompte, StyledField } from './AccountStyle'
+import {
+    StyledBody,
+    StyledCompte,
+    StyledField,
+    Separator,
+    StyledButton,
+    StyledDangerousButton,
+} from './AccountStyle'
 import { styled } from '@material-ui/styles'
 import colors from '../../utils/style/colors'
 
@@ -51,9 +58,16 @@ function Account() {
         }
     }
 
-    const handleNavigate = (e) => {
+    const handleNavigateClick = (e) => {
         e.preventDefault()
         navigate('/app')
+    }
+    const handleNavigateEscape = (e) => {
+        const keyCode = e.which || e.keyCode
+        console.log('test')
+        if (keyCode === 27) {
+            navigate('/app')
+        }
     }
 
     if (selectedFile) {
@@ -61,7 +75,10 @@ function Account() {
     }
     return (
         <StyledBody>
-            <StyledExitToAppIcon onClick={(e) => handleNavigate(e)} />
+            <StyledExitToAppIcon
+                onClick={(e) => handleNavigateClick(e)}
+                onKeyDown={(e) => handleNavigateEscape(e)}
+            />
             <div>
                 <StyledCompte>
                     <h1>Mon compte</h1>
@@ -81,12 +98,27 @@ function Account() {
                         <div id="mail">{userData?.mail}</div>
                     </div>
                 </StyledCompte>
-                <div className="password">
+                <Separator />
+                <StyledCompte>
                     <h1>Mot de passe</h1>
-                    <button>Changer le mot de passe</button>
-                    <button onClick={() => logout()}>Logout</button>
-                    <button>Supprimer le compte</button>
-                </div>
+                    <StyledButton
+                        onClick={() =>
+                            alert('Fonctionnalité pas encore disponible')
+                        }
+                    >
+                        Changer le mot de passe
+                    </StyledButton>
+                    <StyledButton onClick={() => logout()}>
+                        Déconnexion
+                    </StyledButton>
+                    <StyledDangerousButton
+                        onClick={() =>
+                            alert('Fonctionnalité pas encore disponible')
+                        }
+                    >
+                        Supprimer le compte
+                    </StyledDangerousButton>
+                </StyledCompte>
             </div>
         </StyledBody>
     )

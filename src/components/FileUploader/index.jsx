@@ -1,5 +1,4 @@
 import React, { useRef } from 'react'
-import { StyleAlert } from '../../utils/style/LoginSignStyle'
 import { AVATAR_PATH } from '../../utils/paths'
 import { useData } from '../../utils/hooks'
 import Avatar from '@mui/material/Avatar'
@@ -70,11 +69,6 @@ const FileUploader = ({ success, onFileSelectError, onFileSelectSuccess }) => {
                 onChange={handleChange}
                 style={{ display: 'none' }}
             />
-            {success && (
-                <StyleAlert success>
-                    Votre avatar a bien été modifié !{' '}
-                </StyleAlert>
-            )}
         </>
     )
 }

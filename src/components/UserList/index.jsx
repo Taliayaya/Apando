@@ -14,7 +14,7 @@ function UserList() {
     return (
         <StyleUserList>
             <StyleUserListTop>
-                <h2># {currentChannelId ? currentChannelId.name : 'Vide'}</h2>
+                <h2># {currentChannelId?.name}</h2>
             </StyleUserListTop>
             <StyleUserListTopIcons></StyleUserListTopIcons>
             <div>

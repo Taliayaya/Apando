@@ -2,14 +2,11 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import colors from './colors'
 export const StyledLoginPage = styled.div`
-    align-items: center;
-    justify-content: center;
-    margin: 0;
+    margin-top: -21px;
     text-align: center;
     color: #fff
     width: 100%;
-    height: 100vh;
-    position: relative;
+    min-height: 100vh;
     background-size: cover;
     background: rgb(63, 94, 251);
     background: radial-gradient(
@@ -83,10 +80,6 @@ export const StyledLoginWrapper = styled.div`
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    place-items: center;
 `
 
 export const StyledSubmit = styled.input.attrs((props) => ({

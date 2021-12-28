@@ -21,10 +21,10 @@ export const StyledUsername = styled.div`
 `
 
 export const StyledLink = styled(Link)`
-    color: #555;
+    color: ${colors.userList_font_color};
     &:hover {
+        color: #555;
         font-size: large;
-        color: ${colors.userList_font_color};
         cursor: pointer;
     }
 `
