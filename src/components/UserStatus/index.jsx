@@ -40,7 +40,7 @@ export default function UserStatus({ avatar, datediff, pseudo, logged }) {
                     src={`${AVATAR_PATH}${avatar}`}
                 />
             </StyledBadge>
-            <StyleUser online={datediff >= -5}>{pseudo}</StyleUser>
+            <StyleUser online={datediff >= -2}>{pseudo}</StyleUser>
         </StyledDiv>
     )
 }

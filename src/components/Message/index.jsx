@@ -5,6 +5,7 @@ import {
     StyledMessageTimestamp,
     StyledUserMessage,
     Container,
+    Align,
 } from './MessageStyle'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -21,14 +22,6 @@ function Message({ id, username, timestamp, message, avatar, repeat }) {
     const [more, setMore] = useState(false)
     const [showMore, setShowMore] = useState(false)
 
-    // const tryRequire = (path) => {
-    //     try {
-    //         console.log(require(`${path}`))
-    //     } catch (err) {
-    //         return null
-    //     }
-    // }
-
     return (
         <Container
             repeat={repeat}
@@ -42,12 +35,12 @@ function Message({ id, username, timestamp, message, avatar, repeat }) {
                 />
                 <StyledMessageInfo>
                     {!repeat && (
-                        <span>
+                        <Align>
                             {username}
                             <StyledMessageTimestamp>
                                 {timestamp}
                             </StyledMessageTimestamp>
-                        </span>
+                        </Align>
                     )}
                     <StyledUserMessage>
                         <ReactMarkdown
@@ -91,7 +84,11 @@ function Message({ id, username, timestamp, message, avatar, repeat }) {
                 <div>
                     {more && <MessageMore id={id} message={message} />}
                     <MoreVertIcon
-                        style={{ cursor: 'pointer' }}
+                        style={{
+                            cursor: 'pointer',
+                            color: '#aaa',
+                            position: 'relative',
+                        }}
                         onClick={() => setMore(!more)}
                     />
                 </div>

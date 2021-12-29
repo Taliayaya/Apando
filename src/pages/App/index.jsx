@@ -7,7 +7,7 @@ import { StyledStructure } from './AppStyle'
 function App() {
     return (
         <StyledStructure>
-            <ChannelList>App (Private)</ChannelList>
+            <ChannelList />
             <Chat />
             <UserList />
         </StyledStructure>

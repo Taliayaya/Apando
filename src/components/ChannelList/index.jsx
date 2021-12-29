@@ -6,21 +6,15 @@ import {
     StyledChannelListTop,
     StyledChannelListBottom,
     StyledChannel,
-    StyledInput,
 } from './ChannelListStyle'
-import { StyleError } from '../../utils/style/LoginSignStyle'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import {
-    API_LOAD_CHANNELS,
-    API_ADD_CHANNEL,
-    API_LOAD_SERVERS,
-} from '../../utils/paths'
-import { Link } from 'react-router-dom'
+import MenuOpenIcon from '@mui/icons-material/MenuOpen'
+import { API_LOAD_CHANNELS, API_LOAD_SERVERS } from '../../utils/paths'
+import LeftMenu from '../LeftMenu'
 
 function ChannelList() {
     const { sender } = useApi()
-    const [newChannelName, setNewChannelName] = useState('')
-    const [error, setError] = useState(null)
+
     const [channelList, setChannelList] = useState([])
     const [showMenu, setShowMenu] = useState(false)
     const { userData } = useData()
@@ -31,26 +25,6 @@ function ChannelList() {
         setCurrentServer,
     } = useChannel()
     const [serverList, setServerList] = useState([])
-
-    const addChannel = async (e) => {
-        e.preventDefault()
-        if (!newChannelName) {
-            setError("Aucun nom de salon n'a été indiqué")
-            return
-        }
-        error && setError(null)
-        const addChannelFormData = new FormData()
-        addChannelFormData.append('channel_name', newChannelName)
-        addChannelFormData.append('server_id', currentServer)
-        const success = await sender(API_ADD_CHANNEL, addChannelFormData)
-        if (!success?.added) {
-            setError("Il y a eu une erreur lors de l'ajout du salon")
-        } else {
-            console.log('SUCCESS')
-            setNewChannelName('')
-        }
-        return () => clearInterval()
-    }
 
     // Load Channels
     useEffect(() => {
@@ -127,41 +101,14 @@ function ChannelList() {
                 hovered={showMenu}
             >
                 <h2>Le Bon Sauveur</h2>
-                <ExpandMoreIcon />
+                {showMenu ? <MenuOpenIcon /> : <ExpandMoreIcon />}
             </StyledChannelListTop>
-            {error && <StyleError>{error}</StyleError>}
+
             {showMenu && (
-                <>
-                    <form action="#">
-                        <StyledInput
-                            type="text"
-                            name="new_channel"
-                            value={newChannelName}
-                            onChange={(e) => setNewChannelName(e.target.value)}
-                            placeholder="Nouveau salon"
-                        />
-                        <StyledInput
-                            type="submit"
-                            value="Ajouter"
-                            onClick={(e) => addChannel(e)}
-                        />
-                    </form>
-                    <select
-                        value={currentServer?.name}
-                        onChange={(e) => {
-                            setCurrentServer(e.target.value)
-                            setChannelList([])
-                        }}
-                    >
-                        {serverList &&
-                            serverList.map(({ id_server, name }) => (
-                                <option value={id_server} key={id_server}>
-                                    {name}
-                                </option>
-                            ))}
-                    </select>
-                    <Link to="/join">Utiliser un code</Link>
-                </>
+                <LeftMenu
+                    serverList={serverList}
+                    setChannelList={setChannelList}
+                />
             )}
 
             <StyledChannelListBottom>

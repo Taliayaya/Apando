@@ -13,9 +13,12 @@ import {
     StyledHeaderTitle,
     StyleLink,
     StyleError,
+    StyledVisibilityOffIcon,
+    StyledVisibilityOnIcon,
+    Wave,
 } from '../../utils/style/LoginSignStyle'
 import { useApi, useData } from '../../utils/hooks'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { API_LOGIN_PATH } from '../../utils/paths'
 
 function Login() {
@@ -27,6 +30,8 @@ function Login() {
     const [nameEmail, setnameEmail] = useState('')
     const [password, setpassword] = useState('')
     const [error, seterror] = useState(null)
+    const [showPassword, setShowPassword] = useState(false)
+    const [stayLogged, setStayLogged] = useState(false)
 
     async function handleLogin(e) {
         e.preventDefault()
@@ -43,11 +48,27 @@ function Login() {
                       'userData',
                       JSON.stringify(data?.logged_user_data)
                   )
-
+                  stayLogged &&
+                      localStorage.setItem(
+                          'userData',
+                          JSON.stringify(data?.logged_user_data)
+                      )
                   navigate(state?.path || '/app')
               })
             : seterror(true)
     }
+    useEffect(() => {
+        if (localStorage.getItem('userData')) {
+            const userData = JSON.parse(localStorage.getItem('userData'))
+            if (Object.keys(userData).length) {
+                login().then(() => {
+                    setuserData(userData)
+                    sessionStorage.setItem('userData', JSON.stringify(userData))
+                    navigate(state?.path || '/app')
+                })
+            }
+        }
+    })
     return (
         <StyledLoginPage>
             <StyledHeaderTitle>Pando</StyledHeaderTitle>
@@ -73,18 +94,32 @@ function Login() {
                     </StyledField>
                     <StyledField>
                         <StyledFieldInput
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             name="password"
                             value={password}
                             onChange={(e) => setpassword(e.target.value)}
                             required
                         />
+
                         <StyledFieldLabel htmlFor="password">
                             mot de passe
                         </StyledFieldLabel>
+                        {showPassword ? (
+                            <StyledVisibilityOnIcon
+                                onClick={() => setShowPassword(!showPassword)}
+                            />
+                        ) : (
+                            <StyledVisibilityOffIcon
+                                onClick={() => setShowPassword(!showPassword)}
+                            />
+                        )}
                     </StyledField>
                     <StyledField>
-                        <input type="checkbox" name="remember-me" />
+                        <input
+                            type="checkbox"
+                            name="remember-me"
+                            onChange={(e) => setStayLogged(!stayLogged)}
+                        />
                         <label htmlFor="remember-me">Rester connecté</label>
                     </StyledField>
                     <StyledField>
@@ -95,6 +130,7 @@ function Login() {
                     </StyledField>
                 </StyledForm>
             </StyledLoginWrapper>
+            <Wave />
         </StyledLoginPage>
     )
 }

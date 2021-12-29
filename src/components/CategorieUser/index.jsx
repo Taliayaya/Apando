@@ -63,22 +63,23 @@ function CategorieUser() {
                 userList.map(({ pseudo, id, datediff, avatar }) =>
                     // est ce que l'indice précédent était en ligne ?
                     // Oui -> on n'affiche pas la catégorie
-                    previousOnline && datediff >= -5 ? (
+                    previousOnline && datediff >= -2 ? (
                         <UserStatus
                             pseudo={pseudo}
                             datediff={datediff}
-                            avatar={avatar}
+                            avatar={avatar ? avatar : ''}
                             logged="true"
+                            key={id}
                         />
                     ) : // Non -> on affiche la catégorie avec l'utilisateur
-                    datediff >= -5 ? (
-                        <div>
+                    datediff >= -2 ? (
+                        <div key={id}>
                             {(previousOnline = true)}
                             <StyleCategorie>En ligne</StyleCategorie>
                             <UserStatus
                                 pseudo={pseudo}
                                 datediff={datediff}
-                                avatar={avatar}
+                                avatar={avatar ? avatar : ''}
                                 logged="true"
                             />
                         </div>
@@ -88,7 +89,8 @@ function CategorieUser() {
                         <UserStatus
                             pseudo={pseudo}
                             datediff={datediff}
-                            avatar={avatar}
+                            avatar={avatar ? avatar : ''}
+                            key={id}
                         />
                     ) : (
                         // Non -> on affiche aussi la catégorie offline
@@ -98,7 +100,7 @@ function CategorieUser() {
                             <UserStatus
                                 pseudo={pseudo}
                                 datediff={datediff}
-                                avatar={avatar}
+                                avatar={avatar ? avatar : ''}
                             />
                         </div>
                     )

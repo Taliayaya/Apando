@@ -10,6 +10,9 @@ import {
     StyledHeaderTitle,
     StyleLink,
     StyleError,
+    StyledVisibilityOffIcon,
+    StyledVisibilityOnIcon,
+    Wave,
 } from '../../utils/style/LoginSignStyle'
 import { StyledSelect, StyledOption } from './SignInStyle'
 import { useState } from 'react'
@@ -23,12 +26,21 @@ function SignIn() {
     const [userRank, setUserRank] = useState('')
     const [password, setPassword] = useState('')
     const [verifPassword, setVerifPassword] = useState('')
+    const [checkBox, setCheckBox] = useState(false)
     const [error, setError] = useState(null)
     const { sender } = useApi()
     const navigate = useNavigate()
+    const [showPassword, setShowPassword] = useState(false)
 
     async function handleSignIn(e) {
         e.preventDefault()
+        if (!checkBox) {
+            setError(
+                "Vous devez accepter les conditions d'utilisation pour continuer"
+            )
+            return
+        }
+
         if ((!username, !email, !userRank, !password, !verifPassword)) {
             setError('Tout les champs ne sont pas rempli correctement')
             return
@@ -44,6 +56,7 @@ function SignIn() {
         signInFormData.append('u_password', password)
         signInFormData.append('u_password_verif', verifPassword)
         const sentForm = await sender(API_SIGNIN_PATH, signInFormData)
+        console.log(sentForm)
         sentForm?.finished && navigate('/login')
     }
 
@@ -97,7 +110,7 @@ function SignIn() {
                     </StyledField>
                     <StyledField>
                         <StyledFieldInput
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             name="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -106,10 +119,19 @@ function SignIn() {
                         <StyledFieldLabel htmlFor="password">
                             mot de passe
                         </StyledFieldLabel>
+                        {showPassword ? (
+                            <StyledVisibilityOnIcon
+                                onClick={() => setShowPassword(!showPassword)}
+                            />
+                        ) : (
+                            <StyledVisibilityOffIcon
+                                onClick={() => setShowPassword(!showPassword)}
+                            />
+                        )}
                     </StyledField>
                     <StyledField>
                         <StyledFieldInput
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             name="verif_password"
                             value={verifPassword}
                             onChange={(e) => setVerifPassword(e.target.value)}
@@ -118,9 +140,23 @@ function SignIn() {
                         <StyledFieldLabel htmlFor="verif_password">
                             confirmer le mot de passe
                         </StyledFieldLabel>
+                        {showPassword ? (
+                            <StyledVisibilityOnIcon
+                                onClick={() => setShowPassword(!showPassword)}
+                            />
+                        ) : (
+                            <StyledVisibilityOffIcon
+                                onClick={() => setShowPassword(!showPassword)}
+                            />
+                        )}
                     </StyledField>
                     <StyledField>
-                        <input type="checkbox" name="remember-me" required />
+                        <input
+                            type="checkbox"
+                            name="remember-me"
+                            onChange={(e) => setCheckBox(!checkBox)}
+                            required
+                        />
                         <label htmlFor="accept-rules">
                             J'accepte les conditions d'utilisations
                         </label>
@@ -134,6 +170,7 @@ function SignIn() {
                     </StyledField>
                 </StyledForm>
             </StyledLoginWrapper>
+            <Wave />
         </StyledLoginPage>
     )
 }

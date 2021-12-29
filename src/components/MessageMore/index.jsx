@@ -1,5 +1,6 @@
 import { useApi, useMessage } from '../../utils/hooks'
 import { API_DELETE_MESSAGE } from '../../utils/paths'
+import { StyledMessageMoreMenu } from './MessageMoreStyle'
 
 const MessageMore = ({ id, message }) => {
     const { sender } = useApi()
@@ -13,10 +14,10 @@ const MessageMore = ({ id, message }) => {
     const { setMessage } = useMessage()
 
     return (
-        <>
+        <StyledMessageMoreMenu>
             <button onClick={() => handleDelete()}>Supprimer</button>
             <button onClick={() => setMessage(`> ${message}`)}>Répondre</button>
-        </>
+        </StyledMessageMoreMenu>
     )
 }
 

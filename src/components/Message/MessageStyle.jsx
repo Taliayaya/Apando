@@ -4,7 +4,7 @@ export const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     &:hover {
-        background-color: blue;
+        background-color: #33237f;
     }
     ${(props) => (props.repeat ? `padding: 0px 20px;` : `padding: 10px 20px;`)}
 `
@@ -38,4 +38,8 @@ export const StyledUserMessage = styled.span`
         padding-left: 3em;
         border-left: 0.5em #aaaaaa solid;
     }
+`
+
+export const Align = styled.span`
+    align-items: center;
 `

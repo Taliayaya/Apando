@@ -11,13 +11,13 @@ export const StyledUsernameContainer = styled.div`
     display: flex;
     flex-direction: row;
     padding: 20px 0;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
 `
 
 export const StyledUsername = styled.div`
     padding: 0 10px;
-    font-size: large;
+    font-size: medium;
 `
 
 export const StyledLink = styled(Link)`

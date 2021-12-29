@@ -25,6 +25,8 @@ export function useAuth() {
                 setCurrentChannelId({})
                 setAuthed(false)
                 setCurrentServer({})
+                localStorage.removeItem('userData')
+                sessionStorage.removeItem('userData')
                 res()
             })
         },
