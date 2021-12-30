@@ -1,4 +1,4 @@
-const PATH = `http://localhost/project-plateforme-api/`
+const PATH = `https://powerful-escarpment-68317.herokuapp.com/`
 
 export const API_LOGIN_PATH = `${PATH}login.php`
 
