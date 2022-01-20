@@ -10,6 +10,7 @@ export const StyledLoginPage = styled.div`
     color: #fff
     width: 100%;
     min-height: 100vh;
+    height: 100%;
     background-size: cover;
     background: rgb(63, 94, 251);
     background: radial-gradient(
@@ -132,7 +133,7 @@ export const StyleError = styled.div`
 `
 
 export const StyleAlert = styled.div`
-    width: 100%;
+    width: 91%;
     padding: 12px 16px;
     border-radius: 4px;
     border-style: solid;

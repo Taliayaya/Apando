@@ -1,11 +1,10 @@
 import React, { useRef } from 'react'
-import { AVATAR_PATH } from '../../utils/paths'
-import { useData } from '../../utils/hooks'
 import Avatar from '@mui/material/Avatar'
 import { styled } from '@material-ui/styles'
 import Badge from '@mui/material/Badge'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import colors from '../../utils/style/colors'
+import { getAuth } from 'firebase/auth'
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -24,10 +23,10 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }))
 
 const FileUploader = ({ success, onFileSelectError, onFileSelectSuccess }) => {
-    console.log(success)
+    const auth = getAuth()
+    const user = auth.currentUser
     // Create a reference to the hidden file input element
     const hiddenFileInput = useRef(null)
-    const { userData } = useData()
 
     // Programatically click the hidden file input element
     // when the Button component is clicked
@@ -38,11 +37,11 @@ const FileUploader = ({ success, onFileSelectError, onFileSelectSuccess }) => {
     // to handle the user-selected file
     const handleChange = (event) => {
         const fileUploaded = event.target.files[0]
-        console.log(fileUploaded)
         if (fileUploaded.size > 10 ** 7)
             onFileSelectError({ error: fileUploaded.size })
         else onFileSelectSuccess(fileUploaded)
     }
+
     return (
         <>
             <StyledBadge
@@ -54,7 +53,7 @@ const FileUploader = ({ success, onFileSelectError, onFileSelectSuccess }) => {
                 badgeContent={<AddPhotoAlternateIcon />}
             >
                 <Avatar
-                    src={`${AVATAR_PATH}${userData?.avatar}`}
+                    src={user?.photoURL}
                     onClick={(e) => handleClick(e)}
                     style={{
                         height: '100px',

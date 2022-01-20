@@ -1,29 +1,31 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Header from './components/Header'
 import App from './pages/App'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Settings from './pages/Settings'
-import SignIn from './pages/SignIn'
+import Signup from './pages/Signup'
 import RequireAuth from './components/RequireAuth'
 import {
     AuthProvider,
     CurrentChannelProvider,
-    UserDataProvider,
+    MessageListProvider,
     CurrentServerProvider,
     ChatMessageProvider,
 } from './utils/context'
 import NotFound from './components/NotFound'
 import GlobalStyle from './utils/style/GlobalStyle'
 import Join from './pages/Join'
+import { app } from './utils/firebase/config'
+import CreateServer from './pages/CreateServer'
+import ResetPassword from './pages/ResetPassword'
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <AuthProvider>
-                <UserDataProvider>
+                <MessageListProvider>
                     <CurrentServerProvider>
                         <CurrentChannelProvider>
                             <ChatMessageProvider>
@@ -34,14 +36,13 @@ ReactDOM.render(
                                         path="/"
                                         element={
                                             <>
-                                                <Header />
                                                 <Home />
                                             </>
                                         }
                                     />
                                     <Route
-                                        path="/signin"
-                                        element={<SignIn />}
+                                        path="/signup"
+                                        element={<Signup />}
                                     />
                                     <Route
                                         path="/app"
@@ -67,13 +68,25 @@ ReactDOM.render(
                                             </RequireAuth>
                                         }
                                     />
+                                    <Route
+                                        path="/create"
+                                        element={
+                                            <RequireAuth>
+                                                <CreateServer />
+                                            </RequireAuth>
+                                        }
+                                    />
                                     <Route path="/login" element={<Login />} />
+                                    <Route
+                                        path="/reset"
+                                        element={<ResetPassword />}
+                                    />
                                     <Route path="*" element={<NotFound />} />
                                 </Routes>
                             </ChatMessageProvider>
                         </CurrentChannelProvider>
                     </CurrentServerProvider>
-                </UserDataProvider>
+                </MessageListProvider>
             </AuthProvider>
         </BrowserRouter>
     </React.StrictMode>,

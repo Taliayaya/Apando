@@ -16,21 +16,67 @@ import {
 } from '../../utils/style/LoginSignStyle'
 import { StyledSelect, StyledOption } from './SignInStyle'
 import { useState } from 'react'
-import { useApi } from '../../utils/hooks'
-import { API_SIGNIN_PATH } from '../../utils/paths'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    updateProfile,
+    sendEmailVerification,
+    GoogleAuthProvider,
+    signInWithPopup,
+} from 'firebase/auth'
+import { doc, setDoc, Timestamp } from 'firebase/firestore'
+import { db } from '../../utils/firebase/config'
+import { Link, useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 
-function SignIn() {
+const StyledTitleLink = styled(Link)`
+    font-size: 25px;
+    text-decoration: none;
+    color: #fff;
+    z-index: 0;
+`
+function Signup() {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [userRank, setUserRank] = useState('')
     const [password, setPassword] = useState('')
-    const [verifPassword, setVerifPassword] = useState('')
     const [checkBox, setCheckBox] = useState(false)
     const [error, setError] = useState(null)
-    const { sender } = useApi()
     const navigate = useNavigate()
+
     const [showPassword, setShowPassword] = useState(false)
+    const auth = getAuth()
+    auth.useDeviceLanguage()
+    const provider = new GoogleAuthProvider()
+
+    const googleSignInApi = async () => {
+        signInWithPopup(auth, provider)
+            .then(async (result) => {
+                const data = {
+                    lastLogin: Timestamp.fromDate(new Date()),
+                    uid: result.user.uid,
+                    name: result.user.displayName,
+                    avatar: result.user.photoURL,
+                }
+                await setDoc(doc(db, 'users', result.user.uid), {
+                    data,
+                })
+                await sendEmailVerification(result.user)
+                navigate('/join')
+            })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code
+                const errorMessage = error.message
+                // The email of the user's account used.
+                const email = error.email
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error)
+                // ...
+                console.log(errorCode, errorMessage, email, credential)
+            })
+    }
 
     async function handleSignIn(e) {
         e.preventDefault()
@@ -41,28 +87,41 @@ function SignIn() {
             return
         }
 
-        if ((!username, !email, !userRank, !password, !verifPassword)) {
+        if ((!username, !email, !userRank, !password)) {
             setError('Tout les champs ne sont pas rempli correctement')
             return
         }
-        if (password !== verifPassword) {
-            setError('Les deux mots de passe ne correspondent pas')
-            return
-        }
-        const signInFormData = new FormData()
-        signInFormData.append('username', username)
-        signInFormData.append('email', email)
-        signInFormData.append('userRank', userRank)
-        signInFormData.append('u_password', password)
-        signInFormData.append('u_password_verif', verifPassword)
-        const sentForm = await sender(API_SIGNIN_PATH, signInFormData)
-        console.log(sentForm)
-        sentForm?.finished && navigate('/login')
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(async (userCredential) => {
+                await updateProfile(userCredential.user, {
+                    displayName: username,
+                }).catch((error) => {
+                    setError('Il y a eu une erreur')
+                })
+                const data = {
+                    lastLogin: Timestamp.fromDate(new Date()),
+                    uid: userCredential.user.uid,
+                    name: username,
+                    avatar: userCredential.user.photoURL,
+                }
+                await setDoc(doc(db, 'users', userCredential.user.uid), {
+                    data,
+                })
+                await sendEmailVerification(userCredential.user)
+                navigate('/join')
+            })
+            .catch((error) => {
+                const errorCode = error.code
+                setError(errorCode)
+            })
     }
 
     return (
         <StyledLoginPage>
-            <StyledHeaderTitle>Pando</StyledHeaderTitle>
+            <StyledHeaderTitle>
+                <StyledTitleLink to="/">Pando</StyledTitleLink>
+            </StyledHeaderTitle>
             <StyledLoginWrapper>
                 <StyledLoginTitle>Inscription</StyledLoginTitle>
                 <StyledForm action="#">
@@ -101,10 +160,10 @@ function SignIn() {
                             <StyledOption value="" disabled defaultValue>
                                 Choisissez votre profession
                             </StyledOption>
-                            <StyledOption value="teacher">
+                            <StyledOption value="moderator">
                                 Enseignant
                             </StyledOption>
-                            <StyledOption value="student">Élève</StyledOption>
+                            <StyledOption value="user">Élève</StyledOption>
                             <StyledOption value="other">Autre</StyledOption>
                         </StyledSelect>
                     </StyledField>
@@ -130,27 +189,6 @@ function SignIn() {
                         )}
                     </StyledField>
                     <StyledField>
-                        <StyledFieldInput
-                            type={showPassword ? 'text' : 'password'}
-                            name="verif_password"
-                            value={verifPassword}
-                            onChange={(e) => setVerifPassword(e.target.value)}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="verif_password">
-                            confirmer le mot de passe
-                        </StyledFieldLabel>
-                        {showPassword ? (
-                            <StyledVisibilityOnIcon
-                                onClick={() => setShowPassword(!showPassword)}
-                            />
-                        ) : (
-                            <StyledVisibilityOffIcon
-                                onClick={() => setShowPassword(!showPassword)}
-                            />
-                        )}
-                    </StyledField>
-                    <StyledField>
                         <input
                             type="checkbox"
                             name="remember-me"
@@ -158,7 +196,10 @@ function SignIn() {
                             required
                         />
                         <label htmlFor="accept-rules">
-                            J'accepte les conditions d'utilisations
+                            J'accepte{' '}
+                            <StyleLink to="/">
+                                les conditions d'utilisations
+                            </StyleLink>
                         </label>
                     </StyledField>
                     <StyledField>
@@ -168,6 +209,21 @@ function SignIn() {
                         Déjà inscrit ?
                         <StyleLink to="/login"> Se connecter</StyleLink>
                     </StyledField>
+                    <StyledField
+                        onClick={() => googleSignInApi()}
+                        style={{
+                            cursor: 'pointer',
+                            alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <img
+                            src="https://img.icons8.com/fluency/48/000000/google-logo.png"
+                            alt="Google Icon for SignIn popup"
+                        />
+                        <span> Continuer avec Google</span>
+                    </StyledField>
                 </StyledForm>
             </StyledLoginWrapper>
             <Wave />
@@ -175,4 +231,4 @@ function SignIn() {
     )
 }
 
-export default SignIn
+export default Signup

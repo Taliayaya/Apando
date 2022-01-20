@@ -1,19 +1,19 @@
 import Avatar from '@mui/material/Avatar'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
-import { useData } from '../../utils/hooks'
-import { AVATAR_PATH } from '../../utils/paths'
 import {
     StyledUsernameContainer,
     StyledUsername,
     StyledLink,
 } from './UsernameStyle'
+import { getAuth } from 'firebase/auth'
 
-function Username({ username }) {
-    const { userData } = useData()
+function Username() {
+    const auth = getAuth()
+    const user = auth.currentUser
     return (
         <StyledUsernameContainer>
-            <Avatar src={`${AVATAR_PATH}${userData.avatar}`} />
-            <StyledUsername>{username}</StyledUsername>
+            <Avatar src={user.photoURL} />
+            <StyledUsername>{user.displayName}</StyledUsername>
             <StyledLink to="/settings">
                 <ManageAccountsIcon fontSize="large" />
             </StyledLink>

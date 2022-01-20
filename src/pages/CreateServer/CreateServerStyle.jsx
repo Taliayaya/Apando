@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import { Icon } from '../../utils/style/LoginSignStyle'
-import { Link } from 'react-router-dom'
 
-const StyledText = styled.p`
+export const StyledText = styled.p`
     color: #999;
     text-align: justify;
     padding: 0 20px;
@@ -12,7 +11,7 @@ const Svg = styled(Icon)`
     margin-top: -126px;
 `
 
-const WaveJoin = () => (
+export const WaveJoin = () => (
     <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
         <path
             fill="#4b509d"
@@ -22,11 +21,17 @@ const WaveJoin = () => (
     </Svg>
 )
 
-const StyledTitleLink = styled(Link)`
-    font-size: 25px;
-    text-decoration: none;
-    color: #fff;
-    z-index: 0;
+export const StyledTextarea = styled.textarea`
+    resize: none;
+    width: 90%;
+    border-radius: 30px;
+    outline: none;
+    font-size: medium;
+    font-family: Arial;
+    padding-left: 20px;
+    min-height: 100px;
+    &:focus,
+    &:valid {
+        border-color: #4158d0;
+    }
 `
-
-export { WaveJoin, StyledText, StyledTitleLink }

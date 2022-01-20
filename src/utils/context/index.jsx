@@ -4,23 +4,33 @@ export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
     const [authed, setAuthed] = useState(false)
+    const [showChannel, setShowChannel] = useState(true)
+    const [showUsers, setShowUsers] = useState(true)
 
     return (
-        <AuthContext.Provider value={{ authed, setAuthed }}>
+        <AuthContext.Provider
+            value={{
+                authed,
+                setAuthed,
+                showChannel,
+                setShowChannel,
+                showUsers,
+                setShowUsers,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     )
 }
 
-export const UserDataContext = createContext()
+export const MessageListContext = createContext()
 
-export const UserDataProvider = ({ children }) => {
-    const [userData, setuserData] = useState([])
-
+export const MessageListProvider = ({ children }) => {
+    const [messageList, setMessageList] = useState([])
     return (
-        <UserDataContext.Provider value={{ userData, setuserData }}>
+        <MessageListContext.Provider value={{ messageList, setMessageList }}>
             {children}
-        </UserDataContext.Provider>
+        </MessageListContext.Provider>
     )
 }
 
@@ -28,10 +38,15 @@ export const CurrentChannelContext = createContext()
 
 export const CurrentChannelProvider = ({ children }) => {
     const [currentChannelId, setCurrentChannelId] = useState({})
-
+    const [userList, setUserList] = useState([])
     return (
         <CurrentChannelContext.Provider
-            value={{ currentChannelId, setCurrentChannelId }}
+            value={{
+                currentChannelId,
+                setCurrentChannelId,
+                userList,
+                setUserList,
+            }}
         >
             {children}
         </CurrentChannelContext.Provider>

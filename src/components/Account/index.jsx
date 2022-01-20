@@ -1,9 +1,8 @@
-import { useApi, useAuth, useData } from '../../utils/hooks'
+import { useAuth } from '../../utils/hooks'
 import FileUploader from '../FileUploader'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
-import { API_CHANGE_AVATAR } from '../../utils/paths'
 import {
     StyledBody,
     StyledCompte,
@@ -14,6 +13,10 @@ import {
 } from './AccountStyle'
 import { styled } from '@material-ui/styles'
 import colors from '../../utils/style/colors'
+import { deleteUser, getAuth, updateProfile } from 'firebase/auth'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+import { doc, Timestamp, updateDoc } from 'firebase/firestore'
+import { db } from '../../utils/firebase/config'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(({ theme }) => ({
     color: '#fff',
@@ -37,24 +40,50 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(({ theme }) => ({
 
 function Account() {
     const [success, setSuccess] = useState(false)
-    const { userData, setuserData } = useData()
     const [selectedFile, setSelectedFile] = useState(null)
-    const { sender } = useApi()
-    const { logout } = useAuth()
-    const navigate = useNavigate()
+    const { logout, resetPassword } = useAuth()
 
+    const navigate = useNavigate()
+    const auth = getAuth()
+    const user = auth.currentUser
+    const storage = getStorage()
+    const [reset, setReset] = useState(null)
     const submitNewAvatar = async () => {
-        const avatarFormData = new FormData()
-        avatarFormData.append('user_id', userData.id)
-        avatarFormData.append('file', selectedFile)
-        avatarFormData.append('acate', userData?.avatar)
-        const sendAvatar = await sender(API_CHANGE_AVATAR, avatarFormData)
-        console.log(sendAvatar)
-        if (sendAvatar?.done) {
-            setSelectedFile(null)
-            setSuccess(true)
-            setuserData({ ...userData, avatar: '' })
-            setuserData({ ...userData, avatar: sendAvatar?.avatarName })
+        const avatarRef = ref(storage, `avatars/${user.uid}`)
+        uploadBytes(avatarRef, selectedFile).then(() => {
+            getDownloadURL(avatarRef).then(async (url) => {
+                updateProfile(user, {
+                    photoURL: url,
+                }).catch((error) => {
+                    console.log('Il y a eu une erreur')
+                })
+                await updateDoc(doc(db, 'users', user.uid), {
+                    'data.avatar': url,
+                })
+
+                setSelectedFile(null)
+                setSuccess(true)
+                setReset(Timestamp.fromDate(new Date()))
+            })
+        })
+    }
+
+    const handleDeleteAccount = () => {
+        const deleteAccountAnswer = prompt(`${user.displayName}, 
+        vous êtes sur le point de définitivement supprimer votre compte.
+        Il sera parti pour de bon. 
+        
+        Pour continuer la suppression, veuillez écrire CONFIRMER dans la boîte de dialogue.`)
+        if (deleteAccountAnswer.toLowerCase() === 'confirmer') {
+            deleteUser(user)
+                .then(() => {
+                    logout()
+                })
+                .catch((error) => {
+                    console.log(
+                        `Il semblerait que le destin ait produit l'erreur suivante : ${error.message} pour vous empêcher de nous quitter.`
+                    )
+                })
         }
     }
 
@@ -64,7 +93,6 @@ function Account() {
     }
     const handleNavigateEscape = (e) => {
         const keyCode = e.which || e.keyCode
-        console.log('test')
         if (keyCode === 27) {
             navigate('/app')
         }
@@ -93,18 +121,16 @@ function Account() {
                             success={success}
                         />
                         <StyledField>Nom d'utilisateur</StyledField>
-                        <div id="pseudo">{userData?.pseudo}</div>
+                        <div id="pseudo">{user?.displayName}</div>
                         <StyledField>Adresse mail</StyledField>
-                        <div id="mail">{userData?.mail}</div>
+                        <div id="mail">{user?.email}</div>
                     </div>
                 </StyledCompte>
                 <Separator />
                 <StyledCompte>
                     <h1>Mot de passe</h1>
                     <StyledButton
-                        onClick={() =>
-                            alert('Fonctionnalité pas encore disponible')
-                        }
+                        onClick={() => resetPassword(auth, user.email)}
                     >
                         Changer le mot de passe
                     </StyledButton>
@@ -112,9 +138,7 @@ function Account() {
                         Déconnexion
                     </StyledButton>
                     <StyledDangerousButton
-                        onClick={() =>
-                            alert('Fonctionnalité pas encore disponible')
-                        }
+                        onClick={() => handleDeleteAccount()}
                     >
                         Supprimer le compte
                     </StyledDangerousButton>

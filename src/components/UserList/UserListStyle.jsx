@@ -9,9 +9,7 @@ export const StyleUserList = styled.div`
     height: 100vh;
     position: relative;
     margin: 0;
-    @media screen and (max-width: 720px) {
-        display: none;
-    }
+    ${(props) => (props.showUsers === 'true' ? `` : 'display: none;')}
 `
 
 export const StyleUserListTop = styled.div`

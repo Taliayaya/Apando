@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useApi, useChannel, useData } from '../../utils/hooks'
+import { useAuth, useChannel, useMessageList } from '../../utils/hooks'
 import {
     StyledChannelList,
     StyledChannelListTop,
@@ -9,15 +9,22 @@ import {
 } from './ChannelListStyle'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
-import { API_LOAD_CHANNELS, API_LOAD_SERVERS } from '../../utils/paths'
 import LeftMenu from '../LeftMenu'
+import {
+    collection,
+    where,
+    query,
+    getDocs,
+    doc,
+    getDoc,
+} from 'firebase/firestore'
+import { db } from '../../utils/firebase/config'
+import { getAuth } from 'firebase/auth'
+import { Menu } from '@mui/material'
 
 function ChannelList() {
-    const { sender } = useApi()
-
     const [channelList, setChannelList] = useState([])
-    const [showMenu, setShowMenu] = useState(false)
-    const { userData } = useData()
+    const [showMenu, setShowMenu] = useState(null)
     const {
         currentChannelId,
         setCurrentChannelId,
@@ -25,20 +32,36 @@ function ChannelList() {
         setCurrentServer,
     } = useChannel()
     const [serverList, setServerList] = useState([])
+    const { showChannel } = useAuth()
+    const auth = getAuth()
+    const user = auth.currentUser
+    const { setMessageList } = useMessageList()
+    const open = Boolean(showMenu)
+    const handleClick = (e) => {
+        setShowMenu(e.currentTarget)
+    }
+    const handleClose = () => {
+        setShowMenu(null)
+    }
 
     // Load Channels
     useEffect(() => {
         const loadChannels = setInterval(async () => {
-            const loadChannelsFormData = new FormData()
-            loadChannelsFormData.append('server_id', currentServer)
-            loadChannelsFormData.append('id_user', userData.id)
-            const channelListData = await sender(
-                API_LOAD_CHANNELS,
-                loadChannelsFormData
-            )
-            channelListData?.loaded &&
-                channelListData.channels_data.length !== channelList.length &&
-                setChannelList(channelListData.channels_data)
+            if (currentServer) {
+                const channelsRef = collection(db, 'channels')
+                const q = query(
+                    channelsRef,
+                    where('id_server', '==', currentServer)
+                )
+                const querySnapshot = await getDocs(q)
+                const channelListArray = []
+                querySnapshot.forEach((doc) => {
+                    channelListArray.push({ id: doc.id, data: doc.data() })
+                })
+                channelListArray &&
+                    channelListArray.length !== channelList.length &&
+                    setChannelList(channelListArray)
+            }
         }, 60000)
         return () => clearInterval(loadChannels)
     })
@@ -47,42 +70,37 @@ function ChannelList() {
     // (ou quand ya pas de salon)
     useEffect(() => {
         const firstLoadChannel = async () => {
-            if (channelList.length === 0) {
-                const loadChannelsFormData = new FormData()
-                loadChannelsFormData.append('server_id', currentServer)
-                loadChannelsFormData.append('id_user', userData.id)
-                const channelListData = await sender(
-                    API_LOAD_CHANNELS,
-                    loadChannelsFormData
-                )
-                if (
-                    channelListData?.loaded &&
-                    channelListData.channels_data.length !== channelList.length
-                ) {
-                    let channelsData = channelListData.channels_data
-                    // On ajoute ici le premier channel de la liste
-                    // pour faire un salon selected par défaut
-                    setCurrentChannelId({
-                        id: channelsData[0].id_channel,
-                        name: channelsData[0].name,
+            if (channelList.length === 0 && currentServer) {
+                const loadChannel = async () => {
+                    const channelsRef = collection(db, 'channels')
+                    const q = query(
+                        channelsRef,
+                        where('id_server', '==', currentServer)
+                    )
+                    const querySnapshot = await getDocs(q)
+                    const channelListArray = []
+                    querySnapshot.forEach((doc) => {
+                        channelListArray.push({ id: doc.id, data: doc.data() })
                     })
-                    setChannelList(channelListData.channels_data)
+                    if (channelListArray?.length > 0) {
+                        setChannelList(channelListArray)
+                        setCurrentChannelId(channelListArray[0].id)
+                    }
                 }
+                loadChannel()
             }
         }
 
         const loadServerList = async () => {
-            if (serverList.length === 0) {
-                const serverFormData = new FormData()
-                serverFormData.append('user_id', userData.id)
-                const serverList = await sender(
-                    API_LOAD_SERVERS,
-                    serverFormData
-                )
-                console.log(serverList)
-                if (serverList?.loaded && serverList?.servers_list[0]) {
-                    setCurrentServer(serverList?.servers_list[0].id_server)
-                    setServerList(serverList?.servers_list)
+            if (serverList?.length === 0) {
+                const userRef = doc(db, 'users', user.uid)
+                const userSnap = await getDoc(userRef)
+                if (userSnap.exists()) {
+                    const serverList = userSnap.data().servers
+                    if (serverList?.length > 0) {
+                        setCurrentServer(serverList[0].id)
+                        setServerList(serverList)
+                    }
                 }
             }
         }
@@ -90,38 +108,52 @@ function ChannelList() {
         firstLoadChannel()
     })
 
-    const selectChannel = (id_channel, channel_name) => {
-        setCurrentChannelId({ id: id_channel, name: channel_name })
+    const selectChannel = (id_channel, data) => {
+        setCurrentChannelId({ id: id_channel, data: data })
+        setMessageList([])
     }
     let currentChannel = currentChannelId.id ? currentChannelId.id : null
     return (
-        <StyledChannelList>
-            <StyledChannelListTop
-                onClick={() => setShowMenu(!showMenu)}
-                hovered={showMenu}
-            >
+        <StyledChannelList showChannel={showChannel ? 'true' : 'false'}>
+            <StyledChannelListTop hovered={showMenu} onClick={handleClick}>
                 <h2>Le Bon Sauveur</h2>
                 {showMenu ? <MenuOpenIcon /> : <ExpandMoreIcon />}
             </StyledChannelListTop>
 
-            {showMenu && (
+            <Menu
+                open={open}
+                onClose={handleClose}
+                anchorEl={showMenu}
+                PaperProps={{
+                    elevation: 0,
+                    sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                    },
+                }}
+                transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
+                style={{
+                    top: 110,
+                    left: -10,
+                }}
+            >
                 <LeftMenu
                     serverList={serverList}
                     setChannelList={setChannelList}
                 />
-            )}
+            </Menu>
 
             <StyledChannelListBottom>
                 {channelList &&
-                    channelList.map(({ id_channel, channel_name }) => (
+                    channelList.map(({ id, data }) => (
                         <StyledChannel
-                            key={id_channel.toString()}
-                            onClick={() =>
-                                selectChannel(id_channel, channel_name)
-                            }
-                            Selected={currentChannel === id_channel}
+                            key={id.toString()}
+                            onClick={() => selectChannel(id, data)}
+                            Selected={currentChannel === id}
                         >
-                            {channel_name}
+                            {data.channelName}
                         </StyledChannel>
                     ))}
             </StyledChannelListBottom>

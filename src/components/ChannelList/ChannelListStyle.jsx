@@ -4,6 +4,7 @@ import colors from '../../utils/style/colors'
 export const StyledChannelList = styled.div`
     display: flex;
     flex-direction: column;
+    ${(props) => (props.showChannel === 'true' ? '' : 'display: none;')}
     flex: 0.15;
     height: 100vh;
     background-color: ${colors.channelList_bg_color};

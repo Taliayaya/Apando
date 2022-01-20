@@ -1,22 +1,32 @@
-import { useApi, useMessage } from '../../utils/hooks'
-import { API_DELETE_MESSAGE } from '../../utils/paths'
+import { ListItemIcon, MenuItem, Typography } from '@mui/material'
+import { useMessage } from '../../utils/hooks'
 import { StyledMessageMoreMenu } from './MessageMoreStyle'
+import ReplyIcon from '@mui/icons-material/Reply'
+import { DeleteForever } from '@mui/icons-material'
+import { getDatabase, ref, remove } from 'firebase/database'
 
-const MessageMore = ({ id, message }) => {
-    const { sender } = useApi()
-    const handleDelete = async () => {
-        const deleteFormData = new FormData()
-        deleteFormData.append('id_message', id)
-        console.log(deleteFormData)
-        const deleted = await sender(API_DELETE_MESSAGE, deleteFormData)
-        console.log(deleted)
-    }
+const MessageMore = ({ id, message, id_channel }) => {
+    const db = getDatabase()
     const { setMessage } = useMessage()
 
+    const handleDelete = () => {
+        const messageRef = ref(db, 'messages/' + id_channel + '/' + id)
+        remove(messageRef)
+    }
     return (
         <StyledMessageMoreMenu>
-            <button onClick={() => handleDelete()}>Supprimer</button>
-            <button onClick={() => setMessage(`> ${message}`)}>Répondre</button>
+            <MenuItem onClick={() => handleDelete()} style={{ color: 'red' }}>
+                <ListItemIcon>
+                    <DeleteForever />
+                </ListItemIcon>
+                <Typography>Supprimer</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => setMessage(`> ${message} \n\n`)}>
+                <ListItemIcon>
+                    <ReplyIcon />
+                </ListItemIcon>
+                <Typography>Répondre</Typography>
+            </MenuItem>
         </StyledMessageMoreMenu>
     )
 }

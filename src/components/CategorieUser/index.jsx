@@ -1,33 +1,42 @@
 import { ContainerUser, StyleCategorie } from './CategorieUserStyle'
-import { useApi, useChannel } from '../../utils/hooks'
+import { useChannel } from '../../utils/hooks'
 import { useEffect } from 'react'
-import { API_LOAD_USERS } from '../../utils/paths'
-import { useState } from 'react'
 
 import UserStatus from '../UserStatus'
+import {
+    collection,
+    getDocs,
+    query,
+    Timestamp,
+    where,
+} from 'firebase/firestore'
+import { db } from '../../utils/firebase/config'
 
 function CategorieUser() {
-    const { sender } = useApi()
-    const { currentServer } = useChannel()
-    const [userList, setUserList] = useState([])
+    const { currentServer, userList, setUserList } = useChannel()
 
     // Initialisation de la liste des utilisateurs une première fois
     useEffect(() => {
         const usersList = async () => {
             if (userList.length === 0) {
                 // On récupère ici la liste des utilisateurs présents dans le server
-                const usersFormData = new FormData()
-                usersFormData.append('id_server', currentServer)
+                const q = query(
+                    collection(db, 'users'),
+                    where('serversid', 'array-contains', currentServer)
+                )
+                const querySnapshot = await getDocs(q)
+                const queryUserList = []
+                querySnapshot.forEach((doc) => {
+                    const data = { id: doc.id, data: doc.data() }
+                    queryUserList.push(data)
+                })
 
-                // API
-                const loader = await sender(API_LOAD_USERS, usersFormData)
-                if (loader?.loaded && loader?.users_list.length > 0) {
+                if (queryUserList?.length > 0) {
                     // On les trie en fonction de leur différente de temps
-                    const userListSorted = loader.users_list.sort((a, b) =>
-                        parseInt(a.datediff, 10) < parseInt(b.datediff) ? 1 : -1
-                    )
+                    const userListSorted = queryUserList.sort((a, b) => {
+                        return b.data.data.lastLogin - a.data.data.lastLogin
+                    })
                     setUserList(userListSorted)
-                    console.log(userListSorted)
                 }
             }
         }
@@ -37,20 +46,25 @@ function CategorieUser() {
     // On récupère le status des utilisateurs toutes les 30s
     useEffect(() => {
         const usersListInterval = setInterval(async () => {
-            // On récupre ici la liste des utilisateurs présents dans le server
-            const usersFormData = new FormData()
-            usersFormData.append('id_server', currentServer)
+            // On récupère ici la liste des utilisateurs présents dans le server
+            const q = query(
+                collection(db, 'users'),
+                where('serversid', 'array-contains', currentServer)
+            )
 
-            // API
-            const loader = await sender(API_LOAD_USERS, usersFormData)
-            if (loader?.loaded && loader?.users_list.length > 0) {
+            const querySnapshot = await getDocs(q)
+            const queryUserList = []
+            querySnapshot.forEach((doc) => {
+                const data = { id: doc.id, data: doc.data() }
+                queryUserList.push(data)
+            })
+            if (queryUserList?.length > 0) {
                 // On les trie en fonction de leur différente de temps
-                const userListSorted = loader.users_list.sort((a, b) =>
-                    parseInt(a.datediff, 10) < parseInt(b.datediff) ? 1 : -1
-                )
+                const userListSorted = queryUserList.sort((a, b) => {
+                    return b.data.data.lastLogin - a.data.data.lastLogin
+                })
                 setUserList(userListSorted)
             }
-            console.log('Récup des users done')
         }, 30000)
         return () => clearInterval(usersListInterval)
     })
@@ -60,36 +74,38 @@ function CategorieUser() {
     return (
         <ContainerUser>
             {userList.length > 0 &&
-                userList.map(({ pseudo, id, datediff, avatar }) =>
+                userList.map(({ id, data }) => {
                     // est ce que l'indice précédent était en ligne ?
                     // Oui -> on n'affiche pas la catégorie
-                    previousOnline && datediff >= -2 ? (
+                    let lastLogin =
+                        Timestamp.fromDate(new Date()) - data.data.lastLogin
+                    return previousOnline && lastLogin <= 120 ? (
                         <UserStatus
-                            pseudo={pseudo}
-                            datediff={datediff}
-                            avatar={avatar ? avatar : ''}
+                            name={data.data.name}
+                            datediff={lastLogin}
+                            avatar={data.data.avatar}
                             logged="true"
                             key={id}
                         />
                     ) : // Non -> on affiche la catégorie avec l'utilisateur
-                    datediff >= -2 ? (
+                    lastLogin <= 120 ? (
                         <div key={id}>
                             {(previousOnline = true)}
                             <StyleCategorie>En ligne</StyleCategorie>
                             <UserStatus
-                                pseudo={pseudo}
-                                datediff={datediff}
-                                avatar={avatar ? avatar : ''}
+                                name={data.data.name}
+                                datediff={lastLogin}
+                                avatar={data.data.avatar}
                                 logged="true"
                             />
                         </div>
                     ) : // est ce que l'indice précédent était offline ?
                     previousOffline ? (
-                        // Oui -> on affiche seulement le pseudo
+                        // Oui -> on affiche seulement le name
                         <UserStatus
-                            pseudo={pseudo}
-                            datediff={datediff}
-                            avatar={avatar ? avatar : ''}
+                            name={data.data.name}
+                            datediff={lastLogin}
+                            avatar={data.data.avatar}
                             key={id}
                         />
                     ) : (
@@ -98,13 +114,13 @@ function CategorieUser() {
                             {(previousOffline = true)}
                             <StyleCategorie>Hors-Ligne</StyleCategorie>
                             <UserStatus
-                                pseudo={pseudo}
-                                datediff={datediff}
-                                avatar={avatar ? avatar : ''}
+                                name={data.data.name}
+                                datediff={lastLogin}
+                                avatar={data.data.avatar}
                             />
                         </div>
                     )
-                )}
+                })}
         </ContainerUser>
     )
 }

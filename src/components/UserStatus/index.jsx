@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyledDiv, StyleUser } from './UserStatusStyle'
-import { AVATAR_PATH } from '../../utils/paths'
 import Avatar from '@mui/material/Avatar'
 import { styled } from '@material-ui/core'
 import Badge from '@mui/material/Badge'
@@ -23,7 +22,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
 }))
 
-export default function UserStatus({ avatar, datediff, pseudo, logged }) {
+export default function UserStatus({ avatar, datediff, name, logged }) {
     return (
         <StyledDiv style={logged ? { opacity: 1 } : { opacity: 0.3 }}>
             <StyledBadge
@@ -35,12 +34,9 @@ export default function UserStatus({ avatar, datediff, pseudo, logged }) {
                 variant="dot"
                 logged={logged}
             >
-                <Avatar
-                    sx={{ width: 48, height: 48 }}
-                    src={`${AVATAR_PATH}${avatar}`}
-                />
+                <Avatar sx={{ width: 48, height: 48 }} src={avatar} />
             </StyledBadge>
-            <StyleUser online={datediff >= -2}>{pseudo}</StyleUser>
+            <StyleUser online={datediff <= 120}>{name}</StyleUser>
         </StyledDiv>
     )
 }
