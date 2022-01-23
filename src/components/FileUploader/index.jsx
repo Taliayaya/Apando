@@ -1,25 +1,30 @@
 import React, { useRef } from 'react'
-import styled from 'styled-components'
-import { StyleAlert } from '../../utils/style/LoginSignStyle'
-const Button = styled.button`
-    outline: none;
-    font-size: medium;
-    padding: 0 20px;
-    border: 1px solid lightgrey;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    &:focus {
-        border-color: #4158d0;
-    }
-`
+import Avatar from '@mui/material/Avatar'
+import { styled } from '@material-ui/styles'
+import Badge from '@mui/material/Badge'
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
+import { theme } from '../../utils/style/colors'
+import { getAuth } from 'firebase/auth'
 
-const FileUploader = ({
-    success,
-    selectedFile,
-    onFileSelectError,
-    onFileSelectSuccess,
-}) => {
-    console.log(success)
+const StyledBadge = styled(Badge)(() => ({
+    '& .MuiBadge-badge': {
+        color: '#fff',
+        backgroundColor: '#000',
+        width: '30px',
+        height: '30px',
+    },
+    cursor: 'pointer',
+    border: `2px solid ${theme.sides_bg_color}`,
+    borderRadius: '60px',
+    '&:hover': {
+        opacity: 0.6,
+        borderColor: '#4158d0',
+    },
+}))
+
+const FileUploader = ({ success, onFileSelectError, onFileSelectSuccess }) => {
+    const auth = getAuth()
+    const user = auth.currentUser
     // Create a reference to the hidden file input element
     const hiddenFileInput = useRef(null)
 
@@ -32,27 +37,37 @@ const FileUploader = ({
     // to handle the user-selected file
     const handleChange = (event) => {
         const fileUploaded = event.target.files[0]
-        console.log(fileUploaded)
         if (fileUploaded.size > 10 ** 7)
             onFileSelectError({ error: fileUploaded.size })
         else onFileSelectSuccess(fileUploaded)
     }
+
     return (
         <>
-            <Button onClick={(e) => handleClick(e)}>
-                {selectedFile ? selectedFile?.name : <>Changer mon avatar</>}
-            </Button>
+            <StyledBadge
+                overlap="circular"
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                badgeContent={<AddPhotoAlternateIcon />}
+            >
+                <Avatar
+                    src={user?.photoURL}
+                    onClick={(e) => handleClick(e)}
+                    style={{
+                        height: '100px',
+                        width: '100px',
+                        hover: { borderColor: '#4158d0;' },
+                    }}
+                />
+            </StyledBadge>
             <input
                 type="file"
                 ref={hiddenFileInput}
                 onChange={handleChange}
                 style={{ display: 'none' }}
             />
-            {success && (
-                <StyleAlert success>
-                    Votre avatar a bien été modifié !{' '}
-                </StyleAlert>
-            )}
         </>
     )
 }

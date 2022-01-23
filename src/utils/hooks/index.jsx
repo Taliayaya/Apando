@@ -1,13 +1,37 @@
 import { useContext } from 'react'
 import {
     AuthContext,
-    UserDataContext,
+    MessageListContext,
     CurrentChannelContext,
     CurrentServerContext,
+    ChatMessageContext,
 } from '../context'
 import axios from 'axios'
+import { getAuth, signOut, sendPasswordResetEmail } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
+
 export function useAuth() {
-    const { authed, setAuthed } = useContext(AuthContext)
+    const {
+        authed,
+        setAuthed,
+        showChannel,
+        setShowChannel,
+        showUsers,
+        setShowUsers,
+        setUserRole,
+        userRole,
+    } = useContext(AuthContext)
+    const { setCurrentChannelId, setCurrentServer } = useChannel()
+    const auth = getAuth()
+    const navigate = useNavigate()
+
+    const actionCodeSettings = {
+        url: 'https://pando-5ec96.web.app/login',
+    }
+
+    const resetPassword = async (auth, email) => {
+        await sendPasswordResetEmail(auth, email, actionCodeSettings)
+    }
     return {
         authed,
         login() {
@@ -18,10 +42,22 @@ export function useAuth() {
         },
         logout() {
             return new Promise((res) => {
-                setAuthed(false)
+                signOut(auth).then(() => {
+                    setCurrentChannelId({})
+                    setAuthed(false)
+                    navigate('/login')
+                    setCurrentServer(false)
+                })
                 res()
             })
         },
+        resetPassword,
+        showChannel,
+        setShowChannel,
+        showUsers,
+        setShowUsers,
+        setUserRole,
+        userRole,
     }
 }
 
@@ -36,30 +72,28 @@ export function useApi() {
                 axios
                     .post(url, formData, {
                         headers: {
-                            'Content-Type': 'multipart/form-data',
+                            'Content-Type': 'application/json',
                         },
                     })
                     .then((result) => {
                         res(result.data)
                     })
                     .catch((error) => {
-                        console.log(error)
-                        res(error)
+                        res(error.response.data)
                     })
             })
         },
     }
 }
 
-export function useData() {
-    const { userData, setuserData } = useContext(UserDataContext)
-    return { userData, setuserData }
+export function useMessageList() {
+    const { messageList, setMessageList } = useContext(MessageListContext)
+    return { messageList, setMessageList }
 }
 
 export function useChannel() {
-    const { currentChannelId, setCurrentChannelId } = useContext(
-        CurrentChannelContext
-    )
+    const { currentChannelId, setCurrentChannelId, userList, setUserList } =
+        useContext(CurrentChannelContext)
     const { currentServer, setCurrentServer } = useContext(CurrentServerContext)
 
     return {
@@ -67,5 +101,13 @@ export function useChannel() {
         setCurrentChannelId,
         currentServer,
         setCurrentServer,
+        userList,
+        setUserList,
     }
+}
+
+export function useMessage() {
+    const { message, setMessage } = useContext(ChatMessageContext)
+
+    return { message, setMessage }
 }

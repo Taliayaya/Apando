@@ -1,26 +1,27 @@
-import { useChannel } from '../../utils/hooks'
+import { useAuth, useChannel } from '../../utils/hooks'
 import CategorieUser from '../CategorieUser'
 import {
     StyleUserList,
     StyleUserListTop,
     StyleUserListTopIcons,
 } from './UserListStyle'
-import { useData } from '../../utils/hooks'
 import Username from '../Username'
+import { getAuth } from 'firebase/auth'
 
 function UserList() {
     const { currentChannelId } = useChannel()
-    const { userData } = useData()
+    const auth = getAuth()
+    const { showUsers } = useAuth()
     return (
-        <StyleUserList>
+        <StyleUserList showUsers={showUsers ? 'true' : 'false'}>
             <StyleUserListTop>
-                <h2># {currentChannelId ? currentChannelId.name : 'Vide'}</h2>
+                <h2># {currentChannelId?.data?.channelName}</h2>
             </StyleUserListTop>
             <StyleUserListTopIcons></StyleUserListTopIcons>
             <div>
                 <CategorieUser />
             </div>
-            <Username username={userData?.pseudo} />
+            <Username username={auth.currentUser.displayName} />
         </StyleUserList>
     )
 }

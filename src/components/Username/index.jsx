@@ -1,14 +1,21 @@
-import { Settings } from "@material-ui/icons"
-import { StyledUsernameContainer, StyledUsername, StyledLink } from "./UsernameStyle"
+import Avatar from '@mui/material/Avatar'
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
+import {
+    StyledUsernameContainer,
+    StyledUsername,
+    StyledLink,
+} from './UsernameStyle'
+import { getAuth } from 'firebase/auth'
 
-function Username({ username }) {
+function Username() {
+    const auth = getAuth()
+    const user = auth.currentUser
     return (
         <StyledUsernameContainer>
-            <StyledUsername>
-                {username}
-            </StyledUsername>
+            <Avatar src={user.photoURL} />
+            <StyledUsername>{user.displayName}</StyledUsername>
             <StyledLink to="/settings">
-                <Settings />
+                <ManageAccountsIcon fontSize="large" />
             </StyledLink>
         </StyledUsernameContainer>
     )

@@ -1,52 +1,117 @@
-import { Avatar } from '@material-ui/core'
-import { useApi, useAuth, useData } from '../../utils/hooks'
+import { useAuth } from '../../utils/hooks'
 import FileUploader from '../FileUploader'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowBack } from '@material-ui/icons'
-import { API_CHANGE_AVATAR, AVATAR_PATH } from '../../utils/paths'
+import { useNavigate } from 'react-router-dom'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import {
+    StyledBody,
+    StyledCompte,
+    StyledField,
+    Separator,
+    StyledButton,
+    StyledDangerousButton,
+} from './AccountStyle'
+import { styled } from '@material-ui/styles'
+import { theme } from '../../utils/style/colors'
+import { deleteUser, getAuth, updateProfile } from 'firebase/auth'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+import { doc, Timestamp, updateDoc } from 'firebase/firestore'
+import { db } from '../../utils/firebase/config'
+
+const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
+    color: '#fff',
+    backgroundColor: theme.chat_input_bg_color,
+    width: '40px',
+    height: '40px',
+    cursor: 'pointer',
+    top: 30,
+    right: -200,
+    fontSize: 'large',
+    zIndex: 999,
+    borderRadius: 10,
+
+    '&:hover': {
+        opacity: 0.7,
+        backgroundColor: '#17094f',
+    },
+
+    position: 'relative',
+}))
 
 function Account() {
     const [success, setSuccess] = useState(false)
-    const { userData, setuserData } = useData()
     const [selectedFile, setSelectedFile] = useState(null)
-    const { sender } = useApi()
-    const { logout } = useAuth()
-    const submitNewAvatar = async (e) => {
-        e.preventDefault()
-        const avatarFormData = new FormData()
-        avatarFormData.append('user_id', userData.id)
-        avatarFormData.append('file', selectedFile)
-        const sendAvatar = await sender(API_CHANGE_AVATAR, avatarFormData)
-        if (sendAvatar?.done) {
-            setSelectedFile(null)
-            setSuccess(true)
-            setuserData({ ...userData, avatar: sendAvatar?.avatarName })
+    const { logout, resetPassword } = useAuth()
+
+    const navigate = useNavigate()
+    const auth = getAuth()
+    const user = auth.currentUser
+    const storage = getStorage()
+    const [reset, setReset] = useState(null)
+    const submitNewAvatar = async () => {
+        const avatarRef = ref(storage, `avatars/${user.uid}`)
+        uploadBytes(avatarRef, selectedFile).then(() => {
+            getDownloadURL(avatarRef).then(async (url) => {
+                updateProfile(user, {
+                    photoURL: url,
+                }).catch((error) => {
+                    console.log('Il y a eu une erreur')
+                })
+                await updateDoc(doc(db, 'users', user.uid), {
+                    'data.avatar': url,
+                })
+
+                setSelectedFile(null)
+                setSuccess(true)
+                setReset(Timestamp.fromDate(new Date()))
+            })
+        })
+    }
+
+    const handleDeleteAccount = () => {
+        const deleteAccountAnswer = prompt(`${user.displayName}, 
+        vous êtes sur le point de définitivement supprimer votre compte.
+        Il sera parti pour de bon. 
+        
+        Pour continuer la suppression, veuillez écrire CONFIRMER dans la boîte de dialogue.`)
+        if (deleteAccountAnswer.toLowerCase() === 'confirmer') {
+            deleteUser(user)
+                .then(() => {
+                    logout()
+                })
+                .catch((error) => {
+                    console.log(
+                        `Il semblerait que le destin ait produit l'erreur suivante : ${error.message} pour vous empêcher de nous quitter.`
+                    )
+                })
         }
     }
+
+    const handleNavigateClick = (e) => {
+        e.preventDefault()
+        navigate('/app')
+    }
+    const handleNavigateEscape = (e) => {
+        const keyCode = e.which || e.keyCode
+        if (keyCode === 27) {
+            navigate('/app')
+        }
+    }
+
+    if (selectedFile) {
+        submitNewAvatar()
+    }
     return (
-        <div>
-            <div className="compte">
-                <h1>Mon compte</h1>
-                <Link to="/app">
-                    <ArrowBack />
-                </Link>
-                <div>
-                    <Avatar src={`${AVATAR_PATH}${userData?.avatar}`} />
-                    <div id="pseudo">{userData?.pseudo}</div>
-                    <div id="mail">{userData?.mail}</div>
-                </div>
-            </div>
-            <div className="password">
-                <h1>Mot de passe</h1>
-                <button>Changer le mot de passe</button>
-                <button onClick={() => logout()}>Logout</button>
-                <button>Supprimer le compte</button>
-            </div>
+        <StyledBody>
+            <StyledExitToAppIcon
+                onClick={(e) => handleNavigateClick(e)}
+                onKeyDown={(e) => handleNavigateEscape(e)}
+            />
             <div>
-                <h1>Avatar</h1>
-                <div className="avatar-uploader">
-                    <form action="#">
+                <StyledCompte>
+                    <h1>Mon compte</h1>
+
+                    <div>
                         <FileUploader
                             onFileSelectSuccess={(file) =>
                                 setSelectedFile(file)
@@ -55,13 +120,31 @@ function Account() {
                             selectedFile={selectedFile}
                             success={success}
                         />
-                        <button onClick={(e) => submitNewAvatar(e)}>
-                            Submit
-                        </button>
-                    </form>
-                </div>
+                        <StyledField>Nom d'utilisateur</StyledField>
+                        <div id="pseudo">{user?.displayName}</div>
+                        <StyledField>Adresse mail</StyledField>
+                        <div id="mail">{user?.email}</div>
+                    </div>
+                </StyledCompte>
+                <Separator />
+                <StyledCompte>
+                    <h1>Mot de passe</h1>
+                    <StyledButton
+                        onClick={() => resetPassword(auth, user.email)}
+                    >
+                        Changer le mot de passe
+                    </StyledButton>
+                    <StyledButton onClick={() => logout()}>
+                        Déconnexion
+                    </StyledButton>
+                    <StyledDangerousButton
+                        onClick={() => handleDeleteAccount()}
+                    >
+                        Supprimer le compte
+                    </StyledDangerousButton>
+                </StyledCompte>
             </div>
-        </div>
+        </StyledBody>
     )
 }
 

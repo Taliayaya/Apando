@@ -1,98 +1,148 @@
-import {
-    StyledChat,
-    StyledChatInput,
-    StyledChatMessage,
-    StyledChatTextarea,
-} from './ChatStyle'
-import { useEffect, useState, useRef } from 'react'
-import { useApi, useChannel, useData } from '../../utils/hooks'
+import { StyledChat, StyledChatMessage, ScrollDown } from './ChatStyle'
+import { useEffect, useRef, useState } from 'react'
+import { useChannel, useMessageList } from '../../utils/hooks'
 import Message from '../Message'
-import { API_SEND_MESSAGE, API_GET_MESSAGE } from '../../utils/paths'
+import MessageInput from '../MessageInput'
+import TopMenu from '../TopMenu'
+import { getAuth } from 'firebase/auth'
+import { Badge } from '@mui/material'
+import { ArrowCircleDown, Autorenew } from '@mui/icons-material'
+import { styled } from '@material-ui/styles'
+import { theme } from '../../utils/style/colors'
+import { getDatabase, ref, onValue } from 'firebase/database'
+const StyledBadge = styled(Badge)((props) => ({
+    '& .MuiBadge-badge': {
+        color: '#fff',
+        backgroundColor:
+            props.shouldscrolltobottom === 'true'
+                ? 'green'
+                : theme.chat_input_bg_color,
+        width: '25px',
+        height: '25px',
+
+        '&:hover': {
+            backgroundColor:
+                props.shouldscrolltobottom === 'true' ? '#a33a3a' : 'green',
+        },
+    },
+    cursor: 'pointer',
+    border: `2px solid ${theme.sides_bg_color}`,
+    borderRadius: '60px',
+    '&:hover': {
+        borderColor: '#4158d0',
+    },
+}))
+
 function Chat() {
-    const [messageList, setMessageList] = useState([])
-    const { sender } = useApi()
-    const [message, setMessage] = useState('')
     const messageEndRef = useRef(null)
     const { currentChannelId } = useChannel()
-    const { userData } = useData()
+    const { messageList, setMessageList } = useMessageList()
+    const { showUsers } = getAuth()
+    const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true)
+
+    // useEffect(() => {
+    //     const loadMessage = async () => {
+    //         if (messageList.length === 0 && currentChannelId?.id) {
+    //             const messageRef = collection(db, 'messages')
+    //             const q = query(
+    //                 messageRef,
+    //                 where('id_channel', '==', currentChannelId.id)
+    //             )
+    //             // const unsubscribe = onSnapshot(q, (querySnapShot) => {
+    //             //     querySnapShot.forEach((doc) => {
+    //             //         messageListArray.push({ id: doc.id, data: doc?.data() })
+    //             //     })
+    //             // })
+    //             const querySnap = await getDocs(q)
+    //             const messageListArray = []
+
+    //             querySnap.forEach((doc) => {
+    //                 messageListArray.push({ id: doc.id, data: doc.data() })
+    //             })
+    //             messageListArray.sort((a, b) =>
+    //                 a.data.timestamp > b.data.timestamp ? 1 : -1
+    //             )
+    //             const data = await getChannelMessages(currentChannelId.id)
+    //             console.log('chat data', data)
+    //             setMessageList(messageListArray)
+    //             // Permet de scroll en bas du chat dès qu'on commence à écrire un message
+    //         }
+    //     }
+
+    //     return loadMessage()
+    // }, [currentChannelId.id, messageList.length, setMessageList])
 
     useEffect(() => {
-        const loadMessage = setInterval(async () => {
-            const loadFormData = new FormData()
-            loadFormData.append('currentChannel', currentChannelId.id)
-            const fetchMessage = await sender(API_GET_MESSAGE, loadFormData)
-            const message_list = fetchMessage?.messages_list
-            message_list.reverse()
-            if (message_list?.length !== messageList?.length) {
-                console.log(message_list)
-                setMessageList(message_list)
-                // Scroll en bas dès un nouveau message
-                messageEndRef.current?.scrollIntoView()
-            }
-        }, 2500)
-        return () => clearInterval(loadMessage)
-    }, [messageList?.length, sender, currentChannelId.id])
-    useEffect(() => {
-        const loadMessage = async () => {
-            const loadFormData = new FormData()
-            loadFormData.append('currentChannel', currentChannelId.id)
-            const fetchMessage = await sender(API_GET_MESSAGE, loadFormData)
-            const message_list = fetchMessage?.messages_list
-            message_list.reverse()
-            if (message_list?.length !== messageList?.length) {
-                setMessageList(message_list)
-                // Scroll en bas dès un nouveau message
-                messageEndRef.current?.scrollIntoView()
-            }
+        if (currentChannelId.id) {
+            // const messageListArray = []
+            // const messageRef = collection(db, 'messages')
+            // const q = query(
+            //     messageRef,
+            //     where('id_channel', '==', currentChannelId.id)
+            // )
+            const rltdb = getDatabase()
+            const messageListRef = ref(rltdb, 'messages/' + currentChannelId.id)
+            onValue(messageListRef, (snapshot) => {
+                const obj = snapshot.val()
+                const datas = []
+                Object.keys(obj).forEach((key) => {
+                    const values = obj[key]
+                    values.key = key
+                    datas.push(values)
+                })
+                setMessageList(datas)
+            })
+            // const unsubscribe = onSnapshot(q, (querySnapShot) => {
+            //     querySnapShot.forEach((doc) => {
+            //         messageListArray.push({ id: doc.id, data: doc?.data() })
+            //     })
+            // })
+            // getChannelMessages(currentChannelId.id)
+            // setMessageList(messageListArray)
+            // return () => {
+            //     unsubscribe()
+            // }
         }
-        return loadMessage()
-    }, [messageList?.length, sender, currentChannelId.id])
+    }, [currentChannelId.id, setMessageList])
 
-    // Permet de scroll en bas du chat dès qu'on commence à écrire un message
     useEffect(() => {
-        console.log(messageEndRef)
-        messageEndRef.current?.scrollIntoView()
-    }, [message])
-
-    async function handleSubmit(e) {
-        const keyCode = e.which || e.keyCode
-        if (keyCode === 13 && !e.shiftKey) {
-            e.preventDefault()
-            const sendFormData = new FormData()
-            sendFormData.append('message', message)
-            sendFormData.append('user_id', userData.id)
-            sendFormData.append('id_channel', currentChannelId.id)
-            const sendMessage = await sender(API_SEND_MESSAGE, sendFormData)
-            sendMessage?.sent && setMessage('')
+        if (shouldScrollToBottom) {
+            messageEndRef.current?.scrollIntoView({
+                block: 'start',
+                behavior: 'smooth',
+                inline: 'nearest',
+            })
         }
-    }
+    })
 
     let previousUser = -1
+    const messageListSorted = messageList.sort((a, b) => {
+        return a.timestamp - b.timestamp
+    })
     return (
-        <StyledChat>
+        <StyledChat showUsers={showUsers ? 'true' : 'false'}>
+            <TopMenu />
             <StyledChatMessage>
-                {messageList.map(
-                    ({
-                        id_message,
-                        message,
-                        message_date,
-                        pseudo,
-                        avatar,
-                        u_id,
-                    }) => {
-                        let repeat = u_id === previousUser
-                        previousUser = u_id
+                {messageListSorted.map(
+                    ({ message, timestamp, user, key, id_channel }) => {
+                        let repeat = user?.uid === previousUser
+                        previousUser = user?.uid
+
                         return (
                             <Message
-                                key={id_message}
+                                key={key}
                                 username={
-                                    pseudo ? pseudo : 'Utilisateur supprimé'
+                                    user.displayName
+                                        ? user?.displayName
+                                        : 'Utilisateur supprimé'
                                 }
                                 message={message}
-                                timestamp={message_date}
-                                avatar={avatar}
+                                timestamp={timestamp.seconds}
+                                avatar={user.photoURL}
                                 repeat={repeat}
-                                id={id_message}
+                                messageID={key}
+                                id_channel={id_channel}
+                                uid={user.uid}
                             />
                         )
                     }
@@ -100,17 +150,42 @@ function Chat() {
 
                 <div ref={messageEndRef} />
             </StyledChatMessage>
-
-            <StyledChatInput>
-                <form>
-                    <StyledChatTextarea
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder={`Écrivez dans le salon ${currentChannelId.name}`}
-                        onKeyDown={(e) => handleSubmit(e)}
-                    ></StyledChatTextarea>
-                </form>
-            </StyledChatInput>
+            <ScrollDown>
+                <div style={{ visibility: 'hidden' }}>Test</div>
+                <StyledBadge
+                    overlap="circular"
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    badgeContent={
+                        <Autorenew
+                            onClick={() =>
+                                setShouldScrollToBottom(!shouldScrollToBottom)
+                            }
+                        />
+                    }
+                    shouldscrolltobottom={
+                        shouldScrollToBottom ? 'true' : 'false'
+                    }
+                >
+                    <ArrowCircleDown
+                        style={{
+                            backgroundColor: theme.chat_input_bg_color,
+                            borderRadius: '60px',
+                            fontSize: 40,
+                        }}
+                        onClick={() =>
+                            messageEndRef.current?.scrollIntoView({
+                                block: 'start',
+                                behavior: 'smooth',
+                                inline: 'nearest',
+                            })
+                        }
+                    />
+                </StyledBadge>
+            </ScrollDown>
+            <MessageInput currentChannelId={currentChannelId} />
         </StyledChat>
     )
 }

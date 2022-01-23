@@ -1,19 +1,22 @@
 import styled from 'styled-components'
+import { theme } from '../../utils/style/colors'
+
 export const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     &:hover {
-        background-color: blue;
+        background-color: #33237f;
     }
-    ${(props) => (props.repeat ? `padding: 0px 20px;` : `padding: 10px 20px;`)}
+    ${(props) =>
+        props.repeat === 'true' ? `padding: 0px 20px;` : `padding: 5px 20px;`}
 `
 
 export const StyledMessage = styled.div`
     display: flex;
     align-items: left;
 
-    color: white;
+    color: ${theme.font_color};
     justify-content: space-between;
 `
 
@@ -38,4 +41,8 @@ export const StyledUserMessage = styled.span`
         padding-left: 3em;
         border-left: 0.5em #aaaaaa solid;
     }
+`
+
+export const Align = styled.span`
+    align-items: center;
 `

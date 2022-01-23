@@ -1,30 +1,30 @@
 import styled from 'styled-components'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 
 export const StyleUserList = styled.div`
-    background-color: ${colors.userList_top_bg_color};
+    background-color: ${theme.sides_bg_color};
     display: flex;
     flex-direction: column;
     flex: 0.15;
-    overflow: scroll;
     height: 100vh;
     position: relative;
     margin: 0;
+    ${(props) => (props.showUsers === 'true' ? `` : 'display: none;')}
 `
 
 export const StyleUserListTop = styled.div`
-    background-color: ${colors.userList_top_bg_color};
+    background-color: ${theme.menus_bg_color};
     align-items: center;
     padding: 20px;
-    color: ${colors.userList_font_color};
-    border-bottom: 2px solid gray;
+    color: ${theme.font_color};
+    border-bottom: 2px solid ${theme.border_color};
 `
 
 export const StyleUserListTopIcons = styled.div`
-    background-color: ${colors.userList_top_bg_color};
+    background-color: ${theme.menus_bg_color};
     padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${colors.userList_font_color};
+    color: ${theme.sides_font_color};
 `
