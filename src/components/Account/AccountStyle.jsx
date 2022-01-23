@@ -1,7 +1,8 @@
 import styled from 'styled-components'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
+
 export const StyledBody = styled.div`
-    background-color: ${colors.channelList_bg_color};
+    background-color: ${theme.sides_bg_color};
     align-items: center;
     justify-content: center;
     margin: 0;
@@ -21,14 +22,13 @@ export const StyledCompte = styled.div`
     justify-content: space-around;
     align-items: center;
     color: #fff;
-    background-color: ${colors.chat_bg_color};
+    background-color: ${theme.chat_bg_color};
     border-radius: 25px;
     width: 380px;
     left: 50%;
     transform: translateX(-50%);
     position: relative;
     padding: 20px;
-    @media screen and (max-width: 480px);
 `
 export const StyledField = styled.p`
     text-transform: uppercase;
@@ -48,7 +48,7 @@ export const StyledButton = styled.button`
     padding: 10px;
     cursor: pointer;
     border-radius: 10px;
-    background-color: ${colors.chat_input_bg_color};
+    background-color: ${theme.chat_input_bg_color};
     margin: 5px;
     &:hover {
         background-color: #33398e;
@@ -61,7 +61,7 @@ export const StyledDangerousButton = styled.button`
     font-weight: 600;
     cursor: pointer;
     border-radius: 10px;
-    background-color: ${colors.channelList_bg_color};
+    background-color: ${theme.sides_bg_color};
     border: 1px solid #ca0b00;
     margin: 5px;
 `

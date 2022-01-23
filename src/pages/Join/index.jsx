@@ -16,7 +16,7 @@ import {
 import { StyledText, WaveJoin } from './JoinStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 import {
     doc,
     query,
@@ -29,9 +29,9 @@ import {
 import { db } from '../../utils/firebase/config'
 import { getAuth } from 'firebase/auth'
 
-const StyledExitToAppIcon = styled(ExitToAppIcon)(({ theme }) => ({
+const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
-    backgroundColor: colors.chat_input_bg_color,
+    backgroundColor: theme.chat_input_bg_color,
     width: '40px',
     height: '40px',
     cursor: 'pointer',

@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../../utils/hooks'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 
 const StyledNav = styled.nav`
     display: flex;
@@ -10,32 +10,32 @@ const StyledNav = styled.nav`
     justify-content: space-around;
     padding: 10px 10px 50px;
     z-index: 1;
-    background-color: ${colors.chat_input_bg_color};
+    background-color: ${theme.chat_input_bg_color};
 `
 
 const StyledSignUp = styled(Link)`
     padding: 15px;
-    background-color: ${colors.chat_bg_color};
-    color: #fff;
+    background-color: ${theme.chat_bg_color};
+    color: ${theme.font_color};
     border-radius: 30px;
     outline: none;
     text-decoration: none;
     cursor: pointer;
 
     &:hover {
-        background-color: ${colors.channelList_bg_color};
+        background-color: ${theme.sides_bg_color};
     }
 `
 const StyledTitleLink = styled(Link)`
     font-size: 25px;
     text-decoration: none;
-    color: #fff;
+    color: ${theme.font_color};
     z-index: 0;
 `
 
 const StyledLoginLink = styled(Link)`
     padding: 15px;
-    color: #fff;
+    color: ${theme.font_color};
     z-index: 5;
     text-decoration: none;
 

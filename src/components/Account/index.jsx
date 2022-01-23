@@ -12,15 +12,15 @@ import {
     StyledDangerousButton,
 } from './AccountStyle'
 import { styled } from '@material-ui/styles'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 import { deleteUser, getAuth, updateProfile } from 'firebase/auth'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
 
-const StyledExitToAppIcon = styled(ExitToAppIcon)(({ theme }) => ({
+const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
-    backgroundColor: colors.chat_input_bg_color,
+    backgroundColor: theme.chat_input_bg_color,
     width: '40px',
     height: '40px',
     cursor: 'pointer',

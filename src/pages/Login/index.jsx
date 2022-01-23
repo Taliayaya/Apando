@@ -27,11 +27,12 @@ import {
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
 import styled from 'styled-components'
+import { theme } from '../../utils/style/colors'
 
 const StyledTitleLink = styled(Link)`
     font-size: 25px;
     text-decoration: none;
-    color: #fff;
+    color: ${theme.font_color};
     z-index: 0;
 `
 

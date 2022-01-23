@@ -3,10 +3,10 @@ import Avatar from '@mui/material/Avatar'
 import { styled } from '@material-ui/styles'
 import Badge from '@mui/material/Badge'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 import { getAuth } from 'firebase/auth'
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
+const StyledBadge = styled(Badge)(() => ({
     '& .MuiBadge-badge': {
         color: '#fff',
         backgroundColor: '#000',
@@ -14,7 +14,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
         height: '30px',
     },
     cursor: 'pointer',
-    border: `2px solid ${colors.channelList_bg_color}`,
+    border: `2px solid ${theme.sides_bg_color}`,
     borderRadius: '60px',
     '&:hover': {
         opacity: 0.6,

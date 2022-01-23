@@ -8,7 +8,7 @@ import { getAuth } from 'firebase/auth'
 import { Badge } from '@mui/material'
 import { ArrowCircleDown, Autorenew } from '@mui/icons-material'
 import { styled } from '@material-ui/styles'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 import { getDatabase, ref, onValue } from 'firebase/database'
 const StyledBadge = styled(Badge)((props) => ({
     '& .MuiBadge-badge': {
@@ -16,16 +16,17 @@ const StyledBadge = styled(Badge)((props) => ({
         backgroundColor:
             props.shouldscrolltobottom === 'true'
                 ? 'green'
-                : colors.chat_input_bg_color,
+                : theme.chat_input_bg_color,
         width: '25px',
         height: '25px',
 
         '&:hover': {
-            backgroundColor: 'green',
+            backgroundColor:
+                props.shouldscrolltobottom === 'true' ? '#a33a3a' : 'green',
         },
     },
     cursor: 'pointer',
-    border: `2px solid ${colors.channelList_bg_color}`,
+    border: `2px solid ${theme.sides_bg_color}`,
     borderRadius: '60px',
     '&:hover': {
         borderColor: '#4158d0',
@@ -141,6 +142,7 @@ function Chat() {
                                 repeat={repeat}
                                 messageID={key}
                                 id_channel={id_channel}
+                                uid={user.uid}
                             />
                         )
                     }
@@ -169,7 +171,7 @@ function Chat() {
                 >
                     <ArrowCircleDown
                         style={{
-                            backgroundColor: colors.chat_input_bg_color,
+                            backgroundColor: theme.chat_input_bg_color,
                             borderRadius: '60px',
                             fontSize: 40,
                         }}

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { theme } from '../../utils/style/colors'
 
 export const StyledSelect = styled.select`
     text-decoration: none;
@@ -13,7 +14,7 @@ export const StyledSelect = styled.select`
     border: 1px solid lightgrey;
     border-radius: 25px;
     color: #999999;
-    background-color: #fff;
+    background-color: ${theme.font_color};
     text-transform: uppercase;
     &:focus,
     &:valid {

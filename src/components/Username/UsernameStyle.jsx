@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 import { Link } from 'react-router-dom'
 
 export const StyledUsernameContainer = styled.div`
-    color: ${colors.userList_font_color};
+    color: ${theme.username_font_color};
     width: 100%;
     background-color: #17094f;
     position: absolute;
@@ -21,7 +21,7 @@ export const StyledUsername = styled.div`
 `
 
 export const StyledLink = styled(Link)`
-    color: ${colors.userList_font_color};
+    color: ${theme.username_font_color};
     &:hover {
         color: #555;
         font-size: large;

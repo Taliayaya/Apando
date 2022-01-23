@@ -7,6 +7,7 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css'
 import { WaveHome } from './StyledHomeWave'
+import { theme } from '../../utils/style/colors'
 
 const StyledSection = styled.section`
     width: 90%;
@@ -15,7 +16,7 @@ const StyledSection = styled.section`
     padding: 10px;
     margin: 20px;
     align-self: center;
-    background-color: #fff;
+    background-color: ${theme.font_color};
 `
 const HomePage = styled.div`
     width: 70%;
@@ -33,7 +34,7 @@ function Home() {
                     <HomePage>
                         <h1
                             style={{
-                                color: '#fff',
+                                color: theme.font_color,
                                 paddingTop: '30px',
                                 textAlign: 'center',
                             }}

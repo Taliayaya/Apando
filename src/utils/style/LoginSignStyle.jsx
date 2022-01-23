@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import colors from './colors'
+import { theme } from './colors'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
@@ -15,8 +15,8 @@ export const StyledLoginPage = styled.div`
     background: rgb(63, 94, 251);
     background: radial-gradient(
         circle,
-        ${colors.channelList_bg_color} 0%,
-        ${colors.chat_input_bg_color} 80%
+        ${theme.sides_bg_color} 0%,
+        ${theme.chat_input_bg_color} 80%
     );
 `
 
@@ -46,13 +46,13 @@ export const StyledLoginTitle = styled.h2`
     font-weight: 600;
     text-align: center;
     line-height: 100px;
-    color: #fff;
+    color: ${theme.font_color};
     user-select: none;
     border-radius: 15px 15px 0 0;
     background: linear-gradient(
         90deg,
-        ${colors.channelList_bg_color} 0%,
-        ${colors.chat_input_bg_color} 80%
+        ${theme.sides_bg_color} 0%,
+        ${theme.chat_input_bg_color} 80%
     );
 `
 export const StyledForm = styled.form`
@@ -107,7 +107,7 @@ export const StyledLoginWrapper = styled.div`
     transform: translateX(-50%);
 `
 export const StyledHeaderTitle = styled.h1`
-    color: #fff;
+    color: ${theme.font_color};
 
     font-family: Arial;
     padding: 20px;
@@ -172,7 +172,7 @@ export const StyledSubmit = styled.input.attrs((props) => ({
 }))`
     height: 100%;
     width: 100%;
-    color: #fff;
+    color: ${theme.font_color};
     outline: none;
     border: none;
     padding-left: 0;
@@ -183,8 +183,8 @@ export const StyledSubmit = styled.input.attrs((props) => ({
     border-radius: 25px;
     background: linear-gradient(
         90deg,
-        ${colors.channelList_bg_color} 0%,
-        ${colors.chat_input_bg_color} 80%
+        ${theme.sides_bg_color} 0%,
+        ${theme.chat_input_bg_color} 80%
     );
     transition: all 300ms ease;
     &:active {

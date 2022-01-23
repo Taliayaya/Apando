@@ -17,12 +17,14 @@ import {
 import { StyledText, WaveJoin, StyledTextarea } from './CreateServerStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 import { useNavigate } from 'react-router-dom'
+import { writeUserRole } from '../../utils/function'
+import { getAuth } from 'firebase/auth'
 
-const StyledExitToAppIcon = styled(ExitToAppIcon)(({ theme }) => ({
+const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
-    backgroundColor: colors.chat_input_bg_color,
+    backgroundColor: theme.chat_input_bg_color,
     width: '40px',
     height: '40px',
     cursor: 'pointer',
@@ -82,6 +84,7 @@ export default function CreateServer() {
     )
     const [error, setError] = useState(null)
     const navigate = useNavigate()
+    const user = getAuth().currentUser
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -98,6 +101,7 @@ export default function CreateServer() {
                 name: serverName,
                 code: code,
             })
+            writeUserRole(user.uid, 'Owner', docRef.id)
             try {
                 await createChannelListFromString(channels, docRef.id)
                 navigate('/join')
