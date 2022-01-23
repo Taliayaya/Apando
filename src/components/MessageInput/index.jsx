@@ -3,12 +3,12 @@ import React from 'react'
 import { getAuth } from 'firebase/auth'
 import { Send } from '@material-ui/icons'
 import styled from 'styled-components'
-import colors from '../../utils/style/colors'
-import { useMessage } from '../../utils/hooks'
-import { writeUserMessage } from './function'
+import { theme } from '../../utils/style/colors'
+import { useAuth, useMessage } from '../../utils/hooks'
+import { writeUserMessage } from '../../utils/function'
 
 const StyledSend = styled(Send)`
-    background-color: ${colors.channelList_bg_color};
+    background-color: ${theme.sides_bg_color};
     padding: 10px;
     border-radius: 60px;
     cursor: pointer;
@@ -21,9 +21,10 @@ const StyledSend = styled(Send)`
 const MessageInput = ({ currentChannelId }) => {
     const { message, setMessage } = useMessage()
     const user = getAuth().currentUser
+    const { userRole } = useAuth()
 
     const handleSending = async () => {
-        if (message.trim().length > 0) {
+        if (message.trim().length > 0 && userRole !== 'Muted') {
             try {
                 // const data = {
                 //     message: message,
@@ -58,17 +59,21 @@ const MessageInput = ({ currentChannelId }) => {
             handleSending()
         }
     }
+
+    const placeholder =
+        userRole === 'Muted'
+            ? 'Vous avez été bloqué par un administrateur. Par conséquent, vous ne pouvez plus envoyer de messages tant que vous ne serez pas débloqué.'
+            : currentChannelId?.data
+            ? `Écrivez dans le salon ${currentChannelId?.data?.channelName}`
+            : `Choisissez un salon pour commencer à discuter.`
+
     return (
         <StyledChatInput>
             <form>
                 <StyledChatTextarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder={
-                        currentChannelId?.data
-                            ? `Écrivez dans le salon ${currentChannelId?.data?.channelName}`
-                            : `Choisissez un salon pour commencer à discuter.`
-                    }
+                    placeholder={placeholder}
                     onKeyDown={(e) => handleSubmit(e)}
                     disabled={currentChannelId?.data in window}
                 ></StyledChatTextarea>

@@ -52,12 +52,11 @@ function Message({
     avatar,
     repeat,
     id_channel,
+    uid,
 }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const [showMore, setShowMore] = useState(false)
     const open = Boolean(anchorEl)
-
-    console.log(messageID)
 
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget)
@@ -70,7 +69,7 @@ function Message({
 
     return (
         <Container
-            repeat={repeat}
+            repeat={repeat ? 'true' : 'false'}
             onMouseEnter={() => setShowMore(true)}
             onMouseLeave={() => setShowMore(false)}
         >
@@ -156,6 +155,7 @@ function Message({
                             id={messageID}
                             message={message}
                             id_channel={id_channel}
+                            uid={uid}
                         />
                     </Menu>
                 </div>

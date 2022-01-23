@@ -86,6 +86,7 @@ function CategorieUser() {
                             avatar={data.data.avatar}
                             logged="true"
                             key={id}
+                            uid={id}
                         />
                     ) : // Non -> on affiche la catégorie avec l'utilisateur
                     lastLogin <= 120 ? (

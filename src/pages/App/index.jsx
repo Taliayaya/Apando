@@ -13,6 +13,7 @@ function App() {
     const user = auth.currentUser
     const { setShowChannel, setShowUsers } = useAuth()
     const [firstMobileTime, setFirstMobileTime] = useState(true)
+
     useEffect(() => {
         const setOnline = setInterval(async () => {
             await updateDoc(doc(db, 'users', user.uid), {

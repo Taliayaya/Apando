@@ -6,6 +6,7 @@ export const AuthProvider = ({ children }) => {
     const [authed, setAuthed] = useState(false)
     const [showChannel, setShowChannel] = useState(true)
     const [showUsers, setShowUsers] = useState(true)
+    const [userRole, setUserRole] = useState('')
 
     return (
         <AuthContext.Provider
@@ -16,6 +17,8 @@ export const AuthProvider = ({ children }) => {
                 setShowChannel,
                 showUsers,
                 setShowUsers,
+                userRole,
+                setUserRole,
             }}
         >
             {children}
@@ -56,7 +59,7 @@ export const CurrentChannelProvider = ({ children }) => {
 export const CurrentServerContext = createContext()
 
 export const CurrentServerProvider = ({ children }) => {
-    const [currentServer, setCurrentServer] = useState({})
+    const [currentServer, setCurrentServer] = useState(false)
 
     return (
         <CurrentServerContext.Provider

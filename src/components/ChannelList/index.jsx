@@ -21,6 +21,7 @@ import {
 import { db } from '../../utils/firebase/config'
 import { getAuth } from 'firebase/auth'
 import { Menu } from '@mui/material'
+import { getUserRole, writeUserRole } from '../../utils/function'
 
 function ChannelList() {
     const [channelList, setChannelList] = useState([])
@@ -32,7 +33,7 @@ function ChannelList() {
         setCurrentServer,
     } = useChannel()
     const [serverList, setServerList] = useState([])
-    const { showChannel } = useAuth()
+    const { showChannel, setUserRole } = useAuth()
     const auth = getAuth()
     const user = auth.currentUser
     const { setMessageList } = useMessageList()
@@ -43,6 +44,16 @@ function ChannelList() {
     const handleClose = () => {
         setShowMenu(null)
     }
+
+    useEffect(() => {
+        const setRole = async () => {
+            if (currentServer) {
+                const role = await getUserRole(user.uid, currentServer)
+                setUserRole(role?.role)
+            }
+        }
+        setRole()
+    })
 
     // Load Channels
     useEffect(() => {
@@ -109,6 +120,8 @@ function ChannelList() {
     })
 
     const selectChannel = (id_channel, data) => {
+        console.log(id_channel, data)
+        console.log(currentChannelId)
         setCurrentChannelId({ id: id_channel, data: data })
         setMessageList([])
     }
@@ -151,6 +164,7 @@ function ChannelList() {
                         <StyledChannel
                             key={id.toString()}
                             onClick={() => selectChannel(id, data)}
+                            onDoubleClick={() => selectChannel(id, data)}
                             Selected={currentChannel === id}
                         >
                             {data.channelName}

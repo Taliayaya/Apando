@@ -18,6 +18,8 @@ export function useAuth() {
         setShowChannel,
         showUsers,
         setShowUsers,
+        setUserRole,
+        userRole,
     } = useContext(AuthContext)
     const { setCurrentChannelId, setCurrentServer } = useChannel()
     const auth = getAuth()
@@ -44,7 +46,7 @@ export function useAuth() {
                     setCurrentChannelId({})
                     setAuthed(false)
                     navigate('/login')
-                    setCurrentServer({})
+                    setCurrentServer(false)
                 })
                 res()
             })
@@ -54,6 +56,8 @@ export function useAuth() {
         setShowChannel,
         showUsers,
         setShowUsers,
+        setUserRole,
+        userRole,
     }
 }
 

@@ -2,7 +2,7 @@ import { People } from '@material-ui/icons'
 import React from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../../utils/hooks'
-import colors from '../../utils/style/colors'
+import { theme } from '../../utils/style/colors'
 import MenuIcon from '@mui/icons-material/Menu'
 
 const StyledMenu = styled.div`
@@ -10,7 +10,7 @@ const StyledMenu = styled.div`
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
-    background-color: ${colors.channelList_bg_color};
+    background-color: ${theme.top_menu_bg_color};
 `
 
 const TopMenu = () => {
@@ -18,11 +18,11 @@ const TopMenu = () => {
     return (
         <StyledMenu>
             <MenuIcon
-                style={{ cursor: 'pointer', color: '#fff' }}
+                style={{ cursor: 'pointer', color: theme.font_color }}
                 onClick={() => setShowChannel(!showChannel)}
             />
             <People
-                style={{ cursor: 'pointer', color: '#fff' }}
+                style={{ cursor: 'pointer', color: theme.font_color }}
                 onClick={() => setShowUsers(!showUsers)}
             />
         </StyledMenu>

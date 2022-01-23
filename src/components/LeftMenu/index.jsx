@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useChannel } from '../../utils/hooks'
+import { useChannel, useMessageList } from '../../utils/hooks'
 import { StyledInput } from '../ChannelList/ChannelListStyle'
 import { useState } from 'react'
 import { StyleError } from '../../utils/style/LoginSignStyle'
@@ -12,6 +12,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
     const [error, setError] = useState(null)
 
     const { currentServer, setCurrentServer, setUserList } = useChannel()
+    const { setMessageList } = useMessageList()
 
     const addChannel = async (e) => {
         e.preventDefault()
@@ -60,6 +61,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                         setCurrentServer(e.target.value)
                         setChannelList([])
                         setUserList([])
+                        setMessageList([])
                     }}
                 >
                     {serverList &&
