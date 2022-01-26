@@ -63,8 +63,8 @@ const MessageInput = ({ currentChannelId }) => {
     const placeholder =
         userRole === 'Muted'
             ? 'Vous avez été bloqué par un administrateur. Par conséquent, vous ne pouvez plus envoyer de messages tant que vous ne serez pas débloqué.'
-            : currentChannelId?.data
-            ? `Écrivez dans le salon ${currentChannelId?.data?.channelName}`
+            : currentChannelId?.name
+            ? `Écrivez dans le salon ${currentChannelId?.name}`
             : `Choisissez un salon pour commencer à discuter.`
 
     return (
@@ -75,7 +75,7 @@ const MessageInput = ({ currentChannelId }) => {
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder={placeholder}
                     onKeyDown={(e) => handleSubmit(e)}
-                    disabled={currentChannelId?.data in window}
+                    disabled={currentChannelId?.name in window}
                 ></StyledChatTextarea>
             </form>
             {message.trim().length > 0 && (

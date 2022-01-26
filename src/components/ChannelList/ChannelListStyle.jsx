@@ -31,20 +31,23 @@ export const StyledChannelListBottom = styled.div`
     overflow-y: scroll;
 `
 export const StyledChannel = styled.div`
-    padding-bottom: 10px;
+    padding: 15px;
+    border: 1px solid ${theme.top_menu_bg_color};
+    width: 90%;
     ${(props) =>
         props.Selected
             ? `
 color: ${theme.sides_font_color};
 font-size: larger;
-border-top: ${theme.sides_font_color} 1px dotted;`
+background-color: ${theme.top_menu_bg_color};`
             : `
 color: #999999;
 &:hover {
     cursor: pointer;
     color: ${theme.sides_font_color};
+    background-color: ${theme.top_menu_bg_color};
     font-size: large;
-}`}
+}`};
 `
 export const StyledInput = styled.input`
     width: 100%;

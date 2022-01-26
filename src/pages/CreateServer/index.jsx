@@ -19,7 +19,10 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
 import { useNavigate } from 'react-router-dom'
-import { writeUserRole } from '../../utils/function'
+import {
+    createChannelListFromString,
+    writeUserRole,
+} from '../../utils/function'
 import { getAuth } from 'firebase/auth'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
@@ -42,18 +45,6 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     position: 'relative',
 }))
 
-const createChannelListFromString = async (channels, idServer) => {
-    // Ajoute les noms de salons dans la database, et ignore s'ils sont vides.
-    const channelsList = channels.split('\n')
-    for (let i = 0; i < channelsList.length; i++) {
-        if (channelsList[i].trim().length > 0) {
-            await addDoc(collection(db, 'channels'), {
-                channelName: channelsList[i],
-                id_server: idServer,
-            })
-        }
-    }
-}
 const handleServerNameTyping = (chr) => {
     /** Vérifie que le nom donné ne soit pas vide
      * ou supérieur à 12 caractères
@@ -103,8 +94,8 @@ export default function CreateServer() {
             })
             writeUserRole(user.uid, 'Owner', docRef.id)
             try {
-                await createChannelListFromString(channels, docRef.id)
-                navigate('/join')
+                createChannelListFromString(channels, docRef.id)
+                navigate('/app')
             } catch (error) {
                 setError(
                     "Hmmm, il semblerait qu'il y a eu une erreur lors de la création du serveur"

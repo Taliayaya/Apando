@@ -1,43 +1,32 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useAuth, useChannel, useMessageList } from '../../utils/hooks'
+import { useAuth, useChannel } from '../../utils/hooks'
 import {
     StyledChannelList,
     StyledChannelListTop,
     StyledChannelListBottom,
-    StyledChannel,
 } from './ChannelListStyle'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import LeftMenu from '../LeftMenu'
-import {
-    collection,
-    where,
-    query,
-    getDocs,
-    doc,
-    getDoc,
-} from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
 import { getAuth } from 'firebase/auth'
 import { Menu } from '@mui/material'
-import { getUserRole, writeUserRole } from '../../utils/function'
+import { getUserRole } from '../../utils/function'
+import ChannelName from '../ChannelName'
+import { getDatabase, onValue, ref } from 'firebase/database'
 
 function ChannelList() {
     const [channelList, setChannelList] = useState([])
     const [showMenu, setShowMenu] = useState(null)
-    const {
-        currentChannelId,
-        setCurrentChannelId,
-        currentServer,
-        setCurrentServer,
-    } = useChannel()
+    const { currentServer, setCurrentServer } = useChannel()
     const [serverList, setServerList] = useState([])
     const { showChannel, setUserRole } = useAuth()
     const auth = getAuth()
     const user = auth.currentUser
-    const { setMessageList } = useMessageList()
     const open = Boolean(showMenu)
+
     const handleClick = (e) => {
         setShowMenu(e.currentTarget)
     }
@@ -55,53 +44,9 @@ function ChannelList() {
         setRole()
     })
 
-    // Load Channels
-    useEffect(() => {
-        const loadChannels = setInterval(async () => {
-            if (currentServer) {
-                const channelsRef = collection(db, 'channels')
-                const q = query(
-                    channelsRef,
-                    where('id_server', '==', currentServer)
-                )
-                const querySnapshot = await getDocs(q)
-                const channelListArray = []
-                querySnapshot.forEach((doc) => {
-                    channelListArray.push({ id: doc.id, data: doc.data() })
-                })
-                channelListArray &&
-                    channelListArray.length !== channelList.length &&
-                    setChannelList(channelListArray)
-            }
-        }, 60000)
-        return () => clearInterval(loadChannels)
-    })
-
     // Ne s'active que lors du premier chargement de la page
     // (ou quand ya pas de salon)
     useEffect(() => {
-        const firstLoadChannel = async () => {
-            if (channelList.length === 0 && currentServer) {
-                const loadChannel = async () => {
-                    const channelsRef = collection(db, 'channels')
-                    const q = query(
-                        channelsRef,
-                        where('id_server', '==', currentServer)
-                    )
-                    const querySnapshot = await getDocs(q)
-                    const channelListArray = []
-                    querySnapshot.forEach((doc) => {
-                        channelListArray.push({ id: doc.id, data: doc.data() })
-                    })
-                    if (channelListArray?.length > 0) {
-                        setChannelList(channelListArray)
-                        setCurrentChannelId(channelListArray[0].id)
-                    }
-                }
-                loadChannel()
-            }
-        }
-
         const loadServerList = async () => {
             if (serverList?.length === 0) {
                 const userRef = doc(db, 'users', user.uid)
@@ -116,16 +61,28 @@ function ChannelList() {
             }
         }
         loadServerList()
-        firstLoadChannel()
+        // firstLoadChannel()
     })
 
-    const selectChannel = (id_channel, data) => {
-        console.log(id_channel, data)
-        console.log(currentChannelId)
-        setCurrentChannelId({ id: id_channel, data: data })
-        setMessageList([])
-    }
-    let currentChannel = currentChannelId.id ? currentChannelId.id : null
+    useEffect(() => {
+        if (currentServer) {
+            const rldb = getDatabase()
+            const channelRef = ref(rldb, `channels/${currentServer}`)
+            onValue(channelRef, (snapshot) => {
+                const obj = snapshot.val()
+                const datas = []
+                if (obj !== null) {
+                    Object.keys(obj).forEach((key) => {
+                        const values = obj[key]
+                        values.key = key
+                        datas.push(values)
+                    })
+                    setChannelList(datas)
+                }
+            })
+        }
+    }, [currentServer])
+
     return (
         <StyledChannelList showChannel={showChannel ? 'true' : 'false'}>
             <StyledChannelListTop hovered={showMenu} onClick={handleClick}>
@@ -160,16 +117,15 @@ function ChannelList() {
 
             <StyledChannelListBottom>
                 {channelList &&
-                    channelList.map(({ id, data }) => (
-                        <StyledChannel
-                            key={id.toString()}
-                            onClick={() => selectChannel(id, data)}
-                            onDoubleClick={() => selectChannel(id, data)}
-                            Selected={currentChannel === id}
-                        >
-                            {data.channelName}
-                        </StyledChannel>
-                    ))}
+                    channelList.map(({ key, name }) => {
+                        return (
+                            <ChannelName
+                                key={key.toString()}
+                                id_channel={key}
+                                name={name}
+                            />
+                        )
+                    })}
             </StyledChannelListBottom>
         </StyledChannelList>
     )

@@ -85,12 +85,14 @@ function Chat() {
             onValue(messageListRef, (snapshot) => {
                 const obj = snapshot.val()
                 const datas = []
-                Object.keys(obj).forEach((key) => {
-                    const values = obj[key]
-                    values.key = key
-                    datas.push(values)
-                })
-                setMessageList(datas)
+                if (obj !== null) {
+                    Object.keys(obj).forEach((key) => {
+                        const values = obj[key]
+                        values.key = key
+                        datas.push(values)
+                    })
+                    setMessageList(datas)
+                }
             })
             // const unsubscribe = onSnapshot(q, (querySnapShot) => {
             //     querySnapShot.forEach((doc) => {
