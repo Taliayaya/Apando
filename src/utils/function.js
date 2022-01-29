@@ -26,7 +26,7 @@ function writeUserMessage(user, message, id_channel) {
     })
 }
 
-function writeUserRole(uid, role, serverID) {
+async function writeUserRole(uid, role, serverID) {
     const db = getDatabase()
     const memberRef = ref(db, `roles/${serverID}/` + uid)
     set(memberRef, {

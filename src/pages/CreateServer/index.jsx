@@ -92,7 +92,7 @@ export default function CreateServer() {
                 name: serverName,
                 code: code,
             })
-            writeUserRole(user.uid, 'Owner', docRef.id)
+            await writeUserRole(user.uid, 'Owner', docRef.id)
             try {
                 createChannelListFromString(channels, docRef.id)
                 navigate('/app')
@@ -116,7 +116,7 @@ export default function CreateServer() {
                 <StyledText>
                     Ici tu peux créer ton propre serveur en quelques clics et
                     vite inviter tes amis en partageant le code que tu as créé
-                    toi même ! `
+                    toi même !
                 </StyledText>
                 {error && <StyleError>{error}</StyleError>}
                 <StyledForm action="#">
