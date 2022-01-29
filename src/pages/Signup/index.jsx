@@ -179,7 +179,7 @@ function Signup() {
                         />
                         <label htmlFor="accept-rules">
                             J'accepte{' '}
-                            <StyleLink to="/">
+                            <StyleLink to="/terms">
                                 les conditions d'utilisations
                             </StyleLink>
                         </label>
