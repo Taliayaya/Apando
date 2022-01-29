@@ -97,6 +97,11 @@ const Join = () => {
                 <StyledText>
                     Courage c'est la dernière étape avant de les rejoindre !
                 </StyledText>
+                <StyledText>
+                    Dans le cadre de la beta, tu peux utiliser comme nom et code{' '}
+                    <b>beta</b> pour rejoindre le serveur de la beta et obtenir
+                    un avant-goût de Pando !
+                </StyledText>
                 {error && <StyleError>{error}</StyleError>}
                 <StyledForm action="#">
                     <StyledField>

@@ -8,6 +8,7 @@ import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css'
 import { WaveHome } from './StyledHomeWave'
 import { theme } from '../../utils/style/colors'
+import Footer from '../../components/Footer'
 
 const StyledSection = styled.section`
     width: 90%;
@@ -127,6 +128,7 @@ function Home() {
                     </HomePage>
                 </div>
                 <WaveHome />
+                <Footer />
             </StyledLoginPage>
         </>
     )
