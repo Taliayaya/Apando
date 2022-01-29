@@ -3,10 +3,9 @@ import { useAuth, useChannel, useMessageList } from '../../utils/hooks'
 import { StyledInput } from '../ChannelList/ChannelListStyle'
 import { useState } from 'react'
 import { StyleError } from '../../utils/style/LoginSignStyle'
-import { db } from '../../utils/firebase/config'
-import { collection, addDoc } from 'firebase/firestore'
 import { ListItemIcon, MenuItem, Typography } from '@mui/material'
 import { Add, Create } from '@mui/icons-material'
+import { addNewChannel } from '../../utils/function'
 
 const LeftMenu = ({ serverList, setChannelList }) => {
     const [newChannelName, setNewChannelName] = useState('')
@@ -27,14 +26,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
         }
         error && setError(null)
 
-        try {
-            await addDoc(collection(db, 'channels'), {
-                channelName: newChannelName,
-                id_server: currentServer,
-            })
-        } catch (e) {
-            console.error(e)
-        }
+        addNewChannel(newChannelName, currentServer)
 
         setNewChannelName('')
     }
