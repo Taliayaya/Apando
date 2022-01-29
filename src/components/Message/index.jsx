@@ -18,6 +18,13 @@ import { useState } from 'react'
 import MessageMore from '../MessageMore'
 import { IconButton, Menu } from '@mui/material'
 
+const handleMonth = (month) => {
+    if (month < 10) {
+        return '0' + month
+    }
+    return month
+}
+
 const handleMessageData = (timestamp) => {
     const dateFormat = new Intl.DateTimeFormat('fr-FR', {
         timeStyle: 'medium',
@@ -27,14 +34,23 @@ const handleMessageData = (timestamp) => {
     const date = new Date(timestamp * 1000)
     let day
 
-    if (now.getDay() === date.getDay()) {
+    if (
+        now.getDate() === date.getDate() &&
+        now.getMonth() === date.getMonth() &&
+        now.getFullYear() === date.getFullYear()
+    ) {
         day = "Aujourd'hui à "
     } else {
-        if (now.getDate() - 1 === date.getDay()) {
+        if (
+            now.getDate() - 1 === date.getDate() &&
+            now.getMonth() === date.getMonth() &&
+            now.getFullYear() === date.getFullYear()
+        ) {
             day = 'Hier à '
         } else {
-            const dateDay = date.getDay()
-            const dateMonth = date.getMonth()
+            const dateDay = date.getDate()
+            const monthsInt = date.getMonth() + 1
+            const dateMonth = handleMonth(monthsInt)
             const dateYear = date.getFullYear()
             day = dateDay + '/' + dateMonth + '/' + dateYear
         }

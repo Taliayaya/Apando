@@ -38,7 +38,7 @@ const ChannelName = ({ id_channel, name }) => {
             <StyledChannel
                 onClick={() => selectChannel(id_channel, name)}
                 onDoubleClick={() => selectChannel(id_channel, name)}
-                Selected={currentChannel}
+                ischannelselected={currentChannel.toString()}
                 onContextMenu={handleContextMenu}
             >
                 {name}
@@ -59,7 +59,6 @@ const ChannelName = ({ id_channel, name }) => {
                 >
                     <MenuItem
                         onClick={() => deleteChannel(id_channel, currentServer)}
-                        s
                     >
                         <ListItemIcon>
                             <DeleteForever style={{ color: 'red' }} />

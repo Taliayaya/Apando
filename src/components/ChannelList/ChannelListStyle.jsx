@@ -35,7 +35,7 @@ export const StyledChannel = styled.div`
     border: 1px solid ${theme.top_menu_bg_color};
     width: 90%;
     ${(props) =>
-        props.Selected
+        props.ischannelselected === 'true'
             ? `
 color: ${theme.sides_font_color};
 font-size: larger;

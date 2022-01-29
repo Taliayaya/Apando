@@ -15,7 +15,7 @@ function UserList() {
     return (
         <StyleUserList showUsers={showUsers ? 'true' : 'false'}>
             <StyleUserListTop>
-                <h2># {currentChannelId?.data?.channelName}</h2>
+                <h2># {currentChannelId?.name}</h2>
             </StyleUserListTop>
             <StyleUserListTopIcons></StyleUserListTopIcons>
             <div>

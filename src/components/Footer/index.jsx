@@ -43,7 +43,7 @@ export default function Footer() {
                         </li>
                         <li>
                             <a href="https://github.com/Taliayaya/Project-Plateforme">
-                                Espace actualité et dernière mise à jour
+                                Espace actualité et dernières mises à jour
                             </a>
                         </li>
                     </ul>
