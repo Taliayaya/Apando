@@ -43,7 +43,7 @@ Télécharger le code source depuis GitHub via son `.zip` ou par `git clone`
 $ git clone https://github.com/Taliayaya/Project-Plateforme.git
 ```
 
-### Étape 2. Installer les dépendences
+### Étape 2. Installer les dépendances
 
 Depuis le répertoire du projet,
 
