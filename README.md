@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# [✨ Bienvenue sur le projet Pando ✨](https://pando-5ec96.web.app)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📃 Description
 
-## Available Scripts
+Pando est un projet français de création d'une plateforme de communication destiné au domaine de l'enseignement.
 
-In the project directory, you can run:
+Il a pour objectif de fournir un maximum de fonctionnalités au profit des utilisateurs dont un système de chat avec une répartition des différents salons de communications dans des groupes créés par les utilisateurs, une hiérarchie au sein des utilisateurs présents dans un même groupe : Créateur, Administrateur, Délégué, permettant une gestion des utilisateurs dans le même groupe.
 
-### `yarn start`
+Pando utilise la technologie React pour fonctionner ainsi que de nombreux autres packages tels que material-ui, firebase, react-markdown, react-express... dans le but d'offrir la meilleure expérience possible à l'utilisateur.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 🎀 Pourquoi utiliser Pando ?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+De nombreux services de chat existent de nos jours, alors pourquoi Pando ?
 
-### `yarn test`
+Pando est un service de chat qui se vise conforme à la RGPD et qui cherche à offrir les meilleurs outils aux enseignants, groupes d'élèves et autres tiers dont de futurs intégrations comme une API Ecole Directe, Google Agenda ou des filtres personnalisables de mots...
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Il est orienté pour une mise en place rapide de groupes avec des mots de passe personalisables pour y accéder ainsi que d'un système de rôle afin de surveiller le contenu et le réglementer, ainsi que de modifier ce groupe.
 
-### `yarn build`
+Vous devriez aller y [jeter un coup d'œil !](https://pando-5ec96.web.app)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🤝 Contribuer
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Nous sommes toujours ouverts à des contributeurs de **tous niveaux** ! Si vous essayez de vous frailler un chemin dans ce projet, essayez de commencer par ouvrir une [première Issue](https://github.com/Taliayaya/Project-Plateforme/issues/new).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Si vous êtes intéressé pour nous aider au développement du site Pando par la contribution, n'hésitez pas à venir dans notre [serveur Discord](https://discord.gg/DG6Y2MCRBN).
 
-### `yarn eject`
+## 🚀 Installation
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Pour ceux qui sont motivés pour améliorer le code du site, sinon rendez-vous [sur le site web](https://pando-5ec96.web.app) !
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+> NB : Vous devez disposer de la clé d'API pour pouvoir faire tourner le site à 100 %. Seuls les contributeurs vérfiés sont autorisés à la posséder. Si vous voulez faire des tests liés à cela malgré tout, créez votre propre projet Firebase ou [venez gentillement demander](https://discord.gg/DG6Y2MCRBN) !
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Prérequis
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+-   NodeJS installé
+-   Yarn installé
 
-## Learn More
+### Étape 1. Installer Pando
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Télécharger le code source depuis GitHub via son `.zip` ou par `git clone`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```shell
+$ git clone https://github.com/Taliayaya/Project-Plateforme.git
+```
 
-### Code Splitting
+### Étape 2. Installer les dépendences
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Depuis le répertoire du projet,
 
-### Analyzing the Bundle Size
+```shell
+$ yarn install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+ou
 
-### Making a Progressive Web App
+```shell
+$ npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+> Par défaut, Yarn est préféré
 
-### Advanced Configuration
+### Étape 3. Lancer en localhost
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Depuis le répertoire du projet,
 
-### Deployment
+```shell
+$ yarn start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Lance l'app en mode développement.
+Allez sur http://localhost:3000 pour le voir dans votre navigateur.
 
-### `yarn build` fails to minify
+## 📝 Licences
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Copyright © 2021-présent, [Contributeurs Pando](https://github.com/Taliayaya/Project-Plateforme/graphs/contributors). <br />
+Ce projet est sous licence [GNU](https://github.com/Taliayaya/Project-Plateforme/blob/main/LICENSE)
