@@ -28,7 +28,7 @@
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
     "styled-components": "^5.3.3",
-    "web-vitals": "^2.1.2",
+    "web-vitals": "^2.1.4",
     "yarn": "^1.22.17"
   },
   "scripts": {
