@@ -98,6 +98,7 @@ function CategorieUser() {
                                 datediff={lastLogin}
                                 avatar={data.data.avatar}
                                 logged="true"
+                                uid={id}
                             />
                         </div>
                     ) : // est ce que l'indice précédent était offline ?
@@ -108,6 +109,7 @@ function CategorieUser() {
                             datediff={lastLogin}
                             avatar={data.data.avatar}
                             key={id}
+                            uid={id}
                         />
                     ) : (
                         // Non -> on affiche aussi la catégorie offline
@@ -118,6 +120,7 @@ function CategorieUser() {
                                 name={data.data.name}
                                 datediff={lastLogin}
                                 avatar={data.data.avatar}
+                                uid={id}
                             />
                         </div>
                     )

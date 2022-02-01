@@ -64,9 +64,9 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
             >
                 <Avatar sx={{ width: 48, height: 48 }} src={avatar} />
             </StyledBadge>
-            <Typography>
-                <StyleUser online={datediff <= 120}>{name}</StyleUser>
-            </Typography>
+
+            <StyleUser online={datediff <= 120}>{name}</StyleUser>
+
             <Menu
                 open={contextMenu !== null}
                 onClose={handleClose}

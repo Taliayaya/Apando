@@ -40,68 +40,23 @@ function Chat() {
     const { showUsers } = getAuth()
     const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true)
 
-    // useEffect(() => {
-    //     const loadMessage = async () => {
-    //         if (messageList.length === 0 && currentChannelId?.id) {
-    //             const messageRef = collection(db, 'messages')
-    //             const q = query(
-    //                 messageRef,
-    //                 where('id_channel', '==', currentChannelId.id)
-    //             )
-    //             // const unsubscribe = onSnapshot(q, (querySnapShot) => {
-    //             //     querySnapShot.forEach((doc) => {
-    //             //         messageListArray.push({ id: doc.id, data: doc?.data() })
-    //             //     })
-    //             // })
-    //             const querySnap = await getDocs(q)
-    //             const messageListArray = []
-
-    //             querySnap.forEach((doc) => {
-    //                 messageListArray.push({ id: doc.id, data: doc.data() })
-    //             })
-    //             messageListArray.sort((a, b) =>
-    //                 a.data.timestamp > b.data.timestamp ? 1 : -1
-    //             )
-    //             const data = await getChannelMessages(currentChannelId.id)
-    //             console.log('chat data', data)
-    //             setMessageList(messageListArray)
-    //             // Permet de scroll en bas du chat dès qu'on commence à écrire un message
-    //         }
-    //     }
-
-    //     return loadMessage()
-    // }, [currentChannelId.id, messageList.length, setMessageList])
-
     useEffect(() => {
         if (currentChannelId.id) {
-            // const messageListArray = []
-            // const messageRef = collection(db, 'messages')
-            // const q = query(
-            //     messageRef,
-            //     where('id_channel', '==', currentChannelId.id)
-            // )
             const rltdb = getDatabase()
             const messageListRef = ref(rltdb, 'messages/' + currentChannelId.id)
-            onValue(messageListRef, (snapshot) => {
+            const unsub = onValue(messageListRef, (snapshot) => {
                 const obj = snapshot.val()
                 const datas = []
-                Object.keys(obj).forEach((key) => {
-                    const values = obj[key]
-                    values.key = key
-                    datas.push(values)
-                })
-                setMessageList(datas)
+                if (obj !== null) {
+                    Object.keys(obj).forEach((key) => {
+                        const values = obj[key]
+                        values.key = key
+                        datas.push(values)
+                    })
+                    setMessageList(datas)
+                }
             })
-            // const unsubscribe = onSnapshot(q, (querySnapShot) => {
-            //     querySnapShot.forEach((doc) => {
-            //         messageListArray.push({ id: doc.id, data: doc?.data() })
-            //     })
-            // })
-            // getChannelMessages(currentChannelId.id)
-            // setMessageList(messageListArray)
-            // return () => {
-            //     unsubscribe()
-            // }
+            return () => unsub()
         }
     }, [currentChannelId.id, setMessageList])
 

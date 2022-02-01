@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom'
-import { useChannel, useMessageList } from '../../utils/hooks'
+import { useNavigate } from 'react-router-dom'
+import { useAuth, useChannel, useMessageList } from '../../utils/hooks'
 import { StyledInput } from '../ChannelList/ChannelListStyle'
 import { useState } from 'react'
 import { StyleError } from '../../utils/style/LoginSignStyle'
-import { db } from '../../utils/firebase/config'
-import { collection, addDoc } from 'firebase/firestore'
-import { MenuItem } from '@mui/material'
+import { ListItemIcon, MenuItem, Typography } from '@mui/material'
+import { Add, Create } from '@mui/icons-material'
+import { addNewChannel } from '../../utils/function'
 
 const LeftMenu = ({ serverList, setChannelList }) => {
     const [newChannelName, setNewChannelName] = useState('')
@@ -13,6 +13,10 @@ const LeftMenu = ({ serverList, setChannelList }) => {
 
     const { currentServer, setCurrentServer, setUserList } = useChannel()
     const { setMessageList } = useMessageList()
+
+    const { userRole } = useAuth()
+    const hasPower = ['Admin', 'Owner'].includes(userRole)
+    const navigate = useNavigate()
 
     const addChannel = async (e) => {
         e.preventDefault()
@@ -22,38 +26,33 @@ const LeftMenu = ({ serverList, setChannelList }) => {
         }
         error && setError(null)
 
-        try {
-            await addDoc(collection(db, 'channels'), {
-                channelName: newChannelName,
-                id_server: currentServer,
-            })
-        } catch (e) {
-            console.error(e)
-        }
+        addNewChannel(newChannelName, currentServer)
 
         setNewChannelName('')
     }
     return (
         <>
             {error && <StyleError>{error}</StyleError>}
-            <form action="#">
-                <MenuItem>
-                    <StyledInput
-                        type="text"
-                        name="new_channel"
-                        value={newChannelName}
-                        onChange={(e) => setNewChannelName(e.target.value)}
-                        placeholder="Nouveau salon"
-                    />
-                </MenuItem>
-                <MenuItem>
-                    <StyledInput
-                        type="submit"
-                        value="Ajouter"
-                        onClick={(e) => addChannel(e)}
-                    />
-                </MenuItem>
-            </form>
+            {hasPower && (
+                <form action="#">
+                    <MenuItem>
+                        <StyledInput
+                            type="text"
+                            name="new_channel"
+                            value={newChannelName}
+                            onChange={(e) => setNewChannelName(e.target.value)}
+                            placeholder="Nouveau salon"
+                        />
+                    </MenuItem>
+                    <MenuItem>
+                        <StyledInput
+                            type="submit"
+                            value="Ajouter"
+                            onClick={(e) => addChannel(e)}
+                        />
+                    </MenuItem>
+                </form>
+            )}
             <MenuItem>
                 <select
                     value={currentServer?.name}
@@ -72,11 +71,17 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                         ))}
                 </select>
             </MenuItem>
-            <MenuItem>
-                <Link to="/join">Utiliser un code</Link>
+            <MenuItem onClick={() => navigate('/join')}>
+                <ListItemIcon>
+                    <Add />
+                </ListItemIcon>
+                <Typography>Utiliser un code</Typography>
             </MenuItem>
-            <MenuItem>
-                <Link to="/create">Créer un serveur</Link>
+            <MenuItem onClick={() => navigate('/create')}>
+                <ListItemIcon>
+                    <Create />
+                </ListItemIcon>
+                <Typography>Créer un serveur</Typography>
             </MenuItem>
         </>
     )

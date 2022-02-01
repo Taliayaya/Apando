@@ -14,7 +14,6 @@ import {
     StyledVisibilityOnIcon,
     Wave,
 } from '../../utils/style/LoginSignStyle'
-import { StyledSelect, StyledOption } from './SignInStyle'
 import { useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import {
@@ -40,7 +39,6 @@ const StyledTitleLink = styled(Link)`
 function Signup() {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
-    const [userRank, setUserRank] = useState('')
     const [password, setPassword] = useState('')
     const [checkBox, setCheckBox] = useState(false)
     const [error, setError] = useState(null)
@@ -88,7 +86,7 @@ function Signup() {
             return
         }
 
-        if ((!username, !email, !userRank, !password)) {
+        if ((!username, !email, !password)) {
             setError('Tout les champs ne sont pas rempli correctement')
             return
         }
@@ -152,23 +150,6 @@ function Signup() {
                         </StyledFieldLabel>
                     </StyledField>
                     <StyledField>
-                        <StyledSelect
-                            id="user_rank"
-                            value={userRank}
-                            onChange={(e) => setUserRank(e.target.value)}
-                            required
-                        >
-                            <StyledOption value="" disabled defaultValue>
-                                Choisissez votre profession
-                            </StyledOption>
-                            <StyledOption value="moderator">
-                                Enseignant
-                            </StyledOption>
-                            <StyledOption value="user">Élève</StyledOption>
-                            <StyledOption value="other">Autre</StyledOption>
-                        </StyledSelect>
-                    </StyledField>
-                    <StyledField>
                         <StyledFieldInput
                             type={showPassword ? 'text' : 'password'}
                             name="password"
@@ -198,7 +179,7 @@ function Signup() {
                         />
                         <label htmlFor="accept-rules">
                             J'accepte{' '}
-                            <StyleLink to="/">
+                            <StyleLink to="/terms">
                                 les conditions d'utilisations
                             </StyleLink>
                         </label>

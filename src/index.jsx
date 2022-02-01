@@ -20,6 +20,8 @@ import Join from './pages/Join'
 import { app } from './utils/firebase/config'
 import CreateServer from './pages/CreateServer'
 import ResetPassword from './pages/ResetPassword'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
 
 ReactDOM.render(
     <React.StrictMode>
@@ -39,6 +41,11 @@ ReactDOM.render(
                                                 <Home />
                                             </>
                                         }
+                                    />
+                                    <Route path="/terms" element={<Terms />} />
+                                    <Route
+                                        path="/privacy"
+                                        element={<Privacy />}
                                     />
                                     <Route
                                         path="/signup"
