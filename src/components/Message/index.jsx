@@ -125,13 +125,24 @@ function Message({
                                                 /\n$/,
                                                 ''
                                             )}
+                                            lineProps={{
+                                                style: {
+                                                    wordBreak: 'break-all',
+                                                    whiteSpace: 'pre-wrap',
+                                                },
+                                            }}
+                                            wrapLines={true}
                                             style={dark}
                                             language={match[1]}
                                             PreTag="div"
                                             {...props}
                                         />
                                     ) : (
-                                        <code className={className} {...props}>
+                                        <code
+                                            className={className}
+                                            {...props}
+                                            style={{ display: 'none' }}
+                                        >
                                             {children}
                                         </code>
                                     )

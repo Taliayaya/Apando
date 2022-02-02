@@ -12,6 +12,23 @@ export const StyledChat = styled.div`
 export const StyledChatMessage = styled.div`
     flex: 1;
     overflow-y: scroll;
+
+    img {
+        max-width: 50vh;
+    }
+    code {
+        max-width: 50vh;
+    }
+    word-break: break-all;
+    white-space: pre-wrap;
+
+    a {
+        color: #4879ff;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 `
 
 export const StyledChatInput = styled.div`
