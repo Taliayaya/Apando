@@ -29,6 +29,7 @@ const firebaseConfig = {
 
     databaseURL:
         'https://pando-5ec96-default-rtdb.europe-west1.firebasedatabase.app/',
+
 }
 
 // Initialize Firebase

@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # Sensible data (API keys)
-src/utils/firebase/config.js
+/src/utils/firebase/config.js
