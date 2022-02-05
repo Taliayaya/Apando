@@ -1,10 +1,9 @@
 import { StyledChat, StyledChatMessage, ScrollDown } from './ChatStyle'
 import { useEffect, useRef, useState } from 'react'
-import { useChannel, useMessageList } from '../../utils/hooks'
+import { useAuth, useChannel, useMessageList } from '../../utils/hooks'
 import Message from '../Message'
 import MessageInput from '../MessageInput'
 import TopMenu from '../TopMenu'
-import { getAuth } from 'firebase/auth'
 import { Badge } from '@mui/material'
 import { ArrowCircleDown, Autorenew } from '@mui/icons-material'
 import { styled } from '@material-ui/styles'
@@ -37,7 +36,7 @@ function Chat() {
     const messageEndRef = useRef(null)
     const { currentChannelId } = useChannel()
     const { messageList, setMessageList } = useMessageList()
-    const { showUsers } = getAuth()
+    const { showUsers, showChannel } = useAuth()
     const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true)
 
     useEffect(() => {
@@ -74,10 +73,13 @@ function Chat() {
     const messageListSorted = messageList.sort((a, b) => {
         return a.timestamp - b.timestamp
     })
+
+    const shouldresize = showUsers || showChannel ? 'true' : 'false'
+    console.log(shouldresize, showUsers, showChannel)
     return (
-        <StyledChat showUsers={showUsers ? 'true' : 'false'}>
+        <StyledChat shouldresize={shouldresize}>
             <TopMenu />
-            <StyledChatMessage>
+            <StyledChatMessage shouldresize={shouldresize}>
                 {messageListSorted.map(
                     ({ message, timestamp, user, key, id_channel }) => {
                         let repeat = user?.uid === previousUser
