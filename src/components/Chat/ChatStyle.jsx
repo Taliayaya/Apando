@@ -60,14 +60,11 @@ export const StyledChatMessage = styled.div`
 
 export const StyledChatInput = styled.div`
     color: ${theme.font_color};
-    background-color: ${theme.chat_input_bg_color};
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px;
     border-radius: 5px;
     margin: 20px;
-    border-top: 1px solid ${theme.sides_bg_color};
     & > form {
         flex: 1;
     }
@@ -75,7 +72,7 @@ export const StyledChatInput = styled.div`
 export const StyledChatTextarea = styled.textarea`
     color: #fff;
     padding-left: 15px;
-    background: transparent;
+    background: ${theme.chat_input_bg_color};
     border: none;
     outline-width: 0;
     font-size: large;
@@ -87,6 +84,9 @@ export const StyledChatTextarea = styled.textarea`
         border: none;
         outline-width: 0;
     }
+    padding: 10px;
+    border-radius: 30px;
+    padding-left: 20px;
 `
 export const ScrollDown = styled.div`
     position: relative;
