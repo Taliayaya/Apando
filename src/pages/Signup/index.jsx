@@ -87,7 +87,7 @@ function Signup() {
         }
 
         if ((!username, !email, !password)) {
-            setError('Tout les champs ne sont pas rempli correctement')
+            setError('Tous les champs ne sont pas remplis correctement')
             return
         }
 
