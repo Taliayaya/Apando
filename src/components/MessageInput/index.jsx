@@ -6,6 +6,9 @@ import styled from 'styled-components'
 import { theme } from '../../utils/style/colors'
 import { useAuth, useMessage } from '../../utils/hooks'
 import { writeUserMessage } from '../../utils/function'
+//For the upload badge
+import Badge from '@mui/material/Badge'
+import FileUploadIcon from '@mui/icons-material/FileUpload'
 
 const StyledSend = styled(Send)`
     background-color: ${theme.sides_bg_color};
@@ -17,6 +20,20 @@ const StyledSend = styled(Send)`
         display: none !important;
     }
 `
+
+const StyledBadge = styled(Badge)(() => ({
+    '& .MuiBadge-badge': {
+        color: '#fff',
+        width: '30px',
+        height: '30px',
+    },
+    cursor: 'pointer',
+    borderRadius: '60px',
+    '&:hover': {
+        opacity: 0.6,
+        borderColor: '#4158d0',
+    },
+}))
 
 const MessageInput = ({ currentChannelId }) => {
     const { message, setMessage } = useMessage()
@@ -68,8 +85,18 @@ const MessageInput = ({ currentChannelId }) => {
             : `Choisissez un salon pour commencer à discuter.`
 
     return (
+		<>
         <StyledChatInput>
             <form>
+			<StyledBadge
+				overlap="circular"
+				anchorOrigin={{
+					vertical: 'top',
+					horizontal: 'right',
+				}}
+			badgeContent={<FileUploadIcon />}
+			>
+			</StyledBadge>
                 <StyledChatTextarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
@@ -82,6 +109,7 @@ const MessageInput = ({ currentChannelId }) => {
                 <StyledSend onClick={() => handleSending()} />
             )}
         </StyledChatInput>
+		</>
     )
 }
 
