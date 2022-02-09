@@ -178,9 +178,14 @@ function Signup() {
                             required
                         />
                         <label htmlFor="accept-rules">
-                            J'accepte{' '}
+                            Je reconnais avoir 13 ans ou plus et avoir lu et
+                            accepté{' '}
                             <StyleLink to="/terms">
                                 les conditions d'utilisations
+                            </StyleLink>{' '}
+                            et{' '}
+                            <StyleLink to="/privacy">
+                                la Politique de Confidentialité
                             </StyleLink>
                         </label>
                     </StyledField>

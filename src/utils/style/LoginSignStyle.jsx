@@ -75,6 +75,7 @@ export const StyledFieldLabel = styled.label`
     transform: translateY(-50%);
     text-transform: uppercase;
     transition: all 300ms ease;
+    padding-left: 10px;
 `
 export const StyledFieldInput = styled.input`
     height: 100%;
