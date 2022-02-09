@@ -28,7 +28,7 @@ const Terms = () => {
                             Conditions d'Utilisation de Pando
                         </h1>
                         <LastModif>
-                            Dernière modification : 27 janvier 2022
+                            Dernière modification : le 9 février 2022
                         </LastModif>
                         <StyledSection>
                             Le présent document a pour objet de définir les
@@ -47,15 +47,15 @@ const Terms = () => {
                             implique l’acceptation de l’ensemble des conditions
                             décrites ci-après.
                             <br /> <br />
-                            La structure générale du site Pando , ainsi que les
+                            La structure générale du site Pando, ainsi que les
                             textes, graphiques, images, sons et vidéos la
                             composant, sont la propriété de l'éditeur ou de ses
                             partenaires. Toute représentation et/ou reproduction
                             et/ou exploitation partielle ou totale des contenus
                             et services proposés par le site Pando, par quelque
                             procédé que ce soit, sans l'autorisation préalable
-                            et par écrit de Ilan Mayeux et/ou de ses partenaires
-                            est strictement interdite et serait susceptible de
+                            et par écrit de Pando et/ou de ses partenaires est
+                            strictement interdite et serait susceptible de
                             constituer une contrefaçon au sens des articles L
                             335-2 et suivants du Code de la propriété
                             intellectuelle.
@@ -81,12 +81,12 @@ const Terms = () => {
                         <StyledSection>
                             <StyledH2>Responsabilité de l'éditeur</StyledH2>
                             Les informations et/ou documents figurant sur ce
-                            site et/ou accessibles par ce site proviennent de
-                            sources considérées comme étant fiables. Toutefois,
-                            ces informations et/ou documents sont susceptibles
-                            de contenir des inexactitudes techniques et des
-                            erreurs typographiques. L’EDITEUR se réserve le
-                            droit de les corriger, dès que ces erreurs sont
+                            site et/ou accessibles par ce site sont postés par
+                            d'autres utilisateurs de ce site. Toutefois, ces
+                            informations et/ou documents sont susceptibles de
+                            contenir des inexactitudes, être mensonger (Fake
+                            news), ou encore dangereux. . L’EDITEUR se réserve
+                            le droit de les corriger, dès que ces erreurs sont
                             portées à sa connaissance. Il est fortement
                             recommandé de vérifier l’exactitude et la pertinence
                             des informations et/ou documents mis à disposition
