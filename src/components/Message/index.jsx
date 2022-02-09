@@ -28,6 +28,15 @@ const handleMonth = (month) => {
     return month
 }
 
+function LinkRenderer(props) {
+    console.log({ props })
+    return (
+        <a href={props.href} target="_blank" rel="noreferrer">
+            {props.children}
+        </a>
+    )
+}
+
 const handleMessageData = (timestamp) => {
     const dateFormat = new Intl.DateTimeFormat('fr-FR', {
         timeStyle: 'medium',
@@ -116,6 +125,7 @@ function Message({
                                 rehypeStringify,
                             ]}
                             components={{
+                                a: LinkRenderer,
                                 code({
                                     node,
                                     inline,
