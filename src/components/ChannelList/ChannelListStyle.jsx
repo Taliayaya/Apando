@@ -8,6 +8,10 @@ export const StyledChannelList = styled.div`
     flex: 0.15;
     height: 100vh;
     background-color: ${theme.sides_bg_color};
+
+    @media screen and (max-width: 480px) {
+        max-width: 25vh;
+    }
 `
 
 export const StyledChannelListTop = styled.div`
@@ -34,6 +38,8 @@ export const StyledChannel = styled.div`
     padding: 15px;
     border: 1px solid ${theme.top_menu_bg_color};
     width: 90%;
+    text-overflow: ellipsis;
+    overflow: hidden;
     ${(props) =>
         props.ischannelselected === 'true'
             ? `

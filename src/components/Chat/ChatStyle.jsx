@@ -19,7 +19,7 @@ export const StyledChatMessage = styled.div`
             ${(props) => props.shouldresize === 'true' && 'max-width: 25vh;'}
         }
         @media screen and (max-width: 480px) {
-            max-width: 25vh;
+            max-width: 20vh;
         }
     }
     code {

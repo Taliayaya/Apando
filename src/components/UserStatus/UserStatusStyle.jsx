@@ -5,6 +5,8 @@ export const StyleUser = styled.p`
     padding-left: 20px;
     font-weight: normal;
     font-size: medium;
+    text-overflow: ellipsis;
+    overflow: hidden;
     color: ${(props) =>
         props.online ? 'green' : `opacity: 0.2; color: ${theme.font_color}`};
 `
