@@ -1,14 +1,14 @@
 import { StyledChatInput, StyledChatTextarea } from '../Chat/ChatStyle'
-import React from 'react'
+import React, {useRef} from 'react'
 import { getAuth } from 'firebase/auth'
 import { Send } from '@material-ui/icons'
 import styled from 'styled-components'
 import { theme } from '../../utils/style/colors'
 import { useAuth, useMessage } from '../../utils/hooks'
 import { writeUserMessage } from '../../utils/function'
-//For the upload badge
-import Badge from '@mui/material/Badge'
+//For the upload icon
 import FileUploadIcon from '@mui/icons-material/FileUpload'
+import { useState } from 'react'
 
 const StyledSend = styled(Send)`
     background-color: ${theme.sides_bg_color};
@@ -21,21 +21,43 @@ const StyledSend = styled(Send)`
     }
 `
 
-const StyledBadge = styled(Badge)(() => ({
-    '& .MuiBadge-badge': {
-        color: '#fff',
-        width: '30px',
-        height: '30px',
-    },
-    cursor: 'pointer',
-    borderRadius: '60px',
-    '&:hover': {
-        opacity: 0.6,
-        borderColor: '#4158d0',
-    },
-}))
+const UploadIcon = ({ success, onFileSelectError, onFileSelectSuccess  }) => {
+    // Create a reference to the hidden file input element
+    const hiddenFileInput = useRef(null)
+
+    // Programatically click the hidden file input element
+    // when the Button component is clicked
+    const handleClick = (e) => {
+        e.preventDefault()
+        hiddenFileInput.current.click()
+    }
+	// Call a function (passed as a prop from the parent component)
+    // to handle the user-selected file
+    const handleChange = (event) => {
+        const fileUploaded = event.target.files[0]
+        if (fileUploaded.size > 10 ** 7)
+            onFileSelectError({ error: fileUploaded.size })
+        else onFileSelectSuccess(fileUploaded)
+    }
+	return (
+		<>
+		<FileUploadIcon
+			onClick={(e) => handleClick(e)}
+		 />
+		<input
+			type="file"
+			ref={hiddenFileInput}
+			onChange={handleChange}
+			style={{ display: 'none' }}
+		/>
+		</>
+	)}
 
 const MessageInput = ({ currentChannelId }) => {
+    const [success, setSuccess] = useState(false)
+    const [selectedFile, setSelectedFile] = useState(null)
+    const { logout, resetPassword } = useAuth()
+
     const { message, setMessage } = useMessage()
     const user = getAuth().currentUser
     const { userRole } = useAuth()
@@ -69,6 +91,7 @@ const MessageInput = ({ currentChannelId }) => {
             }
         }
     }
+
     const handleSubmit = (e) => {
         const keyCode = e.which || e.keyCode
         if (keyCode === 13 && !e.shiftKey) {
@@ -88,15 +111,14 @@ const MessageInput = ({ currentChannelId }) => {
 		<>
         <StyledChatInput>
             <form>
-			<StyledBadge
-				overlap="circular"
-				anchorOrigin={{
-					vertical: 'top',
-					horizontal: 'right',
-				}}
-			badgeContent={<FileUploadIcon />}
-			>
-			</StyledBadge>
+			<UploadIcon
+				onFileSelectSuccess={(file) =>
+					setSelectedFile(file)
+				}
+				onFileSelectError={({ error }) => alert(error)}
+				selectedFile={selectedFile}
+				success={success}
+			/>
                 <StyledChatTextarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
