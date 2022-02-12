@@ -12,17 +12,29 @@ import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkMath from 'remark-math'
-import rehypeKatex from 'rehype-katex'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { useState } from 'react'
 import MessageMore from '../MessageMore'
 import { IconButton, Menu } from '@mui/material'
+import 'katex/dist/katex.min.css'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import rehypeMathjax from 'rehype-mathjax'
 
 const handleMonth = (month) => {
     if (month < 10) {
         return '0' + month
     }
     return month
+}
+
+function LinkRenderer(props) {
+    console.log({ props })
+    return (
+        <a href={props.href} target="_blank" rel="noreferrer">
+            {props.children}
+        </a>
+    )
 }
 
 const handleMessageData = (timestamp) => {
@@ -107,8 +119,13 @@ function Message({
                         <ReactMarkdown
                             children={message}
                             remarkPlugins={[remarkMath, remarkGfm]}
-                            rehypePlugins={[rehypeKatex]}
+                            rehypePlugins={[
+                                rehypeMathjax,
+                                remarkRehype,
+                                rehypeStringify,
+                            ]}
                             components={{
+                                a: LinkRenderer,
                                 code({
                                     node,
                                     inline,

@@ -4,7 +4,7 @@ import { theme } from '../../utils/style/colors'
 export const StyledChat = styled.div`
     display: flex;
     flex-direction: column;
-    ${(props) => (props.showUsers ? 'flex: 1;' : 'flex: 0.85;')}
+    ${(props) => (props.shouldresize ? 'flex: 1;' : 'flex: 0.85;')}
     background-color: ${theme.chat_bg_color};
     height: 100vh;
 `
@@ -15,6 +15,12 @@ export const StyledChatMessage = styled.div`
 
     img {
         max-width: 50vh;
+        @media screen and (max-width: 720px) {
+            ${(props) => props.shouldresize === 'true' && 'max-width: 25vh;'}
+        }
+        @media screen and (max-width: 480px) {
+            max-width: 20vh;
+        }
     }
     code {
         max-width: 50vh;
@@ -29,18 +35,36 @@ export const StyledChatMessage = styled.div`
             text-decoration: underline;
         }
     }
+
+    table {
+        color: ${theme.font_color};
+        border: 1px solid ${theme.sides_bg_color};
+        font-size: 12pt;
+        border-collapse: collapse;
+    }
+    table thead th,
+    table tfoot th {
+        color: #777;
+        background: rgba(0, 0, 0, 0.1);
+    }
+    table caption {
+        padding: 0.5em;
+    }
+    table th,
+    table td {
+        padding: 0.5em;
+        border: 1px solid lightgrey;
+    }
+    max-height: 100vh;
 `
 
 export const StyledChatInput = styled.div`
     color: ${theme.font_color};
-    background-color: ${theme.chat_input_bg_color};
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px;
     border-radius: 5px;
     margin: 20px;
-    border-top: 1px solid ${theme.sides_bg_color};
     & > form {
         flex: 1;
     }
@@ -48,7 +72,7 @@ export const StyledChatInput = styled.div`
 export const StyledChatTextarea = styled.textarea`
     color: #fff;
     padding-left: 15px;
-    background: transparent;
+    background: ${theme.chat_input_bg_color};
     border: none;
     outline-width: 0;
     font-size: large;
@@ -60,6 +84,9 @@ export const StyledChatTextarea = styled.textarea`
         border: none;
         outline-width: 0;
     }
+    padding: 10px;
+    border-radius: 30px;
+    padding-left: 20px;
 `
 export const ScrollDown = styled.div`
     position: relative;
