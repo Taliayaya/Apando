@@ -69,10 +69,10 @@ function Account() {
     }
 
     const handleDeleteAccount = () => {
-        const deleteAccountAnswer = prompt(`${user.displayName}, 
+        const deleteAccountAnswer = prompt(`${user.displayName},
         vous êtes sur le point de définitivement supprimer votre compte.
-        Il sera parti pour de bon. 
-        
+        Il sera parti pour de bon.
+
         Pour continuer la suppression, veuillez écrire CONFIRMER dans la boîte de dialogue.`)
         if (deleteAccountAnswer.toLowerCase() === 'confirmer') {
             deleteUser(user)
