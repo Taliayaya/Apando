@@ -2,7 +2,11 @@
 
 import { initializeApp } from 'firebase/app'
 
-import { getAnalytics } from 'firebase/analytics'
+import {
+    getAuth,
+    browserSessionPersistence,
+    setPersistence,
+} from 'firebase/auth'
 
 import { getFirestore } from 'firebase/firestore'
 // TODO: Add SDKs for Firebase products that you want to use
@@ -14,8 +18,6 @@ import { getFirestore } from 'firebase/firestore'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-    
-
     authDomain: 'pando-5ec96.firebaseapp.com',
 
     projectId: 'pando-5ec96',
@@ -36,7 +38,7 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig)
 
-export const analytics = getAnalytics(app)
+setPersistence(getAuth(), browserSessionPersistence)
 
 // Initialize Cloud Firestore through Firebase
 
