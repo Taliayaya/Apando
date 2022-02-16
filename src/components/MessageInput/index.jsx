@@ -48,7 +48,20 @@ const UploadIcon = ({ success, onFileSelectError, onFileSelectSuccess  }) => {
 		</>
 	)}
 
+
+// Badge for the closing icon
+
+// Decorative component, showing the type (chosen according to the file name),
+// the name and the size of an uploaded file. Does not actually "contain" it.
+// Also has a number that allows it to be deleetd and send a signal to the list.
+//const UploadItem = ({ index, name, size }) => {}
+
+// Manages the list of the uploaded files (shown as uploadItem instances).
+// Is changed when a new file is added.
+//const uploadList
+
 const MessageInput = ({ currentChannelId }) => {
+    //File-uploading-related values
     const [success, setSuccess] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null)
     const { logout, resetPassword } = useAuth()
