@@ -25,15 +25,15 @@ const Terms = () => {
                                 textAlign: 'center',
                             }}
                         >
-                            Conditions d'Utilisation de Pando
+                            Conditions d'Utilisation de Apando
                         </h1>
                         <LastModif>
-                            Dernière modification : le 9 février 2022
+                            Dernière modification : le 7 mars 2022
                         </LastModif>
                         <StyledSection>
                             Le présent document a pour objet de définir les
                             modalités et conditions dans lesquelles d’une part,
-                            Pando, ci-après dénommé l’EDITEUR, met à la
+                            Apando, ci-après dénommé l’EDITEUR, met à la
                             disposition de ses utilisateurs le site, et les
                             services disponibles sur le site et d’autre part, la
                             manière par laquelle l’utilisateur accède au site et
@@ -41,20 +41,18 @@ const Terms = () => {
                             subordonnée au respect des présentes conditions.
                             Pour l’utilisateur, le simple accès au site de
                             l’EDITEUR à l’adresse URL suivante :{' '}
-                            <a href="pando-5ec96.web.app/">
-                                https://pando-5ec96.web.app
-                            </a>{' '}
-                            implique l’acceptation de l’ensemble des conditions
-                            décrites ci-après.
+                            <a href="apando.fr/">https://apando.fr</a> implique
+                            l’acceptation de l’ensemble des conditions décrites
+                            ci-après.
                             <br /> <br />
-                            La structure générale du site Pando, ainsi que les
+                            La structure générale du site Apando, ainsi que les
                             textes, graphiques, images, sons et vidéos la
                             composant, sont la propriété de l'éditeur ou de ses
                             partenaires. Toute représentation et/ou reproduction
                             et/ou exploitation partielle ou totale des contenus
-                            et services proposés par le site Pando, par quelque
+                            et services proposés par le site Apando, par quelque
                             procédé que ce soit, sans l'autorisation préalable
-                            et par écrit de Pando et/ou de ses partenaires est
+                            et par écrit de Apando et/ou de ses partenaires est
                             strictement interdite et serait susceptible de
                             constituer une contrefaçon au sens des articles L
                             335-2 et suivants du Code de la propriété
@@ -63,10 +61,10 @@ const Terms = () => {
 
                         <StyledSection>
                             <StyledH2>Liens hypertextes</StyledH2>
-                            Le site Pando peut contenir des liens hypertextes
+                            Le site Apando peut contenir des liens hypertextes
                             vers d’autres sites présents sur le réseau Internet.
                             Les liens vers ces autres ressources vous font
-                            quitter le site Pando. Il est possible de créer un
+                            quitter le site Apando. Il est possible de créer un
                             lien vers la page de présentation de ce site sans
                             autorisation expresse de l’EDITEUR. Aucune
                             autorisation ou demande d’information préalable ne
@@ -76,7 +74,7 @@ const Terms = () => {
                             dans une nouvelle fenêtre du navigateur. Cependant,
                             l’EDITEUR se réserve le droit de demander la
                             suppression d’un lien qu’il estime non conforme à
-                            l’objet du site Pando.
+                            l’objet du site Apando.
                         </StyledSection>
                         <StyledSection>
                             <StyledH2>Responsabilité de l'éditeur</StyledH2>
@@ -139,7 +137,7 @@ const Terms = () => {
                             L'utilisateur est responsable de ses identifiants de
                             connexion ainsi que de toute activité résultant leur
                             utilisation. Si l'utilisateur ne dispose pas d'un
-                            Compte lors de l'accès aux zones du service Pando,
+                            Compte lors de l'accès aux zones du service Apando,
                             il sera invité à en créer un en fournissant un nom
                             d'utilisateur, un mot de passe ainsi que d'une
                             adresse e-mail valide. L'utilisateur se représente
@@ -168,26 +166,26 @@ const Terms = () => {
                             </StyledH2>
                             L'utilisateur a à disposition des salons de
                             communications destinés à l'utilisateur de
-                            communiquer avec d'autres utilisateurs de Pando.
+                            communiquer avec d'autres utilisateurs de Apando.
                             L'EDITEUR n'a aucune obligation de surveiller ces
                             salons de communication. Il est également possible
                             que l'EDITEUR mette un terme ou suspende à
                             l'utilisateur l'accès à tout Salon de Communication
                             à tout moment, sans préavis, pour toute raison.
-                            L'utilisateur reconnait que Pando ne supporte aucun
-                            contenu d'utilisateur. Pando n'est en aucun cas
+                            L'utilisateur reconnait que Apando ne supporte aucun
+                            contenu d'utilisateur. Apando n'est en aucun cas
                             responsable des informations que l'utilisateur a
                             choisis de partager dans les Salons de
                             Communication, ou des actions des autres
                             utilisateurs. De plus, en utilisant les services
-                            proposés par Pando, l'utilisateur accepte la charte
+                            proposés par Apando, l'utilisateur accepte la charte
                             du bon comportement sur Internet dont : <br />-
                             diffamer, calomnier, tourner en ridicule, moquer,
                             traquer, harceler, intimider ou maltraiter
                             quiconque.
                             <br /> - se livrer à une conduite qui est
                             frauduleuse ou illégale qui pourrait porter
-                            préjudice à Pando ou tout autre utilisateur.
+                            préjudice à Apando ou tout autre utilisateur.
                             <br /> - mettre en ligne ou transmettre (ou tenter
                             de mettre en ligne ou transmettre) des fichiers
                             contenant des virus, des chevaux de Troie, des vers,
@@ -195,7 +193,7 @@ const Terms = () => {
                             de fichiers ou données corrompues ou tout autre
                             logiciel ou programme similaire, ou se livrer à
                             toute autre activité pouvant endommager le
-                            fonctionnement de Pando ou des ordinateurs d'autres
+                            fonctionnement de Apando ou des ordinateurs d'autres
                             utilisateurs <br /> - violer la propriété
                             contractuelle, personnelle, intellectuelle ou tout
                             autre droit de toute partie. Cela inclut
@@ -238,7 +236,7 @@ const Terms = () => {
                             L’utilisateur reconnaît que les données circulant
                             sur Internet ne sont pas protégées notamment contre
                             les détournements éventuels. La présence du logo
-                            Pando institue une présomption simple de validité.
+                            Apando institue une présomption simple de validité.
                             La communication de toute information jugée par
                             l’utilisateur de nature sensible ou confidentielle
                             se fait à ses risques et périls. <br />{' '}
