@@ -87,7 +87,7 @@ function Signup() {
         }
 
         if ((!username, !email, !password)) {
-            setError('Tout les champs ne sont pas rempli correctement')
+            setError('Tous les champs ne sont pas remplis correctement')
             return
         }
 
@@ -119,7 +119,7 @@ function Signup() {
     return (
         <StyledLoginPage>
             <StyledHeaderTitle>
-                <StyledTitleLink to="/">Pando</StyledTitleLink>
+                <StyledTitleLink to="/">Apando</StyledTitleLink>
             </StyledHeaderTitle>
             <StyledLoginWrapper>
                 <StyledLoginTitle>Inscription</StyledLoginTitle>

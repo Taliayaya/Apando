@@ -109,7 +109,7 @@ function Login() {
     return (
         <StyledLoginPage>
             <StyledHeaderTitle>
-                <StyledTitleLink to="/">Pando</StyledTitleLink>
+                <StyledTitleLink to="/">Apando</StyledTitleLink>
             </StyledHeaderTitle>
             <StyledLoginWrapper>
                 <StyledLoginTitle>Connexion</StyledLoginTitle>

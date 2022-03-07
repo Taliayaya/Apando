@@ -20,7 +20,7 @@ export default function Footer() {
     return (
         <footer className="footer">
             <div className="footer__addr">
-                <h1 className="footer__logo">Pando</h1>
+                <h1 className="footer__logo">Apando</h1>
                 <h6>Contact</h6>
                 <address>
                     <a
@@ -82,7 +82,7 @@ export default function Footer() {
             </ul>
             <hr />
             <div className="legal">
-                <p>&copy; 2021-2022 Pando. Tous droits réservés.</p>
+                <p>&copy; 2021-2022 Apando. Tous droits réservés.</p>
             </div>
         </footer>
     )

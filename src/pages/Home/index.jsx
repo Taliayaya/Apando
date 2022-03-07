@@ -47,10 +47,10 @@ function Home() {
                             <p>
                                 Bienvenue dans la beta fermée du projet de
                                 plateforme de communication, ayant comme nom
-                                temporaire Pando.
+                                Apando.
                             </p>
                             <p>
-                                Pando est un projet ayant vu le jour en
+                                Apando est un projet ayant vu le jour en
                                 septembre 2021 afin de pallier au nom respect du
                                 RGPD de certaines applications de discussion. Il
                                 s'avère qu'au moment de cette beta, les critères
@@ -75,7 +75,7 @@ function Home() {
                                 il a été produit.
                             </p>
                             <p>
-                                L'équipe Pando vous remercie de votre attention
+                                L'équipe Apando vous remercie de votre attention
                             </p>
                         </StyledSection>
                         <StyledSection>
