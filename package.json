@@ -14,7 +14,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.25.0",
     "express": "^4.17.2",
-    "firebase": "^9.6.5",
+    "firebase": "^9.6.8",
     "firebase-admin": "^10.0.2",
     "mui": "^0.0.1",
     "prettier": "^2.5.1",
