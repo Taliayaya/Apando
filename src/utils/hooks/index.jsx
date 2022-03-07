@@ -26,7 +26,7 @@ export function useAuth() {
     const navigate = useNavigate()
 
     const actionCodeSettings = {
-        url: 'https://pando-5ec96.web.app/login',
+        url: 'https://apando.fr/login',
     }
 
     const resetPassword = async (auth, email) => {

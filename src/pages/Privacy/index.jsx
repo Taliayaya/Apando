@@ -23,8 +23,8 @@ const Privacy = () => {
                             Politique de confidentialité
                         </h1>
                         <LastModif>
-                            Dernière mise à jour et entrée en vigueur : le 9
-                            février 2022
+                            Dernière mise à jour et entrée en vigueur : le 7
+                            mars 2022
                         </LastModif>
                         <StyledSection>
                             <p>
@@ -86,7 +86,7 @@ const Privacy = () => {
                                         &quot;La Société&quot;,
                                         &quot;Nous&quot;, &quot;Notre&quot; ou
                                         &quot;Nos&quot; dans le présent Contrat)
-                                        désigne Pando.
+                                        désigne Apando.
                                     </p>
                                 </li>
                                 <li>
@@ -158,14 +158,14 @@ const Privacy = () => {
                                 </li>
                                 <li>
                                     <p>
-                                        <strong>Site Web</strong> désigne Pando,
-                                        accessible depuis{' '}
+                                        <strong>Site Web</strong> désigne
+                                        Apando, accessible depuis{' '}
                                         <a
-                                            href="https://pando-5ec96.web.app"
+                                            href="https://apando.fr"
                                             rel="external nofollow noopener noreferrer"
                                             target="_blank"
                                         >
-                                            https://pando-5ec96.web.app
+                                            https://apando.fr
                                         </a>
                                     </p>
                                 </li>

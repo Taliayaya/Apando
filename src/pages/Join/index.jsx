@@ -100,7 +100,7 @@ const Join = () => {
                 <StyledText>
                     Dans le cadre de la beta, tu peux utiliser comme nom et code{' '}
                     <b>beta</b> pour rejoindre le serveur de la beta et obtenir
-                    un avant-goût de Pando !
+                    un avant-goût de Apando !
                 </StyledText>
                 {error && <StyleError>{error}</StyleError>}
                 <StyledForm action="#">

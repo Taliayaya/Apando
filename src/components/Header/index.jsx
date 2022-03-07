@@ -54,7 +54,7 @@ function Header() {
 
     return (
         <StyledNav>
-            <StyledTitleLink to="/">Pando</StyledTitleLink>
+            <StyledTitleLink to="/">Apando</StyledTitleLink>
             <div>
                 <StyledLoginLink to="/login">Se connecter</StyledLoginLink>
                 <StyledSignUp to="/signup">Nous Rejoindre</StyledSignUp>
