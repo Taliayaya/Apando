@@ -3,21 +3,21 @@
     "roles" : {
       "$serverID" : {
       "$uid": {
-        ".read": "$uid === auth.uid",
-          ".write": "!data.exists() || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Owner' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Admin' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Délégué'"
+        ".read": "$uid === auth.uid && auth.uid != null",
+          ".write": "auth.uid != null && !data.exists() || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Owner' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Admin' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Délégué'"
       }
     }
     },
       "messages": {
         "$channelID" : {
         ".read": "auth.uid !== null",
-        ".write": "root.child('roles').child(auth.uid).child('role').val() != 'Muted'"
+        ".write": "auth.uid != null && root.child('roles').child(auth.uid).child('role').val() != 'Muted'"
       }
       },
         "channels" : {
           "$serverID" : {
-          ".read": "auth.uid !== null",
-        ".write": "root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Owner' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Admin'"
+          ".read": "auth.uid != null && root.child('roles').child($serverID).child(auth.uid).child('role').val() != 'Banned'",
+        ".write": "auth.uid != null && root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Owner' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Admin'"
           }
         }
         
