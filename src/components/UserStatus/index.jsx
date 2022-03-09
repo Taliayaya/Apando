@@ -5,9 +5,13 @@ import { styled } from '@material-ui/core'
 import Badge from '@mui/material/Badge'
 import { theme } from '../../utils/style/colors'
 import { ListItemIcon, Menu, MenuItem, Typography } from '@mui/material'
-import { removeUserRole, writeUserRole } from '../../utils/function'
+import {
+    banUserFromServer,
+    removeUserRole,
+    writeUserRole,
+} from '../../utils/function'
 import { useAuth, useChannel } from '../../utils/hooks'
-import { Add, Block, Remove } from '@mui/icons-material'
+import { Add, Block, Remove, VolumeOff } from '@mui/icons-material'
 
 const StyledBadge = styled(Badge)(() => ({
     '& .MuiBadge-badge': {
@@ -119,18 +123,32 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                     </MenuItem>
                 )}
                 {hasPower && (
-                    <MenuItem
-                        onClick={() => {
-                            writeUserRole(uid, 'Muted', currentServer)
-                            handleClose()
-                        }}
-                        style={{ color: 'red', backgroundColor: '#ffe0e0' }}
-                    >
-                        <ListItemIcon>
-                            <Block style={{ color: 'red' }} />
-                        </ListItemIcon>
-                        <Typography>Rendre muet</Typography>
-                    </MenuItem>
+                    <>
+                        <MenuItem
+                            onClick={() => {
+                                writeUserRole(uid, 'Muted', currentServer)
+                                handleClose()
+                            }}
+                            style={{ color: 'red', backgroundColor: '#ffe0e0' }}
+                        >
+                            <ListItemIcon>
+                                <VolumeOff style={{ color: 'red' }} />
+                            </ListItemIcon>
+                            <Typography>Rendre muet</Typography>
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                banUserFromServer(currentServer, uid)
+                                handleClose()
+                            }}
+                            style={{ color: 'red', backgroundColor: '#ffe0e0' }}
+                        >
+                            <ListItemIcon>
+                                <Block style={{ color: 'red' }} />
+                            </ListItemIcon>
+                            <Typography>Bannir</Typography>
+                        </MenuItem>
+                    </>
                 )}
             </Menu>
         </StyledDiv>
