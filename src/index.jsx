@@ -22,6 +22,7 @@ import CreateServer from './pages/CreateServer'
 import ResetPassword from './pages/ResetPassword'
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
+import Dashboard from './pages/Dashboard'
 
 ReactDOM.render(
     <React.StrictMode>
@@ -80,6 +81,14 @@ ReactDOM.render(
                                         element={
                                             <RequireAuth>
                                                 <CreateServer />
+                                            </RequireAuth>
+                                        }
+                                    />
+                                    <Route
+                                        path="/dashboard"
+                                        element={
+                                            <RequireAuth>
+                                                <Dashboard />
                                             </RequireAuth>
                                         }
                                     />
