@@ -23,87 +23,100 @@ import ResetPassword from './pages/ResetPassword'
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 import Dashboard from './pages/Dashboard'
+import { ThemeProvider } from '@mui/material'
+import { themeMui } from './utils/style/colors'
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
-            <AuthProvider>
-                <MessageListProvider>
-                    <CurrentServerProvider>
-                        <CurrentChannelProvider>
-                            <ChatMessageProvider>
-                                <GlobalStyle />
+            <ThemeProvider theme={themeMui}>
+                <AuthProvider>
+                    <MessageListProvider>
+                        <CurrentServerProvider>
+                            <CurrentChannelProvider>
+                                <ChatMessageProvider>
+                                    <GlobalStyle />
 
-                                <Routes>
-                                    <Route
-                                        path="/"
-                                        element={
-                                            <>
-                                                <Home />
-                                            </>
-                                        }
-                                    />
-                                    <Route path="/terms" element={<Terms />} />
-                                    <Route
-                                        path="/privacy"
-                                        element={<Privacy />}
-                                    />
-                                    <Route
-                                        path="/signup"
-                                        element={<Signup />}
-                                    />
-                                    <Route
-                                        path="/app"
-                                        element={
-                                            <RequireAuth>
-                                                <App />
-                                            </RequireAuth>
-                                        }
-                                    />
-                                    <Route
-                                        path="/settings"
-                                        element={
-                                            <RequireAuth>
-                                                <Settings />
-                                            </RequireAuth>
-                                        }
-                                    />
-                                    <Route
-                                        path="/join"
-                                        element={
-                                            <RequireAuth>
-                                                <Join />
-                                            </RequireAuth>
-                                        }
-                                    />
-                                    <Route
-                                        path="/create"
-                                        element={
-                                            <RequireAuth>
-                                                <CreateServer />
-                                            </RequireAuth>
-                                        }
-                                    />
-                                    <Route
-                                        path="/dashboard"
-                                        element={
-                                            <RequireAuth>
-                                                <Dashboard />
-                                            </RequireAuth>
-                                        }
-                                    />
-                                    <Route path="/login" element={<Login />} />
-                                    <Route
-                                        path="/reset"
-                                        element={<ResetPassword />}
-                                    />
-                                    <Route path="*" element={<NotFound />} />
-                                </Routes>
-                            </ChatMessageProvider>
-                        </CurrentChannelProvider>
-                    </CurrentServerProvider>
-                </MessageListProvider>
-            </AuthProvider>
+                                    <Routes>
+                                        <Route
+                                            path="/"
+                                            element={
+                                                <>
+                                                    <Home />
+                                                </>
+                                            }
+                                        />
+                                        <Route
+                                            path="/terms"
+                                            element={<Terms />}
+                                        />
+                                        <Route
+                                            path="/privacy"
+                                            element={<Privacy />}
+                                        />
+                                        <Route
+                                            path="/signup"
+                                            element={<Signup />}
+                                        />
+                                        <Route
+                                            path="/app"
+                                            element={
+                                                <RequireAuth>
+                                                    <App />
+                                                </RequireAuth>
+                                            }
+                                        />
+                                        <Route
+                                            path="/settings"
+                                            element={
+                                                <RequireAuth>
+                                                    <Settings />
+                                                </RequireAuth>
+                                            }
+                                        />
+                                        <Route
+                                            path="/join"
+                                            element={
+                                                <RequireAuth>
+                                                    <Join />
+                                                </RequireAuth>
+                                            }
+                                        />
+                                        <Route
+                                            path="/create"
+                                            element={
+                                                <RequireAuth>
+                                                    <CreateServer />
+                                                </RequireAuth>
+                                            }
+                                        />
+                                        <Route
+                                            path="/dashboard"
+                                            element={
+                                                <RequireAuth>
+                                                    <Dashboard />
+                                                </RequireAuth>
+                                            }
+                                        />
+                                        <Route
+                                            path="/login"
+                                            element={<Login />}
+                                        />
+                                        <Route
+                                            path="/reset"
+                                            element={<ResetPassword />}
+                                        />
+                                        <Route
+                                            path="*"
+                                            element={<NotFound />}
+                                        />
+                                    </Routes>
+                                </ChatMessageProvider>
+                            </CurrentChannelProvider>
+                        </CurrentServerProvider>
+                    </MessageListProvider>
+                </AuthProvider>
+            </ThemeProvider>
         </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
