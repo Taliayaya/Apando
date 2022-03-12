@@ -4,7 +4,7 @@ import { StyledInput } from '../ChannelList/ChannelListStyle'
 import { useState } from 'react'
 import { StyleError } from '../../utils/style/LoginSignStyle'
 import { ListItemIcon, MenuItem, Typography } from '@mui/material'
-import { Add, Create } from '@mui/icons-material'
+import { Add, Create, Dashboard } from '@mui/icons-material'
 import { addNewChannel } from '../../utils/function'
 
 const LeftMenu = ({ serverList, setChannelList }) => {
@@ -82,6 +82,12 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                     <Create />
                 </ListItemIcon>
                 <Typography>Créer un serveur</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => navigate(`/dashboard/${currentServer}`)}>
+                <ListItemIcon>
+                    <Dashboard />
+                </ListItemIcon>
+                <Typography>Tableau de bord</Typography>
             </MenuItem>
         </>
     )
