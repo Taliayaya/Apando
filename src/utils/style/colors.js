@@ -39,6 +39,9 @@ const themeMui = createTheme({
         primary: {
             main: theme.chat_bg_color,
         },
+        success: {
+            main: '#388e3c',
+        },
     },
 })
 export { theme, themeMui }
