@@ -188,11 +188,28 @@ function joinServer(user, server) {
  */
 function isEmailDomainValidated(user, server) {
     const userDomain = user.email.split('@')[1]
-    const serverDomain = server.domain
+    const serverDomain = server.domain.trim()
     if (serverDomain) {
         return userDomain === serverDomain
     }
     return true
+}
+
+/**
+ * Modify the target server settings
+ *
+ * @param {string} id_server is the target of the changes
+ * @param {string} newDomain data : allows owner to filter joining email
+ * @param {string} newCode data : the code access to join the server
+ * @param {string} newJoinType data : allows users to join without permission or not
+ */
+async function setServerChanges(id_server, newDomain, newCode, newJoinType) {
+    const serverRef = doc(db, 'servers', id_server)
+    await updateDoc(serverRef, {
+        domain: newDomain,
+        code: newCode,
+        join: newJoinType,
+    })
 }
 
 export {
@@ -206,4 +223,5 @@ export {
     banUserFromServer,
     getServer,
     joinServer,
+    setServerChanges,
 }
