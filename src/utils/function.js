@@ -7,7 +7,17 @@ import {
     child,
     remove,
 } from 'firebase/database'
-import { Timestamp, doc, updateDoc, arrayRemove } from 'firebase/firestore'
+import {
+    Timestamp,
+    doc,
+    updateDoc,
+    arrayRemove,
+    collection,
+    query,
+    where,
+    getDocs,
+    arrayUnion,
+} from 'firebase/firestore'
 import { db } from './firebase/config'
 
 function writeUserMessage(user, message, id_channel) {
@@ -116,6 +126,75 @@ async function banUserFromServer(id_server, uid) {
     writeUserRole(uid, 'Banned', id_server)
 }
 
+/**
+ * Search in the table a server associated with this name and password
+ *
+ * @param {string} serverName is the name of the server the user is
+ * trying to join
+ * @param {string} serverPassword is the password that allows the user to join
+ * or not the server.
+ * @returns an Object containing the server name and code or None if empty
+ */
+async function getServer(serverName, serverPassword) {
+    const serversRef = collection(db, 'servers')
+    const q = query(
+        serversRef,
+        where('code', '==', serverPassword),
+        where('name', '==', serverName)
+    )
+    const querySnapshot = await getDocs(q)
+    let server = {}
+    querySnapshot.forEach((doc) => {
+        server = { id: doc.id, name: doc.data().name }
+    })
+    return server
+}
+
+/**
+ * Add a new user to the target server
+ *
+ * @param {Object} user is the auth instance of the current logged user
+ * @param {Object} server holds every public information of the target server,
+ * server.name, server.code, server.domain. query result of getServer()
+ * @returns a Promise, whether or not the user was added in the server
+ */
+function joinServer(user, server) {
+    const userDocRef = doc(db, 'users', user.uid)
+    return new Promise(async (res, rej) => {
+        if (isEmailDomainValidated(user, server)) {
+            await updateDoc(userDocRef, {
+                servers: arrayUnion({ id: server.id, name: server.name }),
+                serversid: arrayUnion(server.id),
+            })
+            res(`Vous avez rejoins ce serveur avec succès !
+            Vous allez maintenant être redirigé vers l'application`)
+        } else {
+            rej(
+                "Le serveur que vous essayez de rejoindre n'accepte pas le domaine de votre email. Essayez avec un email autorisé par le server"
+            )
+        }
+    })
+}
+
+/**
+ * Check if the user email domain and the server allowed email domain
+ * is equal.
+ * If the server did not configure an email domain, returns true
+ *
+ * @param {Object} user is the auth instance of the current logged user
+ * @param {Object} server holds every public information of the target server,
+ * server.name, server.code, server.domain. query result of getServer()
+ * @returns true if the user email is valid, else false
+ */
+function isEmailDomainValidated(user, server) {
+    const userDomain = user.email.split('@')[1]
+    const serverDomain = server.domain
+    if (serverDomain) {
+        return userDomain === serverDomain
+    }
+    return true
+}
+
 export {
     writeUserMessage,
     writeUserRole,
@@ -125,4 +204,6 @@ export {
     createChannelListFromString,
     deleteChannel,
     banUserFromServer,
+    getServer,
+    joinServer,
 }

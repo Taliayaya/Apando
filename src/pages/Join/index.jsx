@@ -12,22 +12,14 @@ import {
     StyledSubmit,
     StyleError,
     StyleLink,
+    StyleAlert,
 } from '../../utils/style/LoginSignStyle'
 import { StyledText, WaveJoin } from './JoinStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
-import {
-    doc,
-    query,
-    collection,
-    where,
-    getDocs,
-    updateDoc,
-    arrayUnion,
-} from 'firebase/firestore'
-import { db } from '../../utils/firebase/config'
 import { getAuth } from 'firebase/auth'
+import { getServer, joinServer } from '../../utils/function'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -56,31 +48,27 @@ const Join = () => {
     const [error, setError] = useState(null)
     const auth = getAuth()
     const user = auth.currentUser
+    const [success, setSuccess] = useState(null)
+
     const handleCode = async (e) => {
         e.preventDefault()
+        setError(null)
         if (code.length > 0) {
-            const serversRef = collection(db, 'servers')
-            const q = query(
-                serversRef,
-                where('code', '==', code),
-                where('name', '==', serverName)
-            )
-            const querySnapshot = await getDocs(q)
-            let server = {}
-            querySnapshot.forEach((doc) => {
-                server = { id: doc.id, name: doc.data().name }
-            })
+            const server = await getServer(serverName, code)
             if (server.name) {
-                const userDocRef = doc(db, 'users', user.uid)
-                await updateDoc(userDocRef, {
-                    servers: arrayUnion({ id: server.id, name: server.name }),
-                })
-                await updateDoc(userDocRef, {
-                    serversid: arrayUnion(server.id),
-                })
-                navigate('/app')
+                joinServer(user, server)
+                    .then((res) => {
+                        setSuccess(res)
+                        setError(null)
+                        setTimeout(() => {
+                            navigate('/app')
+                        }, 3000)
+                    })
+                    .catch((err) => {
+                        setError(err)
+                    })
             } else {
-                setError('Oups, le code semble invalide')
+                setError('Oups, le code ou le nom semble invalide')
             }
         }
     }
@@ -134,6 +122,11 @@ const Join = () => {
                             onClick={(e) => handleCode(e)}
                         />
                     </StyledField>
+                    {success && (
+                        <StyleAlert style={{ width: '100%' }} success>
+                            {success}
+                        </StyleAlert>
+                    )}
                     <StyledField>
                         Pas de code ?{' '}
                         <StyleLink to="/create">Crée ton serveur</StyleLink>
