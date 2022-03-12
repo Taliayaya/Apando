@@ -91,7 +91,7 @@ ReactDOM.render(
                                             }
                                         />
                                         <Route
-                                            path="/dashboard"
+                                            path="/dashboard/:serverid"
                                             element={
                                                 <RequireAuth>
                                                     <Dashboard />
