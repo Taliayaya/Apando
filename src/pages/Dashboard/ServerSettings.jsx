@@ -6,9 +6,14 @@ import {
 } from './DashboardStyle'
 
 import {
+    Alert,
+    Button,
+    Collapse,
+    Fade,
     FormControl,
     IconButton,
     InputAdornment,
+    LinearProgress,
     NativeSelect,
     TextField,
     Tooltip,
@@ -17,13 +22,43 @@ import EditIcon from '@mui/icons-material/Edit'
 import EditOffIcon from '@mui/icons-material/EditOff'
 import { theme } from '../../utils/style/colors'
 import { useState } from 'react'
+import { Close } from '@mui/icons-material'
+import { setServerChanges } from '../../utils/function'
 
-const ServerParams = ({ domain, serverName, code, autoJoin }) => {
+const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
     const [isEditing, setIsEditing] = useState(false)
     const [joinType, setJoinType] = useState(autoJoin)
+    const [domainValue, setDomainValue] = useState(domain)
+    const [codeValue, setCodeValue] = useState(code)
+    const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null)
+    const [query, setQuery] = useState('idle')
+
+    const errorOpen = Boolean(error)
+    const successOpen = Boolean(success)
 
     const editParams = () => {
         setIsEditing(!isEditing)
+        setError(null)
+    }
+
+    const validChanges = async () => {
+        setSuccess(null)
+        setError(null)
+        if (codeValue.trim().length === 0) {
+            setError('Le code du serveur ne doit pas être vide')
+            return
+        }
+        try {
+            setQuery('progress')
+            await setServerChanges(server_id, domainValue, codeValue, joinType)
+            setQuery('idle')
+            setSuccess('Modifications enregistrées')
+            editParams()
+        } catch (e) {
+            console.error(e)
+            setError(`Il y a eu une erreur, veuillez réessayer : ${e}`)
+        }
     }
 
     return (
@@ -54,6 +89,25 @@ const ServerParams = ({ domain, serverName, code, autoJoin }) => {
                         )}
                     </StyleEditContainer>
                 </ParamsHeader>
+                <Collapse in={errorOpen}>
+                    <Alert
+                        severity="error"
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => setError(null)}
+                            >
+                                <Close fontSize="inherit" />
+                            </IconButton>
+                        }
+                        sx={{ mb: 2 }}
+                    >
+                        {error}
+                    </Alert>
+                </Collapse>
+
                 <Params>
                     <Tooltip title="Un nom de domaine d’adresse mail est la partie d’une adresse e-mail qui vient après le symbole @">
                         <span>Domaine :</span>
@@ -69,8 +123,9 @@ const ServerParams = ({ domain, serverName, code, autoJoin }) => {
                             }}
                             hiddenLabel
                             id="domain-input"
-                            defaultValue={domain}
                             variant="filled"
+                            onChange={(e) => setDomainValue(e.target.value)}
+                            value={domainValue}
                         />
                     ) : (
                         <span>{domain ? `*@${domain}` : 'Tous'}</span>
@@ -84,8 +139,9 @@ const ServerParams = ({ domain, serverName, code, autoJoin }) => {
                         <TextField
                             hiddenLabel
                             id="code-input"
-                            defaultValue={code}
                             variant="filled"
+                            value={codeValue}
+                            onChange={(e) => setCodeValue(e.target.value)}
                         />
                     ) : (
                         <span>{code}</span>
@@ -102,10 +158,8 @@ const ServerParams = ({ domain, serverName, code, autoJoin }) => {
                         <FormControl sx={{ m: 1, minWidth: 120 }}>
                             <NativeSelect
                                 inputMode="dark"
-                                defaultValue={joinType}
                                 value={joinType}
                                 onChange={(e) => setJoinType(e.target.value)}
-                                displayEmpty
                             >
                                 {joinType === 'auto' ? (
                                     <>
@@ -136,6 +190,48 @@ const ServerParams = ({ domain, serverName, code, autoJoin }) => {
                         </span>
                     )}
                 </Params>
+                <Collapse in={successOpen}>
+                    <Alert
+                        severity="success"
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => setSuccess(null)}
+                            >
+                                <Close fontSize="inherit" />
+                            </IconButton>
+                        }
+                        sx={{ mb: 2 }}
+                    >
+                        {success}
+                    </Alert>
+                </Collapse>
+                {isEditing && (
+                    <>
+                        {query === 'idle' ? (
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={validChanges}
+                            >
+                                Valider
+                            </Button>
+                        ) : (
+                            <Fade
+                                in={query === 'progress'}
+                                style={{
+                                    transitionDelay:
+                                        query === 'progress' ? '800ms' : '0ms',
+                                }}
+                                unmountOnExit
+                            >
+                                <LinearProgress />
+                            </Fade>
+                        )}
+                    </>
+                )}
             </ParamsCase>
         </>
     )
