@@ -31,6 +31,7 @@ const Row2 = styled.div`
 `
 
 const DashboardTitle = styled.div`
+    position: relative;
     font-size: large;
     color: ${theme.font_color};
     padding: 10px;
@@ -45,6 +46,7 @@ const ServerStatsContainer = styled.div`
     padding: 15px;
     justify-content: space-around;
     transition: all 0.3s ease;
+    height: 100%;
     &:hover {
         box-shadow: 0 0 15px ${theme.menus_bg_color};
     }

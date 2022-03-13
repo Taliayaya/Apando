@@ -21,6 +21,9 @@ import {
 } from '../../utils/function'
 import { useEffect, useState } from 'react'
 import { getDatabase, onValue, ref } from 'firebase/database'
+import { styled } from '@mui/material'
+import { theme } from '../../utils/style/colors'
+import { ExitToApp } from '@material-ui/icons'
 
 // const BootstrapTooltip = styled(({ className, ...props }) => (
 //     <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -32,6 +35,22 @@ import { getDatabase, onValue, ref } from 'firebase/database'
 //         backgroundColor: theme.palette.common.black,
 //     },
 // }))
+const StyledExitToAppIcon = styled(ExitToApp)(() => ({
+    color: '#fff',
+    backgroundColor: theme.chat_input_bg_color,
+    width: '40px',
+    height: '40px',
+    cursor: 'pointer',
+    zIndex: 999,
+    borderRadius: 10,
+    left: -20,
+    position: 'absolute',
+
+    '&:hover': {
+        opacity: 0.7,
+        backgroundColor: '#17094f',
+    },
+}))
 
 const Dashboard = () => {
     const { currentServer } = useChannel()
@@ -84,7 +103,10 @@ const Dashboard = () => {
     return (
         <DashboardBackground>
             <DashboardMain>
-                <DashboardTitle>Dashboard de {serverInfo?.name}</DashboardTitle>
+                <DashboardTitle>
+                    <StyledExitToAppIcon onClick={() => navigate('/app')} />
+                    <div>Dashboard de {serverInfo?.name}</div>
+                </DashboardTitle>
                 <ServerStatsContainer>
                     <MemberCase nb={serverStats?.memberCount} />
                     <InviteCase nb={serverStats?.currentInviteCount} />
