@@ -23,7 +23,7 @@
         "serverstats": {
           "$serverID":{
             ".read": "auth.uid != null && root.child('roles').child(auth.uid).child('role').val() != 'Banned'",
-            ".write": "auth.uid != null && root.child('roles').child(auth.uid).child('role').val() != 'Banned'",
+            ".write": "auth.uid != null && root.child('roles').child(auth.uid).child('role').val() != 'Banned'"
           }
         },
         "requests": {
