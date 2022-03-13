@@ -83,12 +83,16 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                 </ListItemIcon>
                 <Typography>Créer un serveur</Typography>
             </MenuItem>
-            <MenuItem onClick={() => navigate(`/dashboard/${currentServer}`)}>
-                <ListItemIcon>
-                    <Dashboard />
-                </ListItemIcon>
-                <Typography>Tableau de bord</Typography>
-            </MenuItem>
+            {hasPower && (
+                <MenuItem
+                    onClick={() => navigate(`/dashboard/${currentServer}`)}
+                >
+                    <ListItemIcon>
+                        <Dashboard />
+                    </ListItemIcon>
+                    <Typography>Tableau de bord</Typography>
+                </MenuItem>
+            )}
         </>
     )
 }
