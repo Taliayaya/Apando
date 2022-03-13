@@ -266,6 +266,7 @@ const StyledDiv = styled.div`
 `
 const MemberListContainer = styled.div`
     display: flex;
+    color: #888;
     flex-wrap: wrap;
     @media screen and (min-width: 1080px) {
         flex-direction: row;
@@ -329,6 +330,21 @@ const Separator = styled.hr`
     color: ${theme.chat_bg_color};
     margin: 20px 0;
 `
+
+const StyleDoneAllContainer = styled.div`
+    background-color: ${theme.chat_bg_color};
+    border-radius: 60px;
+    cursor: pointer;
+    padding: 4px;
+    align-items: center;
+    justify-content: center;
+    color: ${theme.font_color};
+
+    transition: all 0.3s ease;
+    &:hover {
+        background-color: #388e3c;
+    }
+`
 export {
     DashboardBackground,
     DashboardTitle,
@@ -351,4 +367,5 @@ export {
     UserContainer,
     MemberHeader,
     Separator,
+    StyleDoneAllContainer,
 }
