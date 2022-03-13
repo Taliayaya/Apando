@@ -21,22 +21,31 @@ import {
 import EditIcon from '@mui/icons-material/Edit'
 import EditOffIcon from '@mui/icons-material/EditOff'
 import { theme } from '../../utils/style/colors'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Close } from '@mui/icons-material'
 import { setServerChanges } from '../../utils/function'
 
 const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
     const [isEditing, setIsEditing] = useState(false)
-    const [joinType, setJoinType] = useState(autoJoin)
-    const [domainValue, setDomainValue] = useState(domain)
-    const [codeValue, setCodeValue] = useState(code)
+    const [joinType, setJoinType] = useState('')
+    const [domainValue, setDomainValue] = useState('')
+    const [codeValue, setCodeValue] = useState('')
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
     const [query, setQuery] = useState('idle')
 
+    console.log(domain, serverName, code, autoJoin)
+
     const errorOpen = Boolean(error)
     const successOpen = Boolean(success)
 
+    useEffect(() => {
+        if (!isEditing) {
+            setCodeValue(code)
+            setDomainValue(domain)
+            setJoinType(autoJoin)
+        }
+    }, [autoJoin, code, domain, isEditing, joinType])
     const editParams = () => {
         setIsEditing(!isEditing)
         setError(null)
