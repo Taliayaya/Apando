@@ -1,4 +1,4 @@
-import { Done, DoneAll } from '@mui/icons-material'
+import { Done } from '@mui/icons-material'
 import styled from 'styled-components'
 import { theme } from '../../utils/style/colors'
 
@@ -265,12 +265,18 @@ const StyledDiv = styled.div`
     }`}
 `
 const MemberListContainer = styled.div`
-    flex-wrap: wrap;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     @media screen and (min-width: 1080px) {
         flex-direction: row;
         justify-content: space-around;
+        max-height: 500px;
+        overflow-y: scroll;
+    }
+    @media screen and (max-width: 1079px) {
+        flex-direction: column;
+
+        overflow-y: scroll;
     }
 `
 
@@ -301,7 +307,7 @@ const StyleDone = styled(Done)`
         background-color: green;
         border-radius: 60px;
     }
-    @media screen and (max-width: 480) {
+    @media screen and (max-width: 480px) {
         margin: 0 20px;
     }
 `
