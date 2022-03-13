@@ -1,5 +1,5 @@
 import { DoneAll } from '@mui/icons-material'
-import { Avatar, Tooltip } from '@mui/material'
+import { Avatar, IconButton, Tooltip } from '@mui/material'
 import { getDatabase, onValue, ref } from 'firebase/database'
 import { useEffect, useState } from 'react'
 import {
@@ -11,6 +11,7 @@ import {
     MemberHeader,
     Separator,
     StyleDone,
+    StyleDoneAllContainer,
     StyleUser,
     UserContainer,
 } from './DashboardStyle'
@@ -23,7 +24,7 @@ import {
     UserInfo,
 } from './DashboardStyle'
 
-const MemberList = ({ serverName, server_id, server }) => {
+const MemberList = ({ serverName, server_id, server, joinType }) => {
     const [usersArray, setUsersArray] = useState([])
     const [requestArray, setRequestArray] = useState({})
 
@@ -46,7 +47,7 @@ const MemberList = ({ serverName, server_id, server }) => {
             if (obj !== null) {
                 Object.keys(obj).forEach((key) => {
                     const values = obj[key]
-                    values.id = key
+                    values.uid = key
                     data.push(values)
                 })
             }
@@ -58,34 +59,45 @@ const MemberList = ({ serverName, server_id, server }) => {
 
     const acceptAllRequests = () => {
         requestArray.forEach((user) => {
+            console.log(user, serverInfo)
             joinServer(user, serverInfo).then(() => {
-                removeJoinRequest(user.id, server_id)
+                removeJoinRequest(user.uid, server_id)
             })
         })
     }
 
     return (
         <MemberListCase>
-            {requestArray.length > 0 && (
+            {joinType === 'manual' && (
                 <>
                     <MemberHeader>
                         Demandes d'adhésion
-                        <Tooltip title="Accepter toutes les demandes">
-                            <DoneAll onClick={acceptAllRequests} />
-                        </Tooltip>
+                        {requestArray.length > 0 && (
+                            <StyleDoneAllContainer>
+                                <Tooltip title="Accepter toutes les demandes">
+                                    <IconButton>
+                                        <DoneAll onClick={acceptAllRequests} />
+                                    </IconButton>
+                                </Tooltip>
+                            </StyleDoneAllContainer>
+                        )}
                     </MemberHeader>
                     <MemberListContainer>
-                        {requestArray.map(({ id, username, avatar, email }) => (
-                            <UserCase
-                                name={username}
-                                email={email}
-                                avatar={avatar}
-                                key={id}
-                                id={id}
-                                invite="true"
-                                server={serverInfo}
-                            />
-                        ))}
+                        {requestArray.length > 0
+                            ? requestArray.map(
+                                  ({ uid, username, avatar, email }) => (
+                                      <UserCase
+                                          name={username}
+                                          email={email}
+                                          avatar={avatar}
+                                          key={uid}
+                                          id={uid}
+                                          invite="true"
+                                          server={serverInfo}
+                                      />
+                                  )
+                              )
+                            : 'Aucune demande pour le moment'}
                     </MemberListContainer>
                     <Separator />{' '}
                 </>
