@@ -19,9 +19,20 @@
           ".read": "auth.uid != null && root.child('roles').child($serverID).child(auth.uid).child('role').val() != 'Banned'",
         ".write": "auth.uid != null && root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Owner' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Admin'"
           }
+        },
+        "serverstats": {
+          "$serverID":{
+            ".read": "auth.uid != null && root.child('roles').child(auth.uid).child('role').val() != 'Banned'",
+            ".write": "auth.uid != null && root.child('roles').child(auth.uid).child('role').val() != 'Banned'",
+          }
+        },
+        "requests": {
+          "$serverID": {
+            ".read":"auth != null && (root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Owner' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Admin' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Délégué')",
+            "$uid": {
+              ".read": "auth != null && ($uid === auth.uid || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Owner' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Admin' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Délégué')",
+              ".write": "auth != null && ($uid === auth.uid || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Owner' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Admin' || root.child('roles').child($serverID).child(auth.uid).child('role').val() == 'Délégué')"
+            }
+          }
         }
-        
-      
-
-  }
-}
+  }}
