@@ -19,7 +19,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
 import { getAuth } from 'firebase/auth'
-import { getServer, joinServer } from '../../utils/function'
+import { getServer, joinServer, requestJoin } from '../../utils/function'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -56,17 +56,24 @@ const Join = () => {
         if (code.length > 0) {
             const server = await getServer(serverName, code)
             if (server.name) {
-                joinServer(user, server)
-                    .then((res) => {
-                        setSuccess(res)
-                        setError(null)
-                        setTimeout(() => {
-                            navigate('/app')
-                        }, 3000)
-                    })
-                    .catch((err) => {
-                        setError(err)
-                    })
+                if (server?.jointype === 'manual') {
+                    requestJoin(user, server.id)
+                    setSuccess(
+                        "Votre demande d'adhésion a bien été envoyée. Vous pourrez rejoindre le serveur une fois la demande acceptée."
+                    )
+                } else {
+                    joinServer(user, server)
+                        .then((res) => {
+                            setSuccess(res)
+                            setError(null)
+                            setTimeout(() => {
+                                navigate('/app')
+                            }, 3000)
+                        })
+                        .catch((err) => {
+                            setError(err)
+                        })
+                }
             } else {
                 setError('Oups, le code ou le nom semble invalide')
             }
