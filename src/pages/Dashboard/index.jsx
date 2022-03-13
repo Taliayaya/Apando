@@ -14,7 +14,11 @@ import MemberList from './MemberList'
 import { useChannel } from '../../utils/hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getAuth } from 'firebase/auth'
-import { getServerInfo, isUserInTargetServer } from '../../utils/function'
+import {
+    getServerInfo,
+    getUserRole,
+    isUserInTargetServer,
+} from '../../utils/function'
 import { useEffect, useState } from 'react'
 import { getDatabase, onValue, ref } from 'firebase/database'
 
@@ -40,12 +44,18 @@ const Dashboard = () => {
 
     const checkUser = async () => {
         const isUserValid = await isUserInTargetServer(user.uid, server_id)
+
         if (!isUserValid) {
+            navigate('/app')
+        }
+        const userRole = await getUserRole(user.uid, server_id)
+        if (!['Owner', 'Admin'].includes(userRole.role)) {
             navigate('/app')
         }
     }
     if (currentServer) {
         server_id = currentServer
+        checkUser()
     } else {
         server_id = params.serverid
         checkUser()
@@ -94,6 +104,7 @@ const Dashboard = () => {
                         serverName={serverInfo?.name}
                         server_id={server_id}
                         server={serverInfo}
+                        joinType={serverInfo?.jointype}
                     />
                 </Row2>
             </DashboardMain>
