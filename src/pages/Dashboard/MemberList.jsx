@@ -33,6 +33,7 @@ import {
     UserEmailStyle,
     UserInfo,
 } from './DashboardStyle'
+import RemoveIcon from '@mui/icons-material/Remove'
 
 const MemberList = ({ serverName, server_id, server, joinType }) => {
     const [usersArray, setUsersArray] = useState([])
@@ -130,16 +131,16 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
 }
 
 const UserCase = ({ avatar, name, email, invite, server, id }) => {
-    // const [contextMenu, setContextMenu] = useState(null)
+    const [contextMenu, setContextMenu] = useState(null)
 
-    // const handleContextMenu = (event) => {
-    //     event.preventDefault()
-    //     setContextMenu(
-    //         contextMenu === null
-    //             ? { mouseX: event.clientX - 2, mouseY: event.clientY - 4 }
-    //             : null
-    //     )
-    // }
+    const handleContextMenu = (event) => {
+        event.preventDefault()
+        setContextMenu(
+            contextMenu === null
+                ? { mouseX: event.clientX - 2, mouseY: event.clientY - 4 }
+                : null
+        )
+    }
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
 
@@ -148,6 +149,7 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
     }
     const handleClose = () => {
         setAnchorEl(null)
+        setContextMenu(null)
     }
 
     const user = {
@@ -155,18 +157,20 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
         email: email,
     }
     const handleBan = () => {
-        console.log(server, user)
         banUserFromServer(server.id, user.uid)
     }
     const acceptJoinRequest = () => {
-        console.log(user, server)
         joinServer(user, server).then(() => {
             removeJoinRequest(user.uid, server.id)
         })
     }
 
+    const refuseJoinRequest = () => {
+        removeJoinRequest(user.uid, server.id)
+    }
+
     return (
-        <StyledDiv invite={invite}>
+        <StyledDiv invite={invite} onContextMenu={handleContextMenu}>
             <UserContainer>
                 <Avatar sx={{ width: 48, height: 48 }} src={avatar} />
                 <UserInfo>
@@ -192,7 +196,7 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
                 </Tooltip>
             )}
             <Menu
-                anchorEl={anchorEl}
+                anchorEl={anchorEl || 'anchorPosition'}
                 id="user-menu"
                 open={open}
                 onClose={handleClose}
@@ -233,6 +237,31 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
                     <Typography>Retirer du serveur</Typography>
                 </MenuItem>
             </Menu>
+            {invite === 'true' && (
+                <Menu
+                    id="user-menu"
+                    open={contextMenu !== null}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    anchorReference="anchorPosition"
+                    anchorPosition={
+                        contextMenu !== null
+                            ? {
+                                  top: contextMenu.mouseY,
+                                  left: contextMenu.mouseX,
+                              }
+                            : undefined
+                    }
+                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                >
+                    <MenuItem onClick={refuseJoinRequest}>
+                        <ListItemIcon>
+                            <RemoveIcon />
+                        </ListItemIcon>
+                        <Typography>Refuser la demande</Typography>
+                    </MenuItem>
+                </Menu>
+            )}
         </StyledDiv>
     )
 }
