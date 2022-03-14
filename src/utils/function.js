@@ -208,17 +208,33 @@ function joinServer(user, server) {
  * @param {Object} user the auth instance of the current user
  * @param {string} id_server the target server to request
  */
-function requestJoin(user, id_server) {
+async function requestJoin(user, id_server) {
     const db = getDatabase()
+    const dbRef = ref(db)
     const newRequestRef = ref(db, `/requests/${id_server}/${user.uid}`)
+    await get(child(dbRef, `requests/${id_server}/${user.uid}`)).then(
+        (snapshot) => {
+            if (snapshot.exists()) {
+                throw new Error(
+                    "Vous avez déjà envoyé une demande d'adhésion à ce serveur"
+                )
+            }
+        }
+    )
     set(newRequestRef, {
         username: user.displayName,
         email: user.email,
         avatar: user.photoURL,
     })
+    console.log(1)
     updateInviteCount(id_server)
 }
 
+/**
+ * Update the target server invite count stats
+ * @param {string} id_server the server stats to update
+ * @param {int} num the increment number
+ */
 function updateInviteCount(id_server, num = 1) {
     const db = getDatabase()
     const serverStatsRef = ref(db, `/serverstats/${id_server}/`)
@@ -350,6 +366,12 @@ function updateMessageCount(id_server, id_channel, num = 1) {
     update(serverStatsRef, updates)
 }
 
+/**
+ * Remove the user request of the target server
+ * and update associated invite count
+ * @param {string} uid user's request to remove
+ * @param {string} id_server server where the request is from
+ */
 function removeJoinRequest(uid, id_server) {
     const db = getDatabase()
     const requestRef = ref(db, `/requests/${id_server}/${uid}`)
