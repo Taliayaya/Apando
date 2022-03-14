@@ -75,8 +75,8 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
                         {requestArray.length > 0 && (
                             <StyleDoneAllContainer>
                                 <Tooltip title="Accepter toutes les demandes">
-                                    <IconButton>
-                                        <DoneAll onClick={acceptAllRequests} />
+                                    <IconButton onClick={acceptAllRequests}>
+                                        <DoneAll />
                                     </IconButton>
                                 </Tooltip>
                             </StyleDoneAllContainer>
