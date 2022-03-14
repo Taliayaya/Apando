@@ -23,7 +23,7 @@ import EditOffIcon from '@mui/icons-material/EditOff'
 import { theme } from '../../utils/style/colors'
 import { useEffect, useState } from 'react'
 import { Close } from '@mui/icons-material'
-import { setServerChanges } from '../../utils/function'
+import { getServerInfo, setServerChanges } from '../../utils/function'
 
 const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
     const [isEditing, setIsEditing] = useState(false)
@@ -33,6 +33,7 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
     const [query, setQuery] = useState('idle')
+    const [serverInfo, setServerInfo] = useState({})
 
     console.log(domain, serverName, code, autoJoin)
 
@@ -64,11 +65,17 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
             setQuery('idle')
             setSuccess('Modifications enregistrées')
             editParams()
+            const servInfo = await getServerInfo(server_id)
+            setServerInfo(servInfo)
         } catch (e) {
             console.error(e)
             setError(`Il y a eu une erreur, veuillez réessayer : ${e}`)
         }
     }
+
+    code = serverInfo?.code ? serverInfo.code : code
+    domain = serverInfo?.domain ? serverInfo.domain : domain
+    autoJoin = serverInfo?.jointype ? serverInfo.jointype : autoJoin
 
     return (
         <>
@@ -137,7 +144,7 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
                             value={domainValue}
                         />
                     ) : (
-                        <span>{domain ? `*@${domain}` : 'Tous'}</span>
+                        <span>{domain ? `@${domain}` : 'Tous'}</span>
                     )}
                 </Params>
                 <Params>
