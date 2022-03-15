@@ -4,7 +4,7 @@ import { useAuth, useChannel, useMessageList } from '../../utils/hooks'
 import Message from '../Message'
 import MessageInput from '../MessageInput'
 import TopMenu from '../TopMenu'
-import { Badge } from '@mui/material'
+import { Badge, IconButton, Tooltip } from '@mui/material'
 import { ArrowCircleDown, Autorenew } from '@mui/icons-material'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
@@ -25,7 +25,6 @@ const StyledBadge = styled(Badge)((props) => ({
         },
     },
     cursor: 'pointer',
-    border: `2px solid ${theme.sides_bg_color}`,
     borderRadius: '60px',
     '&:hover': {
         borderColor: '#4158d0',
@@ -116,30 +115,47 @@ function Chat() {
                         horizontal: 'right',
                     }}
                     badgeContent={
-                        <Autorenew
-                            onClick={() =>
-                                setShouldScrollToBottom(!shouldScrollToBottom)
+                        <Tooltip
+                            title={
+                                shouldScrollToBottom
+                                    ? "Annuler l'autoscroll"
+                                    : "Activer l'autoscroll"
                             }
-                        />
+                        >
+                            <IconButton
+                                onClick={() =>
+                                    setShouldScrollToBottom(
+                                        !shouldScrollToBottom
+                                    )
+                                }
+                            >
+                                <Autorenew />
+                            </IconButton>
+                        </Tooltip>
                     }
                     shouldscrolltobottom={
                         shouldScrollToBottom ? 'true' : 'false'
                     }
                 >
-                    <ArrowCircleDown
-                        style={{
-                            backgroundColor: theme.chat_input_bg_color,
-                            borderRadius: '60px',
-                            fontSize: 40,
-                        }}
-                        onClick={() =>
-                            messageEndRef.current?.scrollIntoView({
-                                block: 'start',
-                                behavior: 'smooth',
-                                inline: 'nearest',
-                            })
-                        }
-                    />
+                    <Tooltip title="Scroll vers le bas">
+                        <IconButton
+                            onClick={() =>
+                                messageEndRef.current?.scrollIntoView({
+                                    block: 'start',
+                                    behavior: 'smooth',
+                                    inline: 'nearest',
+                                })
+                            }
+                        >
+                            <ArrowCircleDown
+                                style={{
+                                    backgroundColor: theme.chat_input_bg_color,
+                                    borderRadius: '60px',
+                                    fontSize: 40,
+                                }}
+                            />
+                        </IconButton>
+                    </Tooltip>
                 </StyledBadge>
             </ScrollDown>
             <MessageInput currentChannelId={currentChannelId} />
