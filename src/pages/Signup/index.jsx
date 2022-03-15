@@ -50,31 +50,30 @@ function Signup() {
     const provider = new GoogleAuthProvider()
 
     const googleSignInApi = async () => {
-        signInWithPopup(auth, provider)
-            .then(async (result) => {
-                const data = {
-                    lastLogin: Timestamp.fromDate(new Date()),
-                    uid: result.user.uid,
-                    name: result.user.displayName,
-                    avatar: result.user.photoURL,
-                }
-                await setDoc(doc(db, 'users', result.user.uid), {
-                    data,
-                })
-                await sendEmailVerification(result.user)
-                navigate('/join')
+        signInWithPopup(auth, provider).then(async (result) => {
+            const data = {
+                lastLogin: Timestamp.fromDate(new Date()),
+                uid: result.user.uid,
+                name: result.user.displayName,
+                avatar: result.user.photoURL,
+            }
+            await setDoc(doc(db, 'users', result.user.uid), {
+                data,
             })
-            .catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code
-                const errorMessage = error.message
-                // The email of the user's account used.
-                const email = error.email
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error)
-                // ...
-                console.log(errorCode, errorMessage, email, credential)
-            })
+            await sendEmailVerification(result.user)
+            navigate('/join')
+        })
+        // .catch((error) => {
+        //     // Handle Errors here.
+        //     const errorCode = error.code
+        //     const errorMessage = error.message
+        //     // The email of the user's account used.
+        //     const email = error.email
+        //     // The AuthCredential type that was used.
+        //     const credential = GoogleAuthProvider.credentialFromError(error)
+        //     // ...
+        //     // console.log(errorCode, errorMessage, email, credential)
+        // })
     }
 
     async function handleSignIn(e) {

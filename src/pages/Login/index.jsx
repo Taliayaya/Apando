@@ -42,7 +42,7 @@ function Login() {
     const { state } = useLocation()
     const [nameEmail, setnameEmail] = useState('')
     const [password, setpassword] = useState('')
-    const [error, seterror] = useState(null)
+    const [error, setError] = useState(null)
     const [showPassword, setShowPassword] = useState(false)
     const [stayLogged, setStayLogged] = useState(false)
     const auth = getAuth()
@@ -53,24 +53,31 @@ function Login() {
     const googleSignInApi = async () => {
         signInWithPopup(auth, provider)
             .then(async (result) => {
-                await updateDoc(doc(db, 'users', result.user.uid), {
-                    'data.lastLogin': Timestamp.fromDate(new Date()),
-                })
+                try {
+                    await updateDoc(doc(db, 'users', result.user.uid), {
+                        'data.lastLogin': Timestamp.fromDate(new Date()),
+                    })
 
-                login().then(() => {
-                    navigate(state?.path || '/app')
-                })
+                    login().then(() => {
+                        navigate(state?.path || '/app')
+                    })
+                } catch {
+                    setError(
+                        "Il n'existe pas de compte existant avec cette adresse mail."
+                    )
+                }
             })
             .catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code
-                const errorMessage = error.message
-                // The email of the user's account used.
-                const email = error.email
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error)
-                // ...
-                console.log(errorCode, errorMessage, email, credential)
+                // // Handle Errors here.
+                // const errorCode = error.code
+                // const errorMessage = error.message
+                // // The email of the user's account used.
+                // const email = error.email
+                // // The AuthCredential type that was used.
+                // const credential = GoogleAuthProvider.credentialFromError(error)
+                // // ...
+                // // console.log(errorCode, errorMessage, email, credential)
+                setError('Il y a eu une erreur')
             })
     }
     async function handleLogin(e) {
@@ -79,10 +86,16 @@ function Login() {
 
         signInWithEmailAndPassword(auth, nameEmail, password)
             .then(async (userCredential) => {
-                await updateDoc(doc(db, 'users', userCredential.user.uid), {
-                    'data.lastLogin': Timestamp.fromDate(new Date()),
-                    'data.email': userCredential.user.email,
-                })
+                try {
+                    await updateDoc(doc(db, 'users', userCredential.user.uid), {
+                        'data.lastLogin': Timestamp.fromDate(new Date()),
+                        'data.email': userCredential.user.email,
+                    })
+                } catch {
+                    setError(
+                        "Il n'existe pas de compte existant avec cette adresse mail."
+                    )
+                }
 
                 // Signed in
                 login().then(() => {
@@ -90,8 +103,7 @@ function Login() {
                 })
             })
             .catch((error) => {
-                const errorCode = error.code
-                seterror(errorCode)
+                setError(error.message)
             })
     }
     useEffect(() => {
@@ -117,11 +129,7 @@ function Login() {
             <StyledLoginWrapper>
                 <StyledLoginTitle>Connexion</StyledLoginTitle>
                 <StyledForm action="#">
-                    {error && (
-                        <StyleError>
-                            Votre identifiant ou mot de passe est incorrect
-                        </StyleError>
-                    )}
+                    {error && <StyleError>{error}</StyleError>}
                     <StyledField>
                         <StyledFieldInput
                             type="text"

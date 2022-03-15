@@ -289,9 +289,12 @@ async function isUserInTargetServer(uid, id_server) {
 
     const docSnap = await getDoc(userRef)
     if (docSnap.exists()) {
-        const serversList = docSnap.data().serversid
-        const isAlreadyIn = serversList.includes(id_server)
-        return isAlreadyIn
+        const serversList = docSnap.data()?.serversid
+        if (serversList) {
+            const isAlreadyIn = serversList.includes(id_server)
+            return isAlreadyIn
+        }
+        return false
     }
     return false
 }
