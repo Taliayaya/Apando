@@ -70,7 +70,6 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
 
     const acceptAllRequests = () => {
         requestArray.forEach((user) => {
-            console.log(user, serverInfo)
             joinServer(user, serverInfo).then(() => {
                 removeJoinRequest(user.uid, server_id)
             })

@@ -9,6 +9,7 @@ import { ArrowCircleDown, Autorenew } from '@mui/icons-material'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
 import { getDatabase, ref, onValue } from 'firebase/database'
+
 const StyledBadge = styled(Badge)((props) => ({
     '& .MuiBadge-badge': {
         color: '#fff',
@@ -75,7 +76,6 @@ function Chat() {
     })
 
     const shouldresize = showUsers || showChannel ? 'true' : 'false'
-    console.log(shouldresize, showUsers, showChannel)
     return (
         <StyledChat shouldresize={shouldresize}>
             <TopMenu />

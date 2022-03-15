@@ -84,7 +84,6 @@ const Dashboard = () => {
         const getServer = async () => {
             const serverInfo = await getServerInfo(server_id)
             setServerInfo(serverInfo)
-            console.log(serverInfo)
         }
 
         getServer()

@@ -65,7 +65,7 @@ async function getUserRole(uid, id_server) {
             }
         })
         .catch((error) => {
-            console.log(error)
+            console.error(error)
         })
 }
 
@@ -120,7 +120,6 @@ function deleteChannel(id_channel, id_server) {
  * @param {string} uid est l'id de l'utilisateur a bannir
  */
 async function banUserFromServer(id_server, uid) {
-    console.log("j'ai été cliqué !")
     const userRef = doc(db, 'users', uid)
 
     await updateDoc(userRef, {
@@ -226,7 +225,6 @@ async function requestJoin(user, id_server) {
         email: user.email,
         avatar: user.photoURL,
     })
-    console.log(1)
     updateInviteCount(id_server)
 }
 
@@ -255,7 +253,6 @@ function updateInviteCount(id_server, num = 1) {
  */
 function isEmailDomainValidated(user, server) {
     const userDomain = user.email.split('@')[1]
-    console.log(server)
     const serverDomain =
         server?.domain === undefined ? '' : server?.domain.trim()
     if (serverDomain) {

@@ -35,8 +35,6 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
     const [query, setQuery] = useState('idle')
     const [serverInfo, setServerInfo] = useState({})
 
-    console.log(domain, serverName, code, autoJoin)
-
     const errorOpen = Boolean(error)
     const successOpen = Boolean(success)
 
