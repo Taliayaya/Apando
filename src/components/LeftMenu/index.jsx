@@ -62,7 +62,9 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                         setUserList([])
                         setMessageList([])
                     }}
+                    defaultValue={currentServer}
                 >
+                    {console.log(currentServer)}
                     {serverList &&
                         serverList.map(({ id, name }) => (
                             <option value={id} key={id}>
