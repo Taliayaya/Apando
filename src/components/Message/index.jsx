@@ -29,7 +29,6 @@ const handleMonth = (month) => {
 }
 
 function LinkRenderer(props) {
-    console.log({ props })
     return (
         <a href={props.href} target="_blank" rel="noreferrer">
             {props.children}

@@ -21,6 +21,8 @@ import { theme } from '../../utils/style/colors'
 import { useNavigate } from 'react-router-dom'
 import {
     createChannelListFromString,
+    createServerStatsField,
+    joinServer,
     writeUserRole,
 } from '../../utils/function'
 import { getAuth } from 'firebase/auth'
@@ -88,13 +90,23 @@ export default function CreateServer() {
                     setError('Un serveur à ce nom existe déjà')
                 }
             })
-            const docRef = await addDoc(serverRef, {
-                name: serverName,
-                code: code,
-            })
-            await writeUserRole(user.uid, 'Owner', docRef.id)
             try {
+                const docRef = await addDoc(serverRef, {
+                    name: serverName,
+                    code: code,
+                    domain: '',
+                    jointype: 'auto',
+                })
+                await writeUserRole(user.uid, 'Owner', docRef.id)
                 createChannelListFromString(channels, docRef.id)
+                await createServerStatsField(docRef.id)
+                await joinServer(user, {
+                    name: serverName,
+                    code: code,
+                    domain: '',
+                    jointype: 'auto',
+                    id: docRef.id,
+                })
                 navigate('/app')
             } catch (error) {
                 setError(

@@ -122,33 +122,34 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                         <Typography>Retirer le rôle</Typography>
                     </MenuItem>
                 )}
+                {/* Separated to avoid Mui Fragment error */}
                 {hasPower && (
-                    <>
-                        <MenuItem
-                            onClick={() => {
-                                writeUserRole(uid, 'Muted', currentServer)
-                                handleClose()
-                            }}
-                            style={{ color: 'red', backgroundColor: '#ffe0e0' }}
-                        >
-                            <ListItemIcon>
-                                <VolumeOff style={{ color: 'red' }} />
-                            </ListItemIcon>
-                            <Typography>Rendre muet</Typography>
-                        </MenuItem>
-                        <MenuItem
-                            onClick={() => {
-                                banUserFromServer(currentServer, uid)
-                                handleClose()
-                            }}
-                            style={{ color: 'red', backgroundColor: '#ffe0e0' }}
-                        >
-                            <ListItemIcon>
-                                <Block style={{ color: 'red' }} />
-                            </ListItemIcon>
-                            <Typography>Bannir</Typography>
-                        </MenuItem>
-                    </>
+                    <MenuItem
+                        onClick={() => {
+                            writeUserRole(uid, 'Muted', currentServer)
+                            handleClose()
+                        }}
+                        style={{ color: 'red', backgroundColor: '#ffe0e0' }}
+                    >
+                        <ListItemIcon>
+                            <VolumeOff style={{ color: 'red' }} />
+                        </ListItemIcon>
+                        <Typography>Rendre muet</Typography>
+                    </MenuItem>
+                )}
+                {hasPower && (
+                    <MenuItem
+                        onClick={() => {
+                            banUserFromServer(currentServer, uid)
+                            handleClose()
+                        }}
+                        style={{ color: 'red', backgroundColor: '#ffe0e0' }}
+                    >
+                        <ListItemIcon>
+                            <Block style={{ color: 'red' }} />
+                        </ListItemIcon>
+                        <Typography>Bannir</Typography>
+                    </MenuItem>
                 )}
             </Menu>
         </StyledDiv>

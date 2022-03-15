@@ -103,6 +103,7 @@ function Signup() {
                     uid: userCredential.user.uid,
                     name: username,
                     avatar: userCredential.user.photoURL,
+                    email: userCredential.user.email,
                 }
                 await setDoc(doc(db, 'users', userCredential.user.uid), {
                     data,

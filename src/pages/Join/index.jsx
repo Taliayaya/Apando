@@ -10,16 +10,16 @@ import {
     StyledField,
     StyledFieldLabel,
     StyledSubmit,
-    StyleError,
     StyleLink,
-    StyleAlert,
 } from '../../utils/style/LoginSignStyle'
 import { StyledText, WaveJoin } from './JoinStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
 import { getAuth } from 'firebase/auth'
-import { getServer, joinServer } from '../../utils/function'
+import { getServer, joinServer, requestJoin } from '../../utils/function'
+import { Alert, Collapse, IconButton } from '@mui/material'
+import { Close } from '@material-ui/icons'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -56,17 +56,29 @@ const Join = () => {
         if (code.length > 0) {
             const server = await getServer(serverName, code)
             if (server.name) {
-                joinServer(user, server)
-                    .then((res) => {
-                        setSuccess(res)
-                        setError(null)
-                        setTimeout(() => {
-                            navigate('/app')
-                        }, 3000)
-                    })
-                    .catch((err) => {
-                        setError(err)
-                    })
+                if (server?.jointype === 'manual') {
+                    requestJoin(user, server.id)
+                        .then(() => {
+                            setSuccess(
+                                "Votre demande d'adhésion a bien été envoyée. Vous pourrez rejoindre le serveur une fois la demande acceptée."
+                            )
+                        })
+                        .catch((e) => {
+                            setError(e.message)
+                        })
+                } else {
+                    joinServer(user, server)
+                        .then((res) => {
+                            setSuccess(res)
+                            setError(null)
+                            setTimeout(() => {
+                                navigate('/app')
+                            }, 3000)
+                        })
+                        .catch((err) => {
+                            setError(err)
+                        })
+                }
             } else {
                 setError('Oups, le code ou le nom semble invalide')
             }
@@ -90,7 +102,31 @@ const Join = () => {
                     <b>beta</b> pour rejoindre le serveur de la beta et obtenir
                     un avant-goût de Apando !
                 </StyledText>
-                {error && <StyleError>{error}</StyleError>}
+
+                {/*
+                ===============
+                ERROR COMPONENT
+                ===============
+                */}
+                <Collapse in={Boolean(error)}>
+                    <Alert
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => setError(null)}
+                            >
+                                <Close fontSize="inherit" />
+                            </IconButton>
+                        }
+                        sx={{ mb: 2 }}
+                        severity="error"
+                    >
+                        {error}
+                    </Alert>
+                </Collapse>
+
                 <StyledForm action="#">
                     <StyledField>
                         <StyledFieldInput
@@ -122,11 +158,24 @@ const Join = () => {
                             onClick={(e) => handleCode(e)}
                         />
                     </StyledField>
-                    {success && (
-                        <StyleAlert style={{ width: '100%' }} success>
+                    <Collapse in={Boolean(success)}>
+                        <Alert
+                            action={
+                                <IconButton
+                                    aria-label="close"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => setError(null)}
+                                >
+                                    <Close fontSize="inherit" />
+                                </IconButton>
+                            }
+                            sx={{ mb: 2 }}
+                            severity="success"
+                        >
                             {success}
-                        </StyleAlert>
-                    )}
+                        </Alert>
+                    </Collapse>
                     <StyledField>
                         Pas de code ?{' '}
                         <StyleLink to="/create">Crée ton serveur</StyleLink>
