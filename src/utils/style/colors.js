@@ -1,3 +1,5 @@
+import { createTheme } from '@mui/material'
+
 const colors = {
     // Purple mode
     userList_bg_color: '#4b3869',
@@ -31,4 +33,15 @@ const purpleMode = {
 
 const theme = purpleMode
 
-export { theme }
+const themeMui = createTheme({
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: theme.chat_bg_color,
+        },
+        success: {
+            main: '#388e3c',
+        },
+    },
+})
+export { theme, themeMui }

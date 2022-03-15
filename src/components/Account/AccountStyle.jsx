@@ -9,7 +9,7 @@ export const StyledBody = styled.div`
     text-align: center;
     color: #fff
     width: 100%;
-    min-height: 90vh;
+    min-height: 100vh;
     height: 100%;
     position: relative;
     background-size: cover;

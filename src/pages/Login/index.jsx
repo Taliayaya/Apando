@@ -81,6 +81,7 @@ function Login() {
             .then(async (userCredential) => {
                 await updateDoc(doc(db, 'users', userCredential.user.uid), {
                     'data.lastLogin': Timestamp.fromDate(new Date()),
+                    'data.email': userCredential.user.email,
                 })
 
                 // Signed in
@@ -98,6 +99,8 @@ function Login() {
             if (authUser !== null) {
                 await updateDoc(doc(db, 'users', authUser.uid), {
                     'data.lastLogin': Timestamp.fromDate(new Date()),
+                    // to update acc that where created before this update
+                    'data.email': authUser.email,
                 })
 
                 login().then(() => {

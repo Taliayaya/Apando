@@ -1,11 +1,23 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth, useChannel, useMessageList } from '../../utils/hooks'
-import { StyledInput } from '../ChannelList/ChannelListStyle'
 import { useState } from 'react'
-import { StyleError } from '../../utils/style/LoginSignStyle'
-import { ListItemIcon, MenuItem, Typography } from '@mui/material'
-import { Add, Create } from '@mui/icons-material'
+import {
+    Box,
+    FormControl,
+    FormHelperText,
+    IconButton,
+    InputLabel,
+    ListItemIcon,
+    MenuItem,
+    Select,
+    Snackbar,
+    TextField,
+    Tooltip,
+    Typography,
+} from '@mui/material'
+import { Add, Create, Dashboard } from '@mui/icons-material'
 import { addNewChannel } from '../../utils/function'
+import { Done } from '@mui/icons-material'
 
 const LeftMenu = ({ serverList, setChannelList }) => {
     const [newChannelName, setNewChannelName] = useState('')
@@ -20,7 +32,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
 
     const addChannel = async (e) => {
         e.preventDefault()
-        if (!newChannelName) {
+        if (!newChannelName.trim()) {
             setError("Aucun nom de salon n'a été indiqué")
             return
         }
@@ -30,46 +42,72 @@ const LeftMenu = ({ serverList, setChannelList }) => {
 
         setNewChannelName('')
     }
+
     return (
         <>
-            {error && <StyleError>{error}</StyleError>}
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                open={Boolean(error)}
+                onClose={() => setError(null)}
+                message={error}
+                key={'topleft'}
+            />
             {hasPower && (
-                <form action="#">
-                    <MenuItem>
-                        <StyledInput
-                            type="text"
-                            name="new_channel"
+                <MenuItem>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'flex-end',
+                        }}
+                    >
+                        <TextField
+                            id="add-server"
+                            label="Ajouter un salon"
+                            variant="standard"
                             value={newChannelName}
                             onChange={(e) => setNewChannelName(e.target.value)}
-                            placeholder="Nouveau salon"
                         />
-                    </MenuItem>
-                    <MenuItem>
-                        <StyledInput
-                            type="submit"
-                            value="Ajouter"
-                            onClick={(e) => addChannel(e)}
-                        />
-                    </MenuItem>
-                </form>
+                        <Tooltip title="Ajouter">
+                            <IconButton onClick={(e) => addChannel(e)}>
+                                <Done
+                                    sx={{
+                                        color: 'action.active',
+                                        mr: 1,
+                                        my: 0.5,
+                                    }}
+                                />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                </MenuItem>
             )}
             <MenuItem>
-                <select
-                    value={currentServer?.name}
-                    onChange={(e) => {
-                        setCurrentServer(e.target.value)
-                        setChannelList([])
-                        setUserList([])
-                        setMessageList([])
-                    }}
-                >
-                    {serverList &&
-                        serverList.map(({ id, name }) => (
-                            <option value={id} key={id}>
-                                {name}
-                            </option>
-                        ))}
-                </select>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="server-select-label">
+                        Serveur actuel
+                    </InputLabel>
+                    <Select
+                        labelId="server-select-label"
+                        id="server-select"
+                        value={currentServer?.name}
+                        label="Serveur actuel"
+                        onChange={(e) => {
+                            setCurrentServer(e.target.value)
+                            setChannelList([])
+                            setUserList([])
+                            setMessageList([])
+                        }}
+                        defaultValue={currentServer}
+                    >
+                        {serverList &&
+                            serverList.map(({ id, name }) => (
+                                <MenuItem value={id} key={id}>
+                                    {name}
+                                </MenuItem>
+                            ))}
+                    </Select>
+                    <FormHelperText>Change de serveur ici</FormHelperText>
+                </FormControl>
             </MenuItem>
             <MenuItem onClick={() => navigate('/join')}>
                 <ListItemIcon>
@@ -83,6 +121,16 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                 </ListItemIcon>
                 <Typography>Créer un serveur</Typography>
             </MenuItem>
+            {hasPower && (
+                <MenuItem
+                    onClick={() => navigate(`/dashboard/${currentServer}`)}
+                >
+                    <ListItemIcon>
+                        <Dashboard />
+                    </ListItemIcon>
+                    <Typography>Tableau de bord</Typography>
+                </MenuItem>
+            )}
         </>
     )
 }
