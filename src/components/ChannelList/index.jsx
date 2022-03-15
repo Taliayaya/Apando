@@ -67,7 +67,6 @@ function ChannelList() {
     useEffect(() => {
         if (currentServer) {
             const rldb = getDatabase()
-            console.log(currentServer)
             const channelRef = ref(rldb, `channels/${currentServer}`)
             const unsub = onValue(channelRef, (snapshot) => {
                 const obj = snapshot.val()
