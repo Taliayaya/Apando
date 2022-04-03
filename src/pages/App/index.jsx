@@ -15,7 +15,6 @@ function App() {
     const { setShowChannel, setShowUsers } = useAuth()
     const [firstMobileTime, setFirstMobileTime] = useState(true)
     const { currentServer } = useChannel()
-    console.log(currentServer)
 
     useEffect(() => {
         const setOnline = setInterval(async () => {
