@@ -9,6 +9,8 @@ import { ArrowCircleDown, Autorenew } from '@mui/icons-material'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
 import { getDatabase, ref, onValue } from 'firebase/database'
+import { setMessageAsSeen } from '../../utils/function'
+import { getAuth } from 'firebase/auth'
 
 const StyledBadge = styled(Badge)((props) => ({
     '& .MuiBadge-badge': {
@@ -34,10 +36,11 @@ const StyledBadge = styled(Badge)((props) => ({
 
 function Chat() {
     const messageEndRef = useRef(null)
-    const { currentChannelId } = useChannel()
+    const { currentChannelId, currentServer } = useChannel()
     const { messageList, setMessageList } = useMessageList()
     const { showUsers, showChannel } = useAuth()
     const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true)
+    const user = getAuth().currentUser
 
     useEffect(() => {
         if (currentChannelId.id) {
@@ -54,10 +57,15 @@ function Chat() {
                     })
                     setMessageList(datas)
                 }
+                setMessageAsSeen(
+                    user.uid,
+                    currentChannelId.id,
+                    currentServer.id
+                )
             })
             return () => unsub()
         }
-    }, [currentChannelId.id, setMessageList])
+    }, [currentChannelId.id, currentServer.id, setMessageList, user.uid])
 
     useEffect(() => {
         if (shouldScrollToBottom) {

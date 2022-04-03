@@ -120,15 +120,22 @@ function ChannelList() {
 
             <StyledChannelListBottom>
                 {channelList &&
-                    channelList.map(({ key, name }) => {
-                        return (
-                            <ChannelName
-                                key={key.toString()}
-                                id_channel={key}
-                                name={name}
-                            />
-                        )
-                    })}
+                    channelList.map(
+                        ({ key, name, lastMessage, lastMessageUser, seen }) => {
+                            return (
+                                <ChannelName
+                                    key={key.toString()}
+                                    id_channel={key}
+                                    name={name}
+                                    seen={seen}
+                                    lastMessageData={{
+                                        lastMessage: lastMessage,
+                                        lastMessageUser: lastMessageUser,
+                                    }}
+                                />
+                            )
+                        }
+                    )}
             </StyledChannelListBottom>
         </StyledChannelList>
     )

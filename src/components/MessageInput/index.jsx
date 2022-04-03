@@ -60,7 +60,12 @@ const MessageInput = ({ currentChannelId }) => {
     const handleSending = async () => {
         if (message.trim().length > 0 && userRole !== 'Muted') {
             try {
-                writeUserMessage(user, message, currentChannelId.id)
+                writeUserMessage(
+                    user,
+                    message,
+                    currentChannelId.id,
+                    currentServer?.id
+                )
                 updateMessageCount(currentServer?.id, currentChannelId.id)
                 setMessage('')
             } catch (error) {

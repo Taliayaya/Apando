@@ -53,6 +53,19 @@ async function writeUserMessage(user, message, id_channel, id_server) {
     update(ref(db), updates)
 }
 
+/**
+ * Write the message as seen for the target user
+ * @param {string} uid is the user id that saw the message
+ * @param {string} id_channel where the message was seen
+ * @param {string} id_server in which server the channel is
+ */
+function setMessageAsSeen(uid, id_channel, id_server) {
+    const db = getDatabase()
+    const updates = {}
+    updates[`channels/${id_server}/${id_channel}/seen/${uid}`] = true
+    update(ref(db), updates)
+}
+
 async function writeUserRole(uid, role, id_server) {
     const db = getDatabase()
     const memberRef = ref(db, `roles/${id_server}/` + uid)
@@ -412,4 +425,5 @@ export {
     updateMessageCount,
     requestJoin,
     removeJoinRequest,
+    setMessageAsSeen,
 }

@@ -1,16 +1,18 @@
 import { DeleteForever } from '@mui/icons-material'
 import { ListItemIcon, Menu, MenuItem, Typography } from '@mui/material'
+import { getAuth } from 'firebase/auth'
 import React, { useState } from 'react'
 import { deleteChannel } from '../../utils/function'
 import { useAuth, useChannel, useMessageList } from '../../utils/hooks'
 import { StyledChannel } from '../ChannelList/ChannelListStyle'
 
-const ChannelName = ({ id_channel, name }) => {
+const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
     const { setMessageList } = useMessageList()
     const { setCurrentChannelId, currentChannelId, currentServer } =
         useChannel()
     const [contextMenu, setContextMenu] = useState(null)
     const { userRole } = useAuth()
+    const user = getAuth().currentUser
 
     const hasPower = ['Admin', 'Owner'].includes(userRole)
 
@@ -33,6 +35,14 @@ const ChannelName = ({ id_channel, name }) => {
         setCurrentChannelId({ id: id_channel, name: name })
         setMessageList([])
     }
+
+    const hasSeenLastMessage = () => {
+        if (seen && seen[user.uid]) {
+            return true
+        }
+        return false
+    }
+
     return (
         <>
             <StyledChannel
@@ -40,9 +50,11 @@ const ChannelName = ({ id_channel, name }) => {
                 onDoubleClick={() => selectChannel(id_channel, name)}
                 ischannelselected={currentChannel.toString()}
                 onContextMenu={handleContextMenu}
+                newmessage={hasSeenLastMessage().toString()}
             >
                 {name}
             </StyledChannel>
+
             {hasPower && (
                 <Menu
                     open={contextMenu !== null}
