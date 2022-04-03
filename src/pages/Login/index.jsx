@@ -28,6 +28,7 @@ import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
 import styled from 'styled-components'
 import { theme } from '../../utils/style/colors'
+import Helmet from 'react-helmet'
 
 const StyledTitleLink = styled(Link)`
     font-size: 25px;
@@ -122,83 +123,99 @@ function Login() {
         })
     })
     return (
-        <StyledLoginPage>
-            <StyledHeaderTitle>
-                <StyledTitleLink to="/">Apando</StyledTitleLink>
-            </StyledHeaderTitle>
-            <StyledLoginWrapper>
-                <StyledLoginTitle>Connexion</StyledLoginTitle>
-                <StyledForm action="#">
-                    {error && <StyleError>{error}</StyleError>}
-                    <StyledField>
-                        <StyledFieldInput
-                            type="text"
-                            name="username_or_email"
-                            onChange={(e) => setnameEmail(e.target.value)}
-                            value={nameEmail}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="username_or_email">
-                            adresse mail
-                        </StyledFieldLabel>
-                    </StyledField>
-                    <StyledField>
-                        <StyledFieldInput
-                            type={showPassword ? 'text' : 'password'}
-                            name="password"
-                            value={password}
-                            onChange={(e) => setpassword(e.target.value)}
-                            required
-                        />
+        <>
+            <Helmet>
+                <title>Apando / Connexion</title>
+                <meta
+                    name="description"
+                    content="Connectez-vous à Apando pour retrouvez vos camarades en quelques clics."
+                />
+            </Helmet>
+            <StyledLoginPage>
+                <StyledHeaderTitle>
+                    <StyledTitleLink to="/">Apando</StyledTitleLink>
+                </StyledHeaderTitle>
+                <StyledLoginWrapper>
+                    <StyledLoginTitle>Connexion</StyledLoginTitle>
+                    <StyledForm action="#">
+                        {error && <StyleError>{error}</StyleError>}
+                        <StyledField>
+                            <StyledFieldInput
+                                type="text"
+                                name="username_or_email"
+                                onChange={(e) => setnameEmail(e.target.value)}
+                                value={nameEmail}
+                                required
+                            />
+                            <StyledFieldLabel htmlFor="username_or_email">
+                                adresse mail
+                            </StyledFieldLabel>
+                        </StyledField>
+                        <StyledField>
+                            <StyledFieldInput
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                value={password}
+                                onChange={(e) => setpassword(e.target.value)}
+                                required
+                            />
 
-                        <StyledFieldLabel htmlFor="password">
-                            mot de passe
-                        </StyledFieldLabel>
-                        {showPassword ? (
-                            <StyledVisibilityOnIcon
-                                onClick={() => setShowPassword(!showPassword)}
+                            <StyledFieldLabel htmlFor="password">
+                                mot de passe
+                            </StyledFieldLabel>
+                            {showPassword ? (
+                                <StyledVisibilityOnIcon
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                />
+                            ) : (
+                                <StyledVisibilityOffIcon
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                />
+                            )}
+                        </StyledField>
+                        <StyledField>
+                            <input
+                                type="checkbox"
+                                name="remember-me"
+                                onChange={(e) => setStayLogged(!stayLogged)}
                             />
-                        ) : (
-                            <StyledVisibilityOffIcon
-                                onClick={() => setShowPassword(!showPassword)}
+                            <label htmlFor="remember-me">Rester connecté</label>
+                        </StyledField>
+                        <StyledField>
+                            <StyledSubmit onClick={(e) => handleLogin(e)} />
+                        </StyledField>
+                        <StyledField>
+                            Nouveau ?
+                            <StyleLink to="/signup"> S'inscrire</StyleLink>{' '}
+                            <br /> <br />
+                            <StyleLink to="/reset">
+                                Mot de passe oublié
+                            </StyleLink>
+                        </StyledField>
+                        <StyledField
+                            onClick={() => googleSignInApi()}
+                            style={{
+                                cursor: 'pointer',
+                                alignItems: 'center',
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <img
+                                src="https://img.icons8.com/fluency/48/000000/google-logo.png"
+                                alt="Google Icon for SignIn popup"
                             />
-                        )}
-                    </StyledField>
-                    <StyledField>
-                        <input
-                            type="checkbox"
-                            name="remember-me"
-                            onChange={(e) => setStayLogged(!stayLogged)}
-                        />
-                        <label htmlFor="remember-me">Rester connecté</label>
-                    </StyledField>
-                    <StyledField>
-                        <StyledSubmit onClick={(e) => handleLogin(e)} />
-                    </StyledField>
-                    <StyledField>
-                        Nouveau ?<StyleLink to="/signup"> S'inscrire</StyleLink>{' '}
-                        <br /> <br />
-                        <StyleLink to="/reset">Mot de passe oublié</StyleLink>
-                    </StyledField>
-                    <StyledField
-                        onClick={() => googleSignInApi()}
-                        style={{
-                            cursor: 'pointer',
-                            alignItems: 'center',
-                            display: 'flex',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <img
-                            src="https://img.icons8.com/fluency/48/000000/google-logo.png"
-                            alt="Google Icon for SignIn popup"
-                        />
-                        <span> Continuer avec Google</span>
-                    </StyledField>
-                </StyledForm>
-            </StyledLoginWrapper>
-            <Wave />
-        </StyledLoginPage>
+                            <span> Continuer avec Google</span>
+                        </StyledField>
+                    </StyledForm>
+                </StyledLoginWrapper>
+                <Wave />
+            </StyledLoginPage>
+        </>
     )
 }
 

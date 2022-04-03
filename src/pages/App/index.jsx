@@ -1,11 +1,12 @@
 import { getAuth } from 'firebase/auth'
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
+import Helmet from 'react-helmet'
 import ChannelList from '../../components/ChannelList'
 import Chat from '../../components/Chat'
 import UserList from '../../components/UserList'
 import { db } from '../../utils/firebase/config'
-import { useAuth } from '../../utils/hooks'
+import { useAuth, useChannel } from '../../utils/hooks'
 import { StyledStructure } from './AppStyle'
 
 function App() {
@@ -13,6 +14,8 @@ function App() {
     const user = auth.currentUser
     const { setShowChannel, setShowUsers } = useAuth()
     const [firstMobileTime, setFirstMobileTime] = useState(true)
+    const { currentServer } = useChannel()
+    console.log(currentServer)
 
     useEffect(() => {
         const setOnline = setInterval(async () => {
@@ -56,11 +59,18 @@ function App() {
     }, [firstMobileTime, setShowChannel, setShowUsers, width])
 
     return (
-        <StyledStructure>
-            <ChannelList />
-            <Chat />
-            <UserList />
-        </StyledStructure>
+        <>
+            <Helmet>
+                <title>
+                    Apando / {currentServer?.name ? currentServer.name : 'App'}
+                </title>
+            </Helmet>
+            <StyledStructure>
+                <ChannelList />
+                <Chat />
+                <UserList />
+            </StyledStructure>
+        </>
     )
 }
 

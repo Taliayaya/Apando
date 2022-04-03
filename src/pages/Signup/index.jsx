@@ -29,6 +29,7 @@ import { db } from '../../utils/firebase/config'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { theme } from '../../utils/style/colors'
+import Helmet from 'react-helmet'
 
 const StyledTitleLink = styled(Link)`
     font-size: 25px;
@@ -117,104 +118,117 @@ function Signup() {
     }
 
     return (
-        <StyledLoginPage>
-            <StyledHeaderTitle>
-                <StyledTitleLink to="/">Apando</StyledTitleLink>
-            </StyledHeaderTitle>
-            <StyledLoginWrapper>
-                <StyledLoginTitle>Inscription</StyledLoginTitle>
-                <StyledForm action="#">
-                    {error && <StyleError>{error}</StyleError>}
-                    <StyledField>
-                        <StyledFieldInput
-                            type="text"
-                            name="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="username">
-                            nom d'utilisateur
-                        </StyledFieldLabel>
-                    </StyledField>
-                    <StyledField>
-                        <StyledFieldInput
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="email">
-                            e-mail
-                        </StyledFieldLabel>
-                    </StyledField>
-                    <StyledField>
-                        <StyledFieldInput
-                            type={showPassword ? 'text' : 'password'}
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="password">
-                            mot de passe
-                        </StyledFieldLabel>
-                        {showPassword ? (
-                            <StyledVisibilityOnIcon
-                                onClick={() => setShowPassword(!showPassword)}
+        <>
+            <Helmet>
+                <title>Apando / Inscription</title>
+                <meta
+                    name="description"
+                    content="Bienvenue sur Apando ! Vous pouvez vous inscrire ici pour accéder au reste du site."
+                />
+            </Helmet>
+            <StyledLoginPage>
+                <StyledHeaderTitle>
+                    <StyledTitleLink to="/">Apando</StyledTitleLink>
+                </StyledHeaderTitle>
+                <StyledLoginWrapper>
+                    <StyledLoginTitle>Inscription</StyledLoginTitle>
+                    <StyledForm action="#">
+                        {error && <StyleError>{error}</StyleError>}
+                        <StyledField>
+                            <StyledFieldInput
+                                type="text"
+                                name="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
                             />
-                        ) : (
-                            <StyledVisibilityOffIcon
-                                onClick={() => setShowPassword(!showPassword)}
+                            <StyledFieldLabel htmlFor="username">
+                                nom d'utilisateur
+                            </StyledFieldLabel>
+                        </StyledField>
+                        <StyledField>
+                            <StyledFieldInput
+                                type="email"
+                                name="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
-                        )}
-                    </StyledField>
-                    <StyledField>
-                        <input
-                            type="checkbox"
-                            name="remember-me"
-                            onChange={(e) => setCheckBox(!checkBox)}
-                            required
-                        />
-                        <label htmlFor="accept-rules">
-                            Je reconnais avoir 13 ans ou plus et avoir lu et
-                            accepté{' '}
-                            <StyleLink to="/terms">
-                                les conditions d'utilisations
-                            </StyleLink>{' '}
-                            et{' '}
-                            <StyleLink to="/privacy">
-                                la Politique de Confidentialité
-                            </StyleLink>
-                        </label>
-                    </StyledField>
-                    <StyledField>
-                        <StyledSubmit onClick={(e) => handleSignIn(e)} />
-                    </StyledField>
-                    <StyledField>
-                        Déjà inscrit ?
-                        <StyleLink to="/login"> Se connecter</StyleLink>
-                    </StyledField>
-                    <StyledField
-                        onClick={() => googleSignInApi()}
-                        style={{
-                            cursor: 'pointer',
-                            alignItems: 'center',
-                            display: 'flex',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <img
-                            src="https://img.icons8.com/fluency/48/000000/google-logo.png"
-                            alt="Google Icon for SignIn popup"
-                        />
-                        <span> Continuer avec Google</span>
-                    </StyledField>
-                </StyledForm>
-            </StyledLoginWrapper>
-            <Wave />
-        </StyledLoginPage>
+                            <StyledFieldLabel htmlFor="email">
+                                e-mail
+                            </StyledFieldLabel>
+                        </StyledField>
+                        <StyledField>
+                            <StyledFieldInput
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <StyledFieldLabel htmlFor="password">
+                                mot de passe
+                            </StyledFieldLabel>
+                            {showPassword ? (
+                                <StyledVisibilityOnIcon
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                />
+                            ) : (
+                                <StyledVisibilityOffIcon
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                />
+                            )}
+                        </StyledField>
+                        <StyledField>
+                            <input
+                                type="checkbox"
+                                name="remember-me"
+                                onChange={(e) => setCheckBox(!checkBox)}
+                                required
+                            />
+                            <label htmlFor="accept-rules">
+                                Je reconnais avoir 13 ans ou plus et avoir lu et
+                                accepté{' '}
+                                <StyleLink to="/terms">
+                                    les conditions d'utilisations
+                                </StyleLink>{' '}
+                                et{' '}
+                                <StyleLink to="/privacy">
+                                    la Politique de Confidentialité
+                                </StyleLink>
+                            </label>
+                        </StyledField>
+                        <StyledField>
+                            <StyledSubmit onClick={(e) => handleSignIn(e)} />
+                        </StyledField>
+                        <StyledField>
+                            Déjà inscrit ?
+                            <StyleLink to="/login"> Se connecter</StyleLink>
+                        </StyledField>
+                        <StyledField
+                            onClick={() => googleSignInApi()}
+                            style={{
+                                cursor: 'pointer',
+                                alignItems: 'center',
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <img
+                                src="https://img.icons8.com/fluency/48/000000/google-logo.png"
+                                alt="Google Icon for SignIn popup"
+                            />
+                            <span> Continuer avec Google</span>
+                        </StyledField>
+                    </StyledForm>
+                </StyledLoginWrapper>
+                <Wave />
+            </StyledLoginPage>
+        </>
     )
 }
 

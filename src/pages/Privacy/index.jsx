@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import { theme } from '../../utils/style/colors'
@@ -9,6 +10,9 @@ import { HomePage, LastModif, StyledH2, StyledSection } from './StyledPrivacy'
 const Privacy = () => {
     return (
         <>
+            <Helmet>
+                <title>Apando / Confidentialité</title>
+            </Helmet>
             <Header />
             <StyledLoginPage style={{ marginTop: '-50px' }}>
                 <div>
