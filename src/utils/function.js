@@ -23,10 +23,17 @@ import {
 } from 'firebase/firestore'
 import { db } from './firebase/config'
 
-function writeUserMessage(user, message, id_channel) {
+/**
+ * Write the user message in the database to the associated channel
+ * @param {Object} user is the auth instance of the current logged user
+ * @param {string} message is the message to send
+ * @param {string} id_channel is the channel from where the message is sent
+ */
+async function writeUserMessage(user, message, id_channel, id_server) {
     const db = getDatabase()
     const messageListRef = ref(db, 'messages/' + id_channel)
     const newMessageRef = push(messageListRef)
+    const updates = {}
 
     set(newMessageRef, {
         message: message,
@@ -38,6 +45,12 @@ function writeUserMessage(user, message, id_channel) {
             photoURL: user.photoURL,
         },
     })
+    remove(ref(db, `channels/${id_server}/${id_channel}/seen`))
+    updates[`channels/${id_server}/${id_channel}/lastMessage`] = message
+    updates[`channels/${id_server}/${id_channel}/lastMessageUser`] =
+        user.displayName
+    updates[`channels/${id_server}/${id_channel}/seen/${user.uid}`] = true
+    update(ref(db), updates)
 }
 
 async function writeUserRole(uid, role, id_server) {
