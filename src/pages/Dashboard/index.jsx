@@ -24,6 +24,7 @@ import { getDatabase, onValue, ref } from 'firebase/database'
 import { styled } from '@mui/material'
 import { theme } from '../../utils/style/colors'
 import { ExitToApp } from '@material-ui/icons'
+import Helmet from 'react-helmet'
 
 // const BootstrapTooltip = styled(({ className, ...props }) => (
 //     <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -73,7 +74,7 @@ const Dashboard = () => {
         }
     }
     if (currentServer) {
-        server_id = currentServer
+        server_id = currentServer?.id
         checkUser()
     } else {
         server_id = params.serverid
@@ -100,36 +101,52 @@ const Dashboard = () => {
     }, [server_id])
 
     return (
-        <DashboardBackground>
-            <DashboardMain>
-                <DashboardTitle>
-                    <StyledExitToAppIcon onClick={() => navigate('/app')} />
-                    <div>Dashboard de {serverInfo?.name}</div>
-                </DashboardTitle>
-                <ServerStatsContainer>
-                    <MemberCase nb={serverStats?.memberCount} />
-                    <InviteCase nb={serverStats?.currentInviteCount} />
-                    <MessageCase nb={serverStats?.messageCount} />
-                </ServerStatsContainer>
-                <Row2>
-                    <ServerParams
-                        serverName={serverInfo?.name}
-                        code={serverInfo?.code ? serverInfo.code : ''}
-                        autoJoin={
-                            serverInfo?.jointype ? serverInfo?.jointype : 'auto'
-                        }
-                        domain={serverInfo?.domain ? serverInfo?.domain : ''}
-                        server_id={server_id}
-                    />
-                    <MemberList
-                        serverName={serverInfo?.name}
-                        server_id={server_id}
-                        server={serverInfo}
-                        joinType={serverInfo?.jointype}
-                    />
-                </Row2>
-            </DashboardMain>
-        </DashboardBackground>
+        <>
+            <Helmet>
+                <title>
+                    Apando / Dashboard /{' '}
+                    {currentServer?.name ? currentServer.name : ''}
+                </title>
+                <meta
+                    name="description"
+                    content="Retrouvez toutes les statistiques relatives à votre serveur et configurez-le comme vous le souhaitez."
+                />
+            </Helmet>
+            <DashboardBackground>
+                <DashboardMain>
+                    <DashboardTitle>
+                        <StyledExitToAppIcon onClick={() => navigate('/app')} />
+                        <div>Dashboard de {serverInfo?.name}</div>
+                    </DashboardTitle>
+                    <ServerStatsContainer>
+                        <MemberCase nb={serverStats?.memberCount} />
+                        <InviteCase nb={serverStats?.currentInviteCount} />
+                        <MessageCase nb={serverStats?.messageCount} />
+                    </ServerStatsContainer>
+                    <Row2>
+                        <ServerParams
+                            serverName={serverInfo?.name}
+                            code={serverInfo?.code ? serverInfo.code : ''}
+                            autoJoin={
+                                serverInfo?.jointype
+                                    ? serverInfo?.jointype
+                                    : 'auto'
+                            }
+                            domain={
+                                serverInfo?.domain ? serverInfo?.domain : ''
+                            }
+                            server_id={server_id}
+                        />
+                        <MemberList
+                            serverName={serverInfo?.name}
+                            server_id={server_id}
+                            server={serverInfo}
+                            joinType={serverInfo?.jointype}
+                        />
+                    </Row2>
+                </DashboardMain>
+            </DashboardBackground>
+        </>
     )
 }
 

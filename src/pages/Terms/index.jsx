@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import { theme } from '../../utils/style/colors'
@@ -14,6 +15,9 @@ import {
 const Terms = () => {
     return (
         <>
+            <Helmet>
+                <title>Apando / Conditions d'Utilisation</title>
+            </Helmet>
             <Header />
             <StyledLoginPage style={{ marginTop: '-50px', width: '100%' }}>
                 <div>

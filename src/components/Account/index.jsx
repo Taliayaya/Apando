@@ -17,6 +17,7 @@ import { deleteUser, getAuth, updateProfile } from 'firebase/auth'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
+import Helmet from 'react-helmet'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -69,10 +70,10 @@ function Account() {
     }
 
     const handleDeleteAccount = () => {
-        const deleteAccountAnswer = prompt(`${user.displayName}, 
+        const deleteAccountAnswer = prompt(`${user.displayName},
         vous êtes sur le point de définitivement supprimer votre compte.
-        Il sera parti pour de bon. 
-        
+        Il sera parti pour de bon.
+
         Pour continuer la suppression, veuillez écrire CONFIRMER dans la boîte de dialogue.`)
         if (deleteAccountAnswer.toLowerCase() === 'confirmer') {
             deleteUser(user)
@@ -102,49 +103,54 @@ function Account() {
         submitNewAvatar()
     }
     return (
-        <StyledBody>
-            <StyledExitToAppIcon
-                onClick={(e) => handleNavigateClick(e)}
-                onKeyDown={(e) => handleNavigateEscape(e)}
-            />
-            <div>
-                <StyledCompte>
-                    <h1>Mon compte</h1>
+        <>
+            <Helmet>
+                <title>Apando / {user.displayName}</title>
+            </Helmet>
+            <StyledBody>
+                <StyledExitToAppIcon
+                    onClick={(e) => handleNavigateClick(e)}
+                    onKeyDown={(e) => handleNavigateEscape(e)}
+                />
+                <div>
+                    <StyledCompte>
+                        <h1>Mon compte</h1>
 
-                    <div>
-                        <FileUploader
-                            onFileSelectSuccess={(file) =>
-                                setSelectedFile(file)
-                            }
-                            onFileSelectError={({ error }) => alert(error)}
-                            selectedFile={selectedFile}
-                            success={success}
-                        />
-                        <StyledField>Nom d'utilisateur</StyledField>
-                        <div id="pseudo">{user?.displayName}</div>
-                        <StyledField>Adresse mail</StyledField>
-                        <div id="mail">{user?.email}</div>
-                    </div>
-                </StyledCompte>
-                <Separator />
-                <StyledCompte>
-                    <h1>Mot de passe</h1>
-                    <StyledButton
-                        onClick={() => resetPassword(auth, user.email)}
-                    >
-                        Changer le mot de passe
-                    </StyledButton>
-                    <StyledButton onClick={() => logout()}>
-                        Déconnexion
-                    </StyledButton>
-                    <StyledDangerousButton
-                        onClick={() => handleDeleteAccount()}
-                    >
-                        Supprimer le compte
-                    </StyledDangerousButton>
-                </StyledCompte>
-            </div>
-        </StyledBody>
+                        <div>
+                            <FileUploader
+                                onFileSelectSuccess={(file) =>
+                                    setSelectedFile(file)
+                                }
+                                onFileSelectError={({ error }) => alert(error)}
+                                selectedFile={selectedFile}
+                                success={success}
+                            />
+                            <StyledField>Nom d'utilisateur</StyledField>
+                            <div id="pseudo">{user?.displayName}</div>
+                            <StyledField>Adresse mail</StyledField>
+                            <div id="mail">{user?.email}</div>
+                        </div>
+                    </StyledCompte>
+                    <Separator />
+                    <StyledCompte>
+                        <h1>Mot de passe</h1>
+                        <StyledButton
+                            onClick={() => resetPassword(auth, user.email)}
+                        >
+                            Changer le mot de passe
+                        </StyledButton>
+                        <StyledButton onClick={() => logout()}>
+                            Déconnexion
+                        </StyledButton>
+                        <StyledDangerousButton
+                            onClick={() => handleDeleteAccount()}
+                        >
+                            Supprimer le compte
+                        </StyledDangerousButton>
+                    </StyledCompte>
+                </div>
+            </StyledBody>
+        </>
     )
 }
 

@@ -84,7 +84,7 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 {isOwner && (
                     <MenuItem
                         onClick={() => {
-                            writeUserRole(uid, 'Admin', currentServer)
+                            writeUserRole(uid, 'Admin', currentServer?.id)
                             handleClose()
                         }}
                     >
@@ -98,7 +98,7 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 {hasPower && (
                     <MenuItem
                         onClick={() => {
-                            writeUserRole(uid, 'Délégué', currentServer)
+                            writeUserRole(uid, 'Délégué', currentServer?.id)
                             handleClose()
                         }}
                     >
@@ -111,7 +111,7 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 {isOwner && (
                     <MenuItem
                         onClick={() => {
-                            removeUserRole(uid, currentServer)
+                            removeUserRole(uid, currentServer?.id)
                             handleClose()
                         }}
                         style={{ color: 'red' }}
@@ -126,7 +126,7 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 {hasPower && (
                     <MenuItem
                         onClick={() => {
-                            writeUserRole(uid, 'Muted', currentServer)
+                            writeUserRole(uid, 'Muted', currentServer?.id)
                             handleClose()
                         }}
                         style={{ color: 'red', backgroundColor: '#ffe0e0' }}
@@ -140,7 +140,7 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 {hasPower && (
                     <MenuItem
                         onClick={() => {
-                            banUserFromServer(currentServer, uid)
+                            banUserFromServer(currentServer?.id, uid)
                             handleClose()
                         }}
                         style={{ color: 'red', backgroundColor: '#ffe0e0' }}

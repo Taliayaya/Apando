@@ -20,6 +20,7 @@ import { getAuth } from 'firebase/auth'
 import { getServer, joinServer, requestJoin } from '../../utils/function'
 import { Alert, Collapse, IconButton } from '@mui/material'
 import { Close } from '@material-ui/icons'
+import Helmet from 'react-helmet'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -85,80 +86,35 @@ const Join = () => {
         }
     }
     return (
-        <StyledLoginPage>
-            <StyledHeaderTitle>Utilise ton code ici !</StyledHeaderTitle>
-            <StyledExitToAppIcon onClick={() => navigate('/app')} />
-            <StyledLoginWrapper>
-                <StyledLoginTitle>Mon code</StyledLoginTitle>
-                <StyledText>
-                    Ici tu peux rentrer le code que ton enseignant(e), ton
-                    ami(e) ou tes camarades t'ont donné.
-                </StyledText>
-                <StyledText>
-                    Courage c'est la dernière étape avant de les rejoindre !
-                </StyledText>
-                <StyledText>
-                    Dans le cadre de la beta, tu peux utiliser comme nom et code{' '}
-                    <b>beta</b> pour rejoindre le serveur de la beta et obtenir
-                    un avant-goût de Apando !
-                </StyledText>
+        <>
+            <Helmet>
+                <title>Apando / Rejoindre un serveur</title>
+            </Helmet>
 
-                {/*
+            <StyledLoginPage>
+                <StyledHeaderTitle>Utilise ton code ici !</StyledHeaderTitle>
+                <StyledExitToAppIcon onClick={() => navigate('/app')} />
+                <StyledLoginWrapper>
+                    <StyledLoginTitle>Mon code</StyledLoginTitle>
+                    <StyledText>
+                        Ici tu peux rentrer le code que ton enseignant(e), ton
+                        ami(e) ou tes camarades t'ont donné.
+                    </StyledText>
+                    <StyledText>
+                        Courage c'est la dernière étape avant de les rejoindre !
+                    </StyledText>
+                    <StyledText>
+                        Dans le cadre de la beta, tu peux utiliser comme nom et
+                        code <b>beta</b> pour rejoindre le serveur de la beta et
+                        obtenir un avant-goût de Apando !
+                    </StyledText>
+
+                    {/*
                 ===============
                 ERROR COMPONENT
                 ===============
                 */}
-                <Collapse in={Boolean(error)}>
-                    <Alert
-                        action={
-                            <IconButton
-                                aria-label="close"
-                                color="inherit"
-                                size="small"
-                                onClick={() => setError(null)}
-                            >
-                                <Close fontSize="inherit" />
-                            </IconButton>
-                        }
-                        sx={{ mb: 2 }}
-                        severity="error"
-                    >
-                        {error}
-                    </Alert>
-                </Collapse>
-
-                <StyledForm action="#">
-                    <StyledField>
-                        <StyledFieldInput
-                            type="text"
-                            name="serverName"
-                            value={serverName}
-                            onChange={(e) => setServerName(e.target.value)}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="mycode">
-                            Entrer le nom du serveur
-                        </StyledFieldLabel>
-                    </StyledField>
-                    <StyledField>
-                        <StyledFieldInput
-                            type="text"
-                            name="mycode"
-                            value={code}
-                            onChange={(e) => setCode(e.target.value)}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="mycode">
-                            Entrer mon code
-                        </StyledFieldLabel>
-                    </StyledField>
-                    <StyledField>
-                        <StyledSubmit
-                            type="submit"
-                            onClick={(e) => handleCode(e)}
-                        />
-                    </StyledField>
-                    <Collapse in={Boolean(success)}>
+                    <Collapse in={Boolean(error)}>
                         <Alert
                             action={
                                 <IconButton
@@ -171,19 +127,70 @@ const Join = () => {
                                 </IconButton>
                             }
                             sx={{ mb: 2 }}
-                            severity="success"
+                            severity="error"
                         >
-                            {success}
+                            {error}
                         </Alert>
                     </Collapse>
-                    <StyledField>
-                        Pas de code ?{' '}
-                        <StyleLink to="/create">Crée ton serveur</StyleLink>
-                    </StyledField>
-                </StyledForm>
-            </StyledLoginWrapper>
-            <WaveJoin />
-        </StyledLoginPage>
+
+                    <StyledForm action="#">
+                        <StyledField>
+                            <StyledFieldInput
+                                type="text"
+                                name="serverName"
+                                value={serverName}
+                                onChange={(e) => setServerName(e.target.value)}
+                                required
+                            />
+                            <StyledFieldLabel htmlFor="mycode">
+                                Entrer le nom du serveur
+                            </StyledFieldLabel>
+                        </StyledField>
+                        <StyledField>
+                            <StyledFieldInput
+                                type="text"
+                                name="mycode"
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                                required
+                            />
+                            <StyledFieldLabel htmlFor="mycode">
+                                Entrer mon code
+                            </StyledFieldLabel>
+                        </StyledField>
+                        <StyledField>
+                            <StyledSubmit
+                                type="submit"
+                                onClick={(e) => handleCode(e)}
+                            />
+                        </StyledField>
+                        <Collapse in={Boolean(success)}>
+                            <Alert
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => setError(null)}
+                                    >
+                                        <Close fontSize="inherit" />
+                                    </IconButton>
+                                }
+                                sx={{ mb: 2 }}
+                                severity="success"
+                            >
+                                {success}
+                            </Alert>
+                        </Collapse>
+                        <StyledField>
+                            Pas de code ?{' '}
+                            <StyleLink to="/create">Crée ton serveur</StyleLink>
+                        </StyledField>
+                    </StyledForm>
+                </StyledLoginWrapper>
+                <WaveJoin />
+            </StyledLoginPage>
+        </>
     )
 }
 

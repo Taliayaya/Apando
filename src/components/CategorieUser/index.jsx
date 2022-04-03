@@ -22,7 +22,7 @@ function CategorieUser() {
                 // On récupère ici la liste des utilisateurs présents dans le server
                 const q = query(
                     collection(db, 'users'),
-                    where('serversid', 'array-contains', currentServer)
+                    where('serversid', 'array-contains', currentServer?.id)
                 )
                 const querySnapshot = await getDocs(q)
                 const queryUserList = []
@@ -49,7 +49,7 @@ function CategorieUser() {
             // On récupère ici la liste des utilisateurs présents dans le server
             const q = query(
                 collection(db, 'users'),
-                where('serversid', 'array-contains', currentServer)
+                where('serversid', 'array-contains', currentServer?.id)
             )
 
             const querySnapshot = await getDocs(q)
@@ -99,6 +99,7 @@ function CategorieUser() {
                                 avatar={data.data.avatar}
                                 logged="true"
                                 uid={id}
+                                key={id}
                             />
                         </div>
                     ) : // est ce que l'indice précédent était offline ?
@@ -121,6 +122,7 @@ function CategorieUser() {
                                 datediff={lastLogin}
                                 avatar={data.data.avatar}
                                 uid={id}
+                                key={id}
                             />
                         </div>
                     )
