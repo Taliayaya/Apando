@@ -53,7 +53,13 @@ color: #999999;
     color: ${theme.sides_font_color};
     background-color: ${theme.top_menu_bg_color};
     font-size: large;
-}`};
+}`}
+
+    ${(props) =>
+        props.newmessage === 'false' &&
+        `
+    color: #ccc;
+    `}
 `
 export const StyledInput = styled.input`
     width: 100%;
