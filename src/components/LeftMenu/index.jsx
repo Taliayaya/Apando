@@ -38,9 +38,17 @@ const LeftMenu = ({ serverList, setChannelList }) => {
         }
         error && setError(null)
 
-        addNewChannel(newChannelName, currentServer)
+        addNewChannel(newChannelName, currentServer?.id)
 
         setNewChannelName('')
+    }
+
+    const changeServer = (value) => {
+        const server = value.split(' ')
+        setCurrentServer({ id: server[0], name: server[1] })
+        setChannelList([])
+        setUserList([])
+        setMessageList([])
     }
 
     return (
@@ -89,19 +97,16 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                     <Select
                         labelId="server-select-label"
                         id="server-select"
-                        value={currentServer?.name}
+                        // value={currentServer?.name}
                         label="Serveur actuel"
                         onChange={(e) => {
-                            setCurrentServer(e.target.value)
-                            setChannelList([])
-                            setUserList([])
-                            setMessageList([])
+                            changeServer(e.target.value)
                         }}
-                        defaultValue={currentServer}
+                        defaultValue={`${currentServer?.id} ${currentServer?.name}`}
                     >
                         {serverList &&
                             serverList.map(({ id, name }) => (
-                                <MenuItem value={id} key={id}>
+                                <MenuItem value={`${id} ${name}`} key={id}>
                                     {name}
                                 </MenuItem>
                             ))}
@@ -123,7 +128,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
             </MenuItem>
             {hasPower && (
                 <MenuItem
-                    onClick={() => navigate(`/dashboard/${currentServer}`)}
+                    onClick={() => navigate(`/dashboard/${currentServer?.id}`)}
                 >
                     <ListItemIcon>
                         <Dashboard />

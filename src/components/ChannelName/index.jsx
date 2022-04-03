@@ -58,7 +58,9 @@ const ChannelName = ({ id_channel, name }) => {
                     }
                 >
                     <MenuItem
-                        onClick={() => deleteChannel(id_channel, currentServer)}
+                        onClick={() =>
+                            deleteChannel(id_channel, currentServer?.id)
+                        }
                     >
                         <ListItemIcon>
                             <DeleteForever style={{ color: 'red' }} />

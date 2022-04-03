@@ -37,7 +37,7 @@ function ChannelList() {
     useEffect(() => {
         const setRole = async () => {
             if (currentServer) {
-                const role = await getUserRole(user.uid, currentServer)
+                const role = await getUserRole(user.uid, currentServer?.id)
                 setUserRole(role?.role)
             }
         }
@@ -54,7 +54,7 @@ function ChannelList() {
                 if (userSnap.exists()) {
                     const serverList = userSnap.data().servers
                     if (serverList?.length > 0) {
-                        setCurrentServer(serverList[0].id)
+                        setCurrentServer(serverList[0])
                         setServerList(serverList)
                     }
                 }
@@ -67,7 +67,7 @@ function ChannelList() {
     useEffect(() => {
         if (currentServer) {
             const rldb = getDatabase()
-            const channelRef = ref(rldb, `channels/${currentServer}`)
+            const channelRef = ref(rldb, `channels/${currentServer?.id}`)
             const unsub = onValue(channelRef, (snapshot) => {
                 const obj = snapshot.val()
                 const datas = []

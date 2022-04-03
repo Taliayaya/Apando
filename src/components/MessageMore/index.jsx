@@ -20,7 +20,7 @@ const MessageMore = ({ id, message, id_channel, uid }) => {
     const handleDelete = () => {
         const messageRef = ref(db, 'messages/' + id_channel + '/' + id)
         remove(messageRef)
-        updateMessageCount(currentServer, id_channel, -1)
+        updateMessageCount(currentServer?.id, id_channel, -1)
     }
     return (
         <StyledMessageMoreMenu>
