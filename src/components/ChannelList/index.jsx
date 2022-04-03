@@ -87,7 +87,9 @@ function ChannelList() {
     return (
         <StyledChannelList showChannel={showChannel ? 'true' : 'false'}>
             <StyledChannelListTop hovered={showMenu} onClick={handleClick}>
-                <h2>Le Bon Sauveur</h2>
+                <h2>
+                    {currentServer?.name ? currentServer.name : 'Aucun serveur'}
+                </h2>
                 {showMenu ? <MenuOpenIcon /> : <ExpandMoreIcon />}
             </StyledChannelListTop>
 
