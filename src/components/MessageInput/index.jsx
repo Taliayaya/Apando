@@ -61,7 +61,7 @@ const UploadIcon = ({ success, onFileSelectError, onFileSelectSuccess }) => {
 const MessageInput = ({ currentChannelId }) => {
     //File-uploading-related values
     const [success, setSuccess] = useState(false)
-    const [selectedFiles, addSelectedFiles] = useState([])
+    const [selectedFiles, setSelectedFiles] = useState([])
     const { logout, resetPassword } = useAuth()
 
     const { message, setMessage } = useMessage()
@@ -78,6 +78,7 @@ const MessageInput = ({ currentChannelId }) => {
                     selectedFiles
                 )
                 setMessage('')
+                setSelectedFiles([])
             } catch (error) {
                 console.log(error)
             }
@@ -104,8 +105,7 @@ const MessageInput = ({ currentChannelId }) => {
                 <form>
                     <UploadIcon
                         onFileSelectSuccess={(file) =>
-                          {addSelectedFiles((file) => [...selectedFiles, file])}
-                          console.log(selectedFiles)
+                          {setSelectedFiles([...selectedFiles, file])}
                         }
                         onFileSelectError={({ error }) => alert(error)}
                         selectedFiles={selectedFiles}

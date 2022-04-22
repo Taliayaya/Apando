@@ -19,7 +19,6 @@ async function storeFiles(files, messageRef) {
         const storage = getStorage()
         const filesPath = messageRef._path.pieces_.slice(1).join('/')
         // The whole path except the 'messages' directory
-        console.log(filesPath)
         files.forEach((file) => {
           const filesRef = storageRef(storage, `attachments/${filesPath}/${file.name}`)
           uploadBytes(filesRef, file)
@@ -32,7 +31,6 @@ function writeUserMessage(user, message, id_channel, files = []) {
     const db = getDatabase()
     const messageListRef = ref(db, 'messages/' + id_channel)
     const newMessageRef = push(messageListRef)
-    console.log(newMessageRef)
     const filesRef = storeFiles(files, newMessageRef)
     set(newMessageRef, {
         message: message,
