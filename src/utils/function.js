@@ -8,12 +8,32 @@ import {
     remove,
 } from 'firebase/database'
 import { Timestamp } from 'firebase/firestore'
+import { getStorage, uploadBytes, ref as storageRef } from 'firebase/storage' // Need to alias it in order to avoid collision
 
-function writeUserMessage(user, message, id_channel) {
+async function storeFiles(files, messageRef) {
+    /* Stores the files in the storage, and returns the reference to the folder they're in.
+     * If there are no files, returs null.
+     * Takes the files and the reference to the message we're sending as arguments.
+     */
+    if (files !== []) {
+        const storage = getStorage()
+        const filesPath = messageRef._path.pieces_.slice(1).join('/')
+        // The whole path except the 'messages' directory
+        console.log(filesPath)
+        files.forEach((file) => {
+          const filesRef = storageRef(storage, `attachments/${filesPath}/${file.name}`)
+          uploadBytes(filesRef, file)
+          })
+        return filesPath
+    } else return null
+}
+
+function writeUserMessage(user, message, id_channel, files = []) {
     const db = getDatabase()
     const messageListRef = ref(db, 'messages/' + id_channel)
     const newMessageRef = push(messageListRef)
-
+    console.log(newMessageRef)
+    const filesRef = storeFiles(files, newMessageRef)
     set(newMessageRef, {
         message: message,
         id_channel: id_channel,
@@ -23,6 +43,7 @@ function writeUserMessage(user, message, id_channel) {
             displayName: user.displayName,
             photoURL: user.photoURL,
         },
+        files: filesRef,
     })
 }
 
