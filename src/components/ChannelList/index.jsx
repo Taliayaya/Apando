@@ -12,11 +12,11 @@ import LeftMenu from '../LeftMenu'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
 import { getAuth } from 'firebase/auth'
-import { Menu } from '@mui/material'
+import { Button, Menu } from '@mui/material'
 import { getUserRole } from '../../utils/function'
 import ChannelName from '../ChannelName'
 import { getDatabase, onValue, ref } from 'firebase/database'
-
+import { askNotification } from '../../utils/notification'
 function ChannelList() {
     const [channelList, setChannelList] = useState([])
     const [showMenu, setShowMenu] = useState(null)
@@ -121,7 +121,14 @@ function ChannelList() {
             <StyledChannelListBottom>
                 {channelList &&
                     channelList.map(
-                        ({ key, name, lastMessage, lastMessageUser, seen }) => {
+                        ({
+                            key,
+                            name,
+                            lastMessage,
+                            lastMessageUser,
+                            lastMessageImg,
+                            seen,
+                        }) => {
                             return (
                                 <ChannelName
                                     key={key.toString()}
@@ -131,12 +138,18 @@ function ChannelList() {
                                     lastMessageData={{
                                         lastMessage: lastMessage,
                                         lastMessageUser: lastMessageUser,
+                                        lastMessageImg: lastMessageImg,
                                     }}
                                 />
                             )
                         }
                     )}
             </StyledChannelListBottom>
+            <div>
+                <Button onClick={askNotification}>
+                    Recevoir les notifications
+                </Button>
+            </div>
         </StyledChannelList>
     )
 }
