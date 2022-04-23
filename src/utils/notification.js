@@ -1,0 +1,47 @@
+import { getDatabase, ref, update } from 'firebase/database'
+
+function setNotificationAsSent(uid, id_channel, id_server) {
+    const db = getDatabase()
+    const updates = {}
+    updates[`channels/${id_server}/${id_channel}/seen/${uid}`] = 'sent'
+    update(ref(db), updates)
+}
+function askNotification() {
+    // Let's check if the browser supports notifications
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+        console.log('This browser does not support desktop notification')
+    } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission()
+    }
+}
+
+function sendNotificationWeb(
+    uid,
+    id_channel,
+    id_server,
+    img,
+    message,
+    channelName,
+    serverName,
+    username
+) {
+    if (Notification.permission === 'granted') {
+        const notification = new Notification(
+            `${serverName}/${channelName} - ${username}`,
+            {
+                body: message,
+                icon: img,
+            }
+        )
+        // document.addEventListener('visibilitychange', () => {
+        //     if (document.visibilityState === 'visible') {
+        //         notification.close()
+        //     }
+        // })
+    }
+    setNotificationAsSent(uid, id_channel, id_server)
+
+    console.log('not sent')
+}
+
+export { setNotificationAsSent, askNotification, sendNotificationWeb }
