@@ -14,13 +14,13 @@ const Privacy = () => {
                 <title>Apando / Confidentialité</title>
             </Helmet>
             <Header />
-            <StyledLoginPage style={{ marginTop: '-50px' }}>
+            <StyledLoginPage style={{ marginTop: '-7.5em' }}>
                 <div>
                     <HomePage>
                         <h1
                             style={{
                                 color: theme.font_color,
-                                paddingTop: '30px',
+                                paddingTop: '5em',
                                 textAlign: 'center',
                             }}
                         >
@@ -290,9 +290,11 @@ const Privacy = () => {
                                     ?&quot; disponible à l'adresse suivante :{' '}
                                     <br />
                                     <a
-                                        href="https://helpx.adobe.com/flash-player/kb/disable-local-shared-objects-flash.html#main_Where_can_I_change_the_settings_for_disabling__or_deleting_local_shared_objects_"
+                                        href="https://helpx.adobe.com/flash-player/kb
+                                        /disable-local-shared-objects-flash.html#main_Where_can_I_change_the_settings_for_disabling__or_deleting_local_shared_objects_"
                                         rel="external nofollow noopener noreferrer"
                                         target="_blank"
+                                        style={{ wordBreak: 'break-all' }}
                                     >
                                         https://helpx.adobe.com/flash-player/kb/disable-local-shared-objects-flash.html#main_Where_can_I_change_the_settings_for_disabling__or_deleting_local_shared_objects_
                                     </a>
