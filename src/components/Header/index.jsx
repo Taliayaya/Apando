@@ -10,7 +10,6 @@ const StyledNav = styled.nav`
     justify-content: space-around;
     padding: 10px 10px 50px;
     z-index: 1;
-    background-color: ${theme.chat_input_bg_color};
 `
 
 const StyledSignUp = styled(Link)`
@@ -31,6 +30,13 @@ const StyledTitleLink = styled(Link)`
     text-decoration: none;
     color: ${theme.font_color};
     z-index: 0;
+    padding: 3px;
+    border-radius: 30px;
+    &:hover {
+        opacity: 0.5;
+        font-size: 30px;
+    }
+    transition: all 0.5s ease;
 `
 
 const StyledLoginLink = styled(Link)`
@@ -45,21 +51,13 @@ const StyledLoginLink = styled(Link)`
 `
 
 function Header() {
-    const { authed, logout } = useAuth()
-    const navigate = useNavigate()
-    const handleLogout = () => {
-        logout()
-        navigate('/')
-    }
-
     return (
         <StyledNav>
             <StyledTitleLink to="/">Apando</StyledTitleLink>
-            <div>
+            <div style={{ paddingTop: '10px' }}>
                 <StyledLoginLink to="/login">Se connecter</StyledLoginLink>
                 <StyledSignUp to="/signup">Nous Rejoindre</StyledSignUp>
             </div>
-            {authed && <button onClick={() => handleLogout}>Logout</button>}
         </StyledNav>
     )
 }
