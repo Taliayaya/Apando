@@ -10,8 +10,7 @@ import { StyledChannel } from '../ChannelList/ChannelListStyle'
 
 const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
     const { setMessageList } = useMessageList()
-    const { setCurrentChannelId, currentChannelId, currentServer } =
-        useChannel()
+    const { setCurrentChannelId, currentChannel, currentServer } = useChannel()
     const navigate = useNavigate()
     const [contextMenu, setContextMenu] = useState(null)
     const { userRole } = useAuth()
@@ -32,7 +31,7 @@ const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
         setContextMenu(null)
     }
 
-    const currentChannel = currentChannelId.id === id_channel
+    const isCurrentChannel = currentChannel.id === id_channel
 
     const selectChannel = (id_channel, name) => {
         setCurrentChannelId({ id: id_channel, name: name })
@@ -66,7 +65,7 @@ const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
             <StyledChannel
                 onClick={() => selectChannel(id_channel, name)}
                 onDoubleClick={() => selectChannel(id_channel, name)}
-                ischannelselected={currentChannel.toString()}
+                ischannelselected={isCurrentChannel.toString()}
                 onContextMenu={handleContextMenu}
                 newmessage={hasSeenLastMessage().toString()}
             >

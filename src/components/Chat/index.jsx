@@ -36,16 +36,16 @@ const StyledBadge = styled(Badge)((props) => ({
 
 function Chat() {
     const messageEndRef = useRef(null)
-    const { currentChannelId, currentServer } = useChannel()
+    const { currentChannel, currentServer } = useChannel()
     const { messageList, setMessageList } = useMessageList()
     const { showUsers, showChannel } = useAuth()
     const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true)
     const user = getAuth().currentUser
 
     useEffect(() => {
-        if (currentChannelId.id) {
+        if (currentChannel.id) {
             const rltdb = getDatabase()
-            const messageListRef = ref(rltdb, 'messages/' + currentChannelId.id)
+            const messageListRef = ref(rltdb, 'messages/' + currentChannel.id)
             const unsub = onValue(messageListRef, (snapshot) => {
                 const obj = snapshot.val()
                 const datas = []
@@ -57,15 +57,11 @@ function Chat() {
                     })
                     setMessageList(datas)
                 }
-                setMessageAsSeen(
-                    user.uid,
-                    currentChannelId.id,
-                    currentServer.id
-                )
+                setMessageAsSeen(user.uid, currentChannel.id, currentServer.id)
             })
             return () => unsub()
         }
-    }, [currentChannelId.id, currentServer.id, setMessageList, user.uid])
+    }, [currentChannel.id, currentServer.id, setMessageList, user.uid])
 
     useEffect(() => {
         if (shouldScrollToBottom) {
@@ -166,7 +162,7 @@ function Chat() {
                     </Tooltip>
                 </StyledBadge>
             </ScrollDown>
-            <MessageInput currentChannelId={currentChannelId} />
+            <MessageInput currentChannel={currentChannel} />
         </StyledChat>
     )
 }
