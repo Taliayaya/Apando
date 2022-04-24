@@ -389,6 +389,7 @@ async function getServerInfo(id_server) {
 
     const docSnap = await getDoc(serverRef)
     const data = docSnap.data()
+    data['id'] = docSnap.id
     return data
 }
 
