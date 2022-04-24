@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth'
-import { doc, Timestamp, updateDoc } from 'firebase/firestore'
+import { doc, Timestamp, updateDoc, serverTimestamp } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import Helmet from 'react-helmet'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -27,47 +27,40 @@ function App() {
      */
     useEffect(() => {
         const checkUser = async (server_id) => {
-            console.log(server_id)
             const isUserValid = await isUserInTargetServer(user.uid, server_id)
 
             if (isUserValid) {
-                if (currentServer) return
+                // The currentServer is as the URL, so no changes needed
+                if (currentServer?.id === server_id) return
+
+                // Retrieve server data and update states
                 const serverData = await getServerInfo(server_id)
                 if (serverData) {
-                    console.log(1)
                     setCurrentServer({
                         id: serverData.id,
                         name: serverData.name,
                     })
-                    /** Well, the user is in the server but......
-                     * We couldn't retrieve any data ??
-                     * Let's avoid any error, shall we ? Get redirected !
-                     */
                     return
                 }
                 return
             }
+            /** Well, the user is not in the server ?
+             * Or We couldn't retrieve any data ??
+             * Let's avoid any error, shall we ? Get redirected !
+             */
             navigate('/app')
         }
 
         if (currentServer?.id || params.server_id) {
             checkUser(currentServer?.id ? currentServer.id : params.server_id)
         }
-        console.log(1)
         // Else this user isn't in a server, so no verification needed
-    }, [
-        currentServer,
-        currentServer.id,
-        navigate,
-        params.server_id,
-        setCurrentServer,
-        user.uid,
-    ])
+    }, [currentServer, navigate, params.server_id, setCurrentServer, user.uid])
 
     useEffect(() => {
         const setOnline = setInterval(async () => {
             await updateDoc(doc(db, 'users', user.uid), {
-                'data.lastLogin': Timestamp.fromDate(new Date()),
+                'data.lastLogin': serverTimestamp(),
             })
         }, 60_000)
         return () => {
@@ -77,7 +70,7 @@ function App() {
     useEffect(() => {
         const setOnline = async () => {
             await updateDoc(doc(db, 'users', user.uid), {
-                'data.lastLogin': Timestamp.fromDate(new Date()),
+                'data.lastLogin': serverTimestamp(),
             })
         }
         setOnline()
