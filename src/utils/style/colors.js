@@ -29,6 +29,10 @@ const purpleMode = {
     username_font_color: 'rgb(240, 233, 210)',
 
     font_color: '#fff',
+
+    // Home Page color
+    home_page_bg_color: '#9fa1e0',
+    home_gradient: '#be80e0',
 }
 
 const theme = purpleMode
@@ -41,6 +45,9 @@ const themeMui = createTheme({
         },
         success: {
             main: '#388e3c',
+        },
+        secondary: {
+            main: theme.chat_input_bg_color,
         },
     },
 })
