@@ -6,6 +6,9 @@ import { useAuth, useMessage } from '../../utils/hooks'
 import { writeUserMessage } from '../../utils/function'
 import { styled } from '@mui/material'
 import { StyleMobileSendingContainer } from './StyleMessageInput'
+// For the files tray
+import { Stack, Badge, Button } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 
 //For the upload icon
 import FileUploadIcon from '@mui/icons-material/FileUpload'
@@ -54,9 +57,37 @@ const UploadIcon = ({ success, onFileSelectError, onFileSelectSuccess }) => {
 // Also has a number that allows it to be deleted and send a signal to the list.
 //const UploadItem = ({ index, name, size }) => {}
 
-// Manages the list of the uploaded files (shown as uploadItem instances).
-// Is changed when a new file is added.
-//const uploadList
+const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
+    /* Displays a tray on top of the writing zone when files are added to the
+     * message, and displays each file with its name and a cross to remove it
+     * from the selection.
+     * Arguments:
+     *      selectedFiles: the state of the files, a list containing the files
+     *      setSelectedFiles: the state selector of the list of files
+     * */
+    return (
+        <>
+            <Stack direction="row" spacing={2}>
+                {selectedFiles.map(({ name }) => (
+                    <Badge
+                        badgeContent={<CloseIcon fontSize="small" />}
+                        onClick={() => {
+                            setSelectedFiles(
+                                selectedFiles.filter(
+                                    // Removes from the list any file by that
+                                    // name (quite quirky JS)
+                                    (item) => item.name != { name }.name
+                                ))
+                            console.log(selectedFiles);
+                        }}
+                    >
+                        <Button>{name}</Button>
+                    </Badge>
+                ))}
+            </Stack>
+        </>
+    )
+}
 
 const MessageInput = ({ currentChannelId }) => {
     //File-uploading-related values
@@ -104,12 +135,16 @@ const MessageInput = ({ currentChannelId }) => {
             <StyledChatInput>
                 <form>
                     <UploadIcon
-                        onFileSelectSuccess={(file) =>
-                          {setSelectedFiles([...selectedFiles, file])}
-                        }
+                        onFileSelectSuccess={(file) => {
+                            setSelectedFiles([...selectedFiles, file])
+                        }}
                         onFileSelectError={({ error }) => alert(error)}
                         selectedFiles={selectedFiles}
                         success={success}
+                    />
+                    <FilesTray
+                        selectedFiles={selectedFiles}
+                        setSelectedFiles={setSelectedFiles}
                     />
                     <StyledChatTextarea
                         value={message}
