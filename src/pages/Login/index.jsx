@@ -117,7 +117,7 @@ function Login() {
                 })
 
                 login().then(() => {
-                    navigate(state?.path || '/app')
+                    navigate(state?.path || '/app', { replace: true })
                 })
             }
         })
