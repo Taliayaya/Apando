@@ -47,18 +47,12 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     position: 'relative',
 }))
 
-const handleServerNameTyping = (chr) => {
-    /** Vérifie que le nom donné ne soit pas vide
-     * ou supérieur à 12 caractères
-     * Sinon empêche de taper le caractère
-     */
-    const pattern = /^.{0,12}$/g
-    if (pattern.test(chr)) {
-        return chr
-    }
-    return chr.slice(0, -1)
-}
-
+/**
+ * Verify that each channel name is no longer than 12 chr
+ * Otherwise, it removes the last character of this name to match the size
+ * @param {string} chr a string of channel name separated by \n
+ * @returns the string of channel name with names no more longer than 12 chr
+ */
 const handleChannelListTyping = (chr) => {
     const pattern = /^.{0,12}$/g
     const words = chr.split('\n')
@@ -137,11 +131,8 @@ export default function CreateServer() {
                             type="text"
                             name="serverName"
                             value={serverName}
-                            onChange={(e) =>
-                                setServerName(
-                                    handleServerNameTyping(e.target.value)
-                                )
-                            }
+                            onChange={(e) => setServerName(e.target.value)}
+                            maxLength={'12'}
                             required
                         />
                         <StyledFieldLabel htmlFor="serverName">
@@ -160,25 +151,19 @@ export default function CreateServer() {
                             Créer mon code
                         </StyledFieldLabel>
                     </StyledField>
-                    <StyledField style={{ paddingBottom: '20px' }}>
-                        <StyledText>
-                            Écris en-dessous, ligne par ligne, le nom des salons
-                            que tu veux ajouter dans ton serveur. (Tu pourras en
-                            créer d'autre depuis l'app)
-                        </StyledText>
-                    </StyledField>
-                    <StyledField style={{ paddingBottom: '60px' }}>
-                        <StyledTextarea
-                            name="channels"
-                            cols={12}
-                            onChange={(e) =>
-                                setChannels(
-                                    handleChannelListTyping(e.target.value)
-                                )
-                            }
-                            value={channels}
-                        ></StyledTextarea>
-                    </StyledField>
+                    <StyledText>
+                        Écris en-dessous, ligne par ligne, le nom des salons que
+                        tu veux ajouter dans ton serveur. (Tu pourras en créer
+                        d'autre depuis l'app)
+                    </StyledText>
+                    <StyledTextarea
+                        name="channels"
+                        cols={12}
+                        onChange={(e) =>
+                            setChannels(handleChannelListTyping(e.target.value))
+                        }
+                        value={channels}
+                    ></StyledTextarea>
 
                     <StyledField>
                         <StyledSubmit
