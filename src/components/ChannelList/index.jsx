@@ -17,15 +17,24 @@ import { getUserRole } from '../../utils/function'
 import ChannelName from '../ChannelName'
 import { getDatabase, onValue, ref } from 'firebase/database'
 import { askNotification } from '../../utils/notification'
+import { useNavigate, useParams } from 'react-router-dom'
+
 function ChannelList() {
     const [channelList, setChannelList] = useState([])
     const [showMenu, setShowMenu] = useState(null)
-    const { currentServer, setCurrentServer } = useChannel()
+    const {
+        currentServer,
+        setCurrentServer,
+        currentChannel,
+        setCurrentChannelId,
+    } = useChannel()
     const [serverList, setServerList] = useState([])
     const { showChannel, setUserRole } = useAuth()
     const auth = getAuth()
     const user = auth.currentUser
     const open = Boolean(showMenu)
+    const params = useParams()
+    const navigate = useNavigate()
 
     const handleClick = (e) => {
         setShowMenu(e.currentTarget)
@@ -63,6 +72,29 @@ function ChannelList() {
         loadServerList()
         // firstLoadChannel()
     })
+
+    useEffect(() => {
+        /**
+         * It checks the url params channel_id and whether it is existing or not.
+         * If it does, it sets it as a selected channel, and so load messages
+         * afterward
+         * Else it updates the URL and remove the wrong channel id
+         */
+        const checkURLChannel = async () => {
+            if (params.channel_id && currentChannel.id !== params.channel_id) {
+                const channelURLInServer = channelList.find(
+                    (channelData) => channelData.key === params.channel_id
+                )
+                if (channelURLInServer) {
+                    setCurrentChannelId({
+                        id: channelURLInServer.key,
+                        name: channelURLInServer.name,
+                    })
+                }
+            }
+        }
+        checkURLChannel()
+    }, [channelList, currentChannel, params.channel_id, setCurrentChannelId])
 
     useEffect(() => {
         if (currentServer) {
