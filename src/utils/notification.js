@@ -33,11 +33,17 @@ function sendNotificationWeb(
                 icon: img,
             }
         )
-        // document.addEventListener('visibilitychange', () => {
-        //     if (document.visibilityState === 'visible') {
-        //         notification.close()
-        //     }
-        // })
+        notification.onclick = (e) => {
+            // `http://localhost:3000/app/${serverName}/${id_server}/${id_channel}`
+            window.open(
+                `https://apando.fr/app/${serverName}/${id_server}/${id_channel}`
+            )
+        }
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                notification.close()
+            }
+        })
     }
     setNotificationAsSent(uid, id_channel, id_server)
 
