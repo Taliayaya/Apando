@@ -75,11 +75,10 @@ const Dashboard = () => {
     }
     if (currentServer) {
         server_id = currentServer?.id
-        checkUser()
     } else {
         server_id = params.serverid
-        checkUser()
     }
+    checkUser()
 
     useEffect(() => {
         const getServer = async () => {

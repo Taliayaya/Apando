@@ -92,12 +92,12 @@ export function useMessageList() {
 }
 
 export function useChannel() {
-    const { currentChannelId, setCurrentChannelId, userList, setUserList } =
+    const { currentChannel, setCurrentChannelId, userList, setUserList } =
         useContext(CurrentChannelContext)
     const { currentServer, setCurrentServer } = useContext(CurrentServerContext)
 
     return {
-        currentChannelId,
+        currentChannel,
         setCurrentChannelId,
         currentServer,
         setCurrentServer,

@@ -23,10 +23,19 @@ import {
 } from 'firebase/firestore'
 import { db } from './firebase/config'
 
-function writeUserMessage(user, message, id_channel) {
+/**
+ * Write the user message in the database to the associated channel
+ * Update server stats in real time
+ * @param {Object} user is the auth instance of the current logged user
+ * @param {string} message is the message to send
+ * @param {string} id_channel is the channel in which the message is sent
+ * @param {string} id_server is the server in which the message is sent
+ */
+async function writeUserMessage(user, message, id_channel, id_server) {
     const db = getDatabase()
     const messageListRef = ref(db, 'messages/' + id_channel)
     const newMessageRef = push(messageListRef)
+    const updates = {}
 
     set(newMessageRef, {
         message: message,
@@ -38,8 +47,43 @@ function writeUserMessage(user, message, id_channel) {
             photoURL: user.photoURL,
         },
     })
+    /**
+     * Reset everybody seen stat (Nobody has seen this new message yet, right ?)
+     * Update the server & channels messages stats
+     * Save his avatar and name for the notification display
+     * Set owner message as seen... for the owner (he knows he sent a new message)
+     */
+    remove(ref(db, `channels/${id_server}/${id_channel}/seen`))
+    updates[`channels/${id_server}/${id_channel}/lastMessage`] = message
+    updates[`channels/${id_server}/${id_channel}/lastMessageUser`] =
+        user.displayName
+    updates[`channels/${id_server}/${id_channel}/lastMessageImg`] =
+        user.photoURL
+    updates[`channels/${id_server}/${id_channel}/seen/${user.uid}`] = true
+    update(ref(db), updates)
 }
 
+/**
+ * Write the message as seen for the target user
+ * @param {string} uid is the user id that saw the message
+ * @param {string} id_channel where the message was seen
+ * @param {string} id_server in which server the channel is
+ */
+function setMessageAsSeen(uid, id_channel, id_server) {
+    const db = getDatabase()
+    const updates = {}
+    updates[`channels/${id_server}/${id_channel}/seen/${uid}`] = true
+    update(ref(db), updates)
+}
+
+/**
+ * Change the target user role into a new one.
+ * Each role can give specials interactions to the server
+ * Example : Owner, Admin, Délégué, Muted, Banned...
+ * @param {string} uid is the role update target uid
+ * @param {string} role is the role name
+ * @param {string} id_server is the environment where it takes place
+ */
 async function writeUserRole(uid, role, id_server) {
     const db = getDatabase()
     const memberRef = ref(db, `roles/${id_server}/` + uid)
@@ -48,12 +92,23 @@ async function writeUserRole(uid, role, id_server) {
     })
 }
 
+/**
+ * Remove the target user role.
+ * @param {string} uid the target user id
+ * @param {string} id_server is the current server id
+ */
 function removeUserRole(uid, id_server) {
     const db = getDatabase()
     const memberRef = ref(db, `roles/${id_server}/` + uid)
     remove(memberRef)
 }
 
+/**
+ * Retrieve the user role in a target server
+ * @param {string} uid is the target user to retrieve
+ * @param {string} id_server is where the server environment
+ * @returns the user role in the current server
+ */
 async function getUserRole(uid, id_server) {
     const dbRef = ref(getDatabase())
     const roleRef = `roles/${id_server}/${uid}`
@@ -70,7 +125,9 @@ async function getUserRole(uid, id_server) {
 }
 
 /**
- * Ajoute le nouveau salon dans rltd
+ * Add a new channel to the target server
+ * @param {string} name the new channel name
+ * @param {string} id_server is where the channel is added
  */
 function addNewChannel(name, id_server) {
     const db = getDatabase()
@@ -83,10 +140,9 @@ function addNewChannel(name, id_server) {
 }
 
 /**
- * A partir d'une chaîne de caractère, utilise la fonction addNewChannel
- * et crée des salons correspondants aux mots séparés par des \n
- *
- * Ignore s'ils sont "vide"
+ * Add multiple channels in one time in the target server
+ * @param {string} channelsString a string containing multiple channels name separated by \n
+ * @param {string} id_server where to add new channels
  */
 function createChannelListFromString(channelsString, id_server) {
     const channelsList = channelsString.split('\n')
@@ -99,7 +155,9 @@ function createChannelListFromString(channelsString, id_server) {
 }
 
 /**
- * Supprime le salon correspondant
+ * Delete a channel from a target server
+ * @param {string} id_channel the channel to delete
+ * @param {string} id_server where to delete the channel
  */
 function deleteChannel(id_channel, id_server) {
     const db = getDatabase()
@@ -110,14 +168,14 @@ function deleteChannel(id_channel, id_server) {
 }
 
 /**
- * Permet de bannir un utilisateur du serveur actuel.
+ * Allow to ban a user from a target server
  *
- * L'utilisateur banni se voit retiré de la liste des utilisateurs
- * du serveur et se voit octroyé le rôle Banned, l'empêchant de lire
- * les données du serveur en question.
- * @param {string} id_server est l'id associé au serveur où le bannisesement doit
- * être effectué
- * @param {string} uid est l'id de l'utilisateur a bannir
+ * The banned user is removed from the server userlist and get the Banned
+ * role
+ * This banned role forbid this user to read and send any message.
+ * No interaction will be possible for a banned user in the target server
+ * @param {string} id_server is the server where to ban the user
+ * @param {string} uid is the ban target user id
  */
 async function banUserFromServer(id_server, uid) {
     const userRef = doc(db, 'users', uid)
@@ -331,6 +389,7 @@ async function getServerInfo(id_server) {
 
     const docSnap = await getDoc(serverRef)
     const data = docSnap.data()
+    data['id'] = docSnap.id
     return data
 }
 
@@ -399,4 +458,5 @@ export {
     updateMessageCount,
     requestJoin,
     removeJoinRequest,
+    setMessageAsSeen,
 }

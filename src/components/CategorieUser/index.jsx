@@ -18,7 +18,7 @@ function CategorieUser() {
     // Initialisation de la liste des utilisateurs une première fois
     useEffect(() => {
         const usersList = async () => {
-            if (userList.length === 0) {
+            if (userList.length === 0 && currentServer?.id) {
                 // On récupère ici la liste des utilisateurs présents dans le server
                 const q = query(
                     collection(db, 'users'),

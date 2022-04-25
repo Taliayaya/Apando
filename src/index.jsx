@@ -65,7 +65,25 @@ ReactDOM.render(
                                                     <App />
                                                 </RequireAuth>
                                             }
-                                        />
+                                        >
+                                            <Route
+                                                path=":server_name/:server_id"
+                                                element={
+                                                    <RequireAuth>
+                                                        <App />
+                                                    </RequireAuth>
+                                                }
+                                            >
+                                                <Route
+                                                    path=":channel_id"
+                                                    element={
+                                                        <RequireAuth>
+                                                            <App />
+                                                        </RequireAuth>
+                                                    }
+                                                />
+                                            </Route>
+                                        </Route>
                                         <Route
                                             path="/settings"
                                             element={
