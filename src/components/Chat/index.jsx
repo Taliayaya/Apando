@@ -75,7 +75,6 @@ function Chat() {
     })
 
     const shouldresize = showUsers || showChannel ? 'true' : 'false'
-    console.log(shouldresize, showUsers, showChannel)
     return (
         <StyledChat shouldresize={shouldresize}>
             <TopMenu />
