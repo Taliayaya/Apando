@@ -1,14 +1,8 @@
 import React from 'react'
-import Header from '../../components/Header'
-import 'katex/dist/katex.min.css'
 import Footer from '../../components/Footer'
 import mascottoCute from '../../assets/images/mascotteCute.png'
 import {
     FirstContentContainer,
-    HomePageBanner,
-    HomePageTreeAbove,
-    HomePageTreeBelow,
-    Clouds,
     FirstDiagonalBox,
     Container,
     Slogan,
@@ -23,20 +17,16 @@ import {
 } from './HomeStyle'
 import { Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Header from '../../components/Header'
 
 function Home() {
     const navigate = useNavigate()
     return (
         <>
-            <HomePageBanner>
-                <Clouds>
-                    <HomePageTreeBelow>
-                        <HomePageTreeAbove>
-                            <Header />
-                        </HomePageTreeAbove>
-                    </HomePageTreeBelow>
-                </Clouds>
-            </HomePageBanner>
+            <BackgroundAnimation>
+                <Header authLinks={true} />
+            </BackgroundAnimation>
             <Container>
                 <DiagonalBoxContainr>
                     <FirstDiagonalBox>

@@ -3,10 +3,8 @@ import React, { useState } from 'react'
 import { db } from '../../utils/firebase/config'
 import {
     StyledLoginWrapper,
-    StyledLoginPage,
     StyledForm,
     StyledLoginTitle,
-    StyledHeaderTitle,
     StyledFieldInput,
     StyledField,
     StyledFieldLabel,
@@ -14,7 +12,7 @@ import {
     StyleError,
     StyleLink,
 } from '../../utils/style/LoginSignStyle'
-import { StyledText, WaveJoin, StyledTextarea } from './CreateServerStyle'
+import { StyledText, StyledTextarea } from './CreateServerStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
@@ -26,6 +24,8 @@ import {
     writeUserRole,
 } from '../../utils/function'
 import { getAuth } from 'firebase/auth'
+import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Header from '../../components/Header'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -33,8 +33,8 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     width: '40px',
     height: '40px',
     cursor: 'pointer',
-    top: 50,
-    right: -200,
+    left: '4em',
+    top: '-2em',
     fontSize: 'large',
     zIndex: 999,
     borderRadius: 10,
@@ -112,13 +112,13 @@ export default function CreateServer() {
         }
     }
     return (
-        <StyledLoginPage>
-            <StyledHeaderTitle>
-                Crée rapidement ton serveur ici !
-            </StyledHeaderTitle>
-            <StyledExitToAppIcon onClick={() => navigate('/app')} />
+        <BackgroundAnimation>
+            <Header />
             <StyledLoginWrapper>
-                <StyledLoginTitle>Mon serveur</StyledLoginTitle>
+                <StyledLoginTitle>
+                    <span style={{ marginLeft: '30px' }}>Mon serveur</span>
+                    <StyledExitToAppIcon onClick={() => navigate('/app')} />
+                </StyledLoginTitle>
                 <StyledText>
                     Ici tu peux créer ton propre serveur en quelques clics et
                     vite inviter tes amis en partageant le code que tu as créé
@@ -178,7 +178,6 @@ export default function CreateServer() {
                     </StyledField>
                 </StyledForm>
             </StyledLoginWrapper>
-            <WaveJoin />
-        </StyledLoginPage>
+        </BackgroundAnimation>
     )
 }

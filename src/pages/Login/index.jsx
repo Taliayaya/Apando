@@ -1,8 +1,7 @@
 import React from 'react'
-import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../utils/hooks'
 import {
-    StyledLoginPage,
     StyledLoginTitle,
     StyledForm,
     StyledField,
@@ -10,12 +9,10 @@ import {
     StyledFieldLabel,
     StyledLoginWrapper,
     StyledSubmit,
-    StyledHeaderTitle,
     StyleLink,
     StyleError,
     StyledVisibilityOffIcon,
     StyledVisibilityOnIcon,
-    Wave,
 } from '../../utils/style/LoginSignStyle'
 import { useState, useEffect } from 'react'
 import {
@@ -26,16 +23,9 @@ import {
 } from 'firebase/auth'
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
-import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
 import Helmet from 'react-helmet'
-
-const StyledTitleLink = styled(Link)`
-    font-size: 25px;
-    text-decoration: none;
-    color: ${theme.font_color};
-    z-index: 0;
-`
+import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Header from '../../components/Header'
 
 function Login() {
     const navigate = useNavigate()
@@ -131,10 +121,8 @@ function Login() {
                     content="Connectez-vous à Apando pour retrouvez vos camarades en quelques clics."
                 />
             </Helmet>
-            <StyledLoginPage>
-                <StyledHeaderTitle>
-                    <StyledTitleLink to="/">Apando</StyledTitleLink>
-                </StyledHeaderTitle>
+            <BackgroundAnimation>
+                <Header />
                 <StyledLoginWrapper>
                     <StyledLoginTitle>Connexion</StyledLoginTitle>
                     <StyledForm action="#">
@@ -213,8 +201,7 @@ function Login() {
                         </StyledField>
                     </StyledForm>
                 </StyledLoginWrapper>
-                <Wave />
-            </StyledLoginPage>
+            </BackgroundAnimation>
         </>
     )
 }

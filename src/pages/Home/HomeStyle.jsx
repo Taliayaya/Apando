@@ -59,8 +59,9 @@ const cloudAnimation = keyframes`
 
 const Clouds = styled.div`
     background: url(${clouds});
+    background-size: 100%;
     z-index: 0;
-    animation: ${cloudAnimation} 25s linear infinite;
+    animation: ${cloudAnimation} 45s linear infinite;
 `
 
 const HomePageBanner = styled.div`
