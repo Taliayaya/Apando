@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { useAuth } from '../../utils/hooks'
+
 import { theme } from '../../utils/style/colors'
 
 const StyledNav = styled.nav`
@@ -50,14 +50,16 @@ const StyledLoginLink = styled(Link)`
     }
 `
 
-function Header() {
+function Header({ authLinks }) {
     return (
         <StyledNav>
             <StyledTitleLink to="/">Apando</StyledTitleLink>
-            <div style={{ paddingTop: '10px' }}>
-                <StyledLoginLink to="/login">Se connecter</StyledLoginLink>
-                <StyledSignUp to="/signup">Nous Rejoindre</StyledSignUp>
-            </div>
+            {authLinks && (
+                <div style={{ paddingTop: '10px' }}>
+                    <StyledLoginLink to="/login">Se connecter</StyledLoginLink>
+                    <StyledSignUp to="/signup">Nous Rejoindre</StyledSignUp>
+                </div>
+            )}
         </StyledNav>
     )
 }
