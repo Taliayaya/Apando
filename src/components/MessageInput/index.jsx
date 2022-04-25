@@ -50,13 +50,6 @@ const UploadIcon = ({ success, onFileSelectError, onFileSelectSuccess }) => {
     )
 }
 
-// Badge for the closing icon
-
-// Decorative component, showing the type (chosen according to the file name),
-// the name and the size of an uploaded file. Does not actually "contain" it.
-// Also has a number that allows it to be deleted and send a signal to the list.
-//const UploadItem = ({ index, name, size }) => {}
-
 const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
     /* Displays a tray on top of the writing zone when files are added to the
      * message, and displays each file with its name and a cross to remove it
@@ -66,27 +59,52 @@ const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
      *      setSelectedFiles: the state selector of the list of files
      * */
     return (
-        <>
-            <Stack direction="row" spacing={2}>
-                {selectedFiles.map(({ name }) => (
-                    <Badge
-                        badgeContent={<CloseIcon fontSize="small" />}
-                        onClick={() => {
-                            setSelectedFiles(
-                                selectedFiles.filter(
-                                    // Removes from the list any file by that
-                                    // name (quite quirky JS)
-                                    (item) => item.name != { name }.name
-                                ))
-                            console.log(selectedFiles);
-                        }}
-                    >
-                        <Button>{name}</Button>
-                    </Badge>
-                ))}
-            </Stack>
-        </>
+        <Stack direction="row" spacing={2}>
+            {selectedFiles.map((file) => (
+                <Badge
+                    badgeContent={<CloseIcon fontSize="small" />}
+                    onClick={() => {
+                        setSelectedFiles(
+                            selectedFiles.filter((elt) => (elt[1] = file[1]))
+                        )
+                    }}
+                >
+                    <Button>{file[1]}</Button>
+                </Badge>
+            ))}
+        </Stack>
     )
+}
+
+function giveUniqueName(filename, filelist) {
+    /* Gives an unique name a file, that's different from the rest of the
+     * list. The storage shouldn't contain same-name files, so this function
+     * tries to give the normal name to the file, then tries again with (1)
+     * appended to the file name, and increases this number step by step.
+     * Arguments:
+     *     filename: string, the name of the file to be inserted
+     *     filelist: array of files, the files already inserted
+     * Returns: The given name to the file
+     */
+    console.log(filelist)
+    console.log(filename)
+    if (filelist.every((file) => file[1] != `${filename}`)){
+        return filename
+    }
+    else {
+        const matching = filename.match(/(.*)(\.[a-zA-Z0-9]*$)/)
+        console.log(matching)
+        // Gets the name and extension of the file
+        var count = 0
+        while (count++) {
+            console.log(count)
+            const incname = matching[1] + '(' + count.toString() + ')' + matching[2]
+            console.log(incname)
+            if (filelist.every((file) => file[1] !== incname)) {
+                return incname
+            }
+        }
+    }
 }
 
 const MessageInput = ({ currentChannelId }) => {
@@ -136,7 +154,16 @@ const MessageInput = ({ currentChannelId }) => {
                 <form>
                     <UploadIcon
                         onFileSelectSuccess={(file) => {
-                            setSelectedFiles([...selectedFiles, file])
+                            setSelectedFiles([
+                                ...selectedFiles,
+                                [
+                                    file,
+                                    giveUniqueName(
+                                        `${file.name}`,
+                                        selectedFiles
+                                    ),
+                                ],
+                            ])
                         }}
                         onFileSelectError={({ error }) => alert(error)}
                         selectedFiles={selectedFiles}

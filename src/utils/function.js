@@ -15,8 +15,9 @@ function giveUniqueName(filename, namelist) {
      * list. The storage shouldn't contain same-name files, so this function
      * tries to give the normal name to the file, then tries again with (1)
      * appended to the file name, and increases this number step by step.
-     * filename: string, the name of the file to be inserted
-     * filelist: array of strings, the names of the files already inserted
+     * Arguments:
+     *     filename: string, the name of the file to be inserted
+     *     filelist: array of strings, the names of the files already inserted
      * Returns: The given name to the file
      */
     if (namelist.every((name) => name !== filename)) return filename
