@@ -18,7 +18,7 @@ export const StyledLoginPage = styled.div`
         ${theme.sides_bg_color} 0%,
         ${theme.chat_input_bg_color} 80%
     );
-`
+    `
 
 export const StyledVisibilityOffIcon = styled(VisibilityOffIcon)`
     margin-left: -30px;
@@ -104,6 +104,7 @@ export const StyledLoginWrapper = styled.div`
     border-radius: 15px;
     box-shadow: 0px 33px 40px 33px rgba(0, 0, 0, 0.2);
     position: relative;
+    text-align: center;
     left: 50%;
     transform: translateX(-50%);
 `
@@ -120,8 +121,8 @@ export const StyleLink = styled(Link)`
     text-decoration: none;
     &:hover {
         cursor: pointer;
-        border-bottom: blue 1px solid;
-        font-size: larger;
+        color: ${theme.chat_bg_color}
+        border-bottom: ${theme.chat_bg_color} 1px solid;
         transition: all 300ms ease;
     }
 `

@@ -19,13 +19,13 @@ const Terms = () => {
                 <title>Apando / Conditions d'Utilisation</title>
             </Helmet>
             <Header />
-            <StyledLoginPage style={{ marginTop: '-50px', width: '100%' }}>
+            <StyledLoginPage style={{ marginTop: '-7.5em', width: '100%' }}>
                 <div>
                     <HomePage>
                         <h1
                             style={{
                                 color: theme.font_color,
-                                paddingTop: '30px',
+                                paddingTop: '5em',
                                 textAlign: 'center',
                             }}
                         >

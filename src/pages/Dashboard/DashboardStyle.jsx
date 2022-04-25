@@ -19,6 +19,8 @@ const DashboardMain = styled.div`
     margin-left: 15%;
     padding-top: 5%;
     margin-right: 15%;
+    z-index: 999;
+    position: relative;
 `
 
 const Row2 = styled.div`
@@ -50,6 +52,7 @@ const ServerStatsContainer = styled.div`
     &:hover {
         box-shadow: 0 0 15px ${theme.menus_bg_color};
     }
+    box-shadow: 0px 13px 30px 23px rgba(0, 0, 0, 0.2);
 `
 
 const NumberCase = styled.div`
@@ -93,6 +96,7 @@ const ParamsCase = styled.div`
     &:hover {
         box-shadow: 0 0 15px ${theme.sides_bg_color};
     }
+    box-shadow: 0px 33px 40px 33px rgba(0, 0, 0, 0.2);
 `
 const Params = styled.div`
     display: flex;
@@ -151,6 +155,7 @@ const MemberListCase = styled.div`
     &:hover {
         box-shadow: 0 0 15px ${theme.sides_bg_color};
     }
+    box-shadow: 0px 33px 40px 33px rgba(0, 0, 0, 0.2);
 
     @media screen and (max-width: 720px) {
         width: 100%;

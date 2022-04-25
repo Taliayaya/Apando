@@ -1,5 +1,4 @@
 import {
-    DashboardBackground,
     DashboardMain,
     DashboardTitle,
     Row2,
@@ -25,6 +24,7 @@ import { styled } from '@mui/material'
 import { theme } from '../../utils/style/colors'
 import { ExitToApp } from '@material-ui/icons'
 import Helmet from 'react-helmet'
+import BackgroundAnimation from '../../components/BackgroundAnimation'
 
 // const BootstrapTooltip = styled(({ className, ...props }) => (
 //     <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -111,7 +111,7 @@ const Dashboard = () => {
                     content="Retrouvez toutes les statistiques relatives à votre serveur et configurez-le comme vous le souhaitez."
                 />
             </Helmet>
-            <DashboardBackground>
+            <BackgroundAnimation>
                 <DashboardMain>
                     <DashboardTitle>
                         <StyledExitToAppIcon onClick={() => navigate('/app')} />
@@ -144,7 +144,7 @@ const Dashboard = () => {
                         />
                     </Row2>
                 </DashboardMain>
-            </DashboardBackground>
+            </BackgroundAnimation>
         </>
     )
 }
