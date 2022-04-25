@@ -10,6 +10,29 @@ import {
 import { Timestamp } from 'firebase/firestore'
 import { getStorage, uploadBytes, ref as storageRef } from 'firebase/storage' // Need to alias it in order to avoid collision
 
+function giveUniqueName(filename, namelist) {
+    /* Gives an unique name a file, that's different from the rest of the
+     * list. The storage shouldn't contain same-name files, so this function
+     * tries to give the normal name to the file, then tries again with (1)
+     * appended to the file name, and increases this number step by step.
+     * filename: string, the name of the file to be inserted
+     * filelist: array of strings, the names of the files already inserted
+     * Returns: The given name to the file
+     */
+    if (namelist.every((name) => name !== filename)) return filename
+    else {
+        const matching = filename.match(/(.*)(\.[a-zA-Z0-9]*$)/)
+        // Gets the name and extension of the file
+        var count = 0
+        while (count++) {
+            var incname = matching[1] + '(' + count + ')' + matching[2]
+            if (namelist.every((name) => name !== incname)) {
+                return incname
+            }
+        }
+    }
+}
+
 function storeFiles(files, messageRef) {
     /* Stores the files in the storage, and returns the reference to the folder they're in.
      * If there are no files, returs null.
@@ -19,10 +42,16 @@ function storeFiles(files, messageRef) {
         const storage = getStorage()
         const filesPath = messageRef._path.pieces_.slice(1).join('/')
         // The whole path except the 'messages' directory
+        var givennames = [] // The names given to each file
         files.forEach((file) => {
-          const filesRef = storageRef(storage, `attachments/${filesPath}/${file.name}`)
-          uploadBytes(filesRef, file)
-          })
+            const filename = giveUniqueName(file.name, givennames)
+            givennames.push(filename)
+            const filesRef = storageRef(
+                storage,
+                `attachments/${filesPath}/${filename}`
+            )
+            uploadBytes(filesRef, file)
+        })
         return filesPath
     } else return null
 }
