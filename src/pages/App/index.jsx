@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth'
-import { doc, Timestamp, updateDoc, serverTimestamp } from 'firebase/firestore'
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import Helmet from 'react-helmet'
 import { useNavigate, useParams } from 'react-router-dom'
