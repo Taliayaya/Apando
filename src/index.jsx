@@ -1,30 +1,30 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import App from './pages/App'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Settings from './pages/Settings'
-import Signup from './pages/Signup'
-import RequireAuth from './components/RequireAuth'
+import App from './/pages/App'
+import Home from './/pages/Home'
+import Login from './/pages/Login'
+import Settings from './/pages/Settings'
+import Signup from './/pages/Signup'
+import RequireAuth from './/components/RequireAuth'
 import {
     AuthProvider,
     CurrentChannelProvider,
     MessageListProvider,
     CurrentServerProvider,
     ChatMessageProvider,
-} from './utils/context'
-import NotFound from './components/NotFound'
-import GlobalStyle from './utils/style/GlobalStyle'
-import Join from './pages/Join'
-import { app } from './utils/firebase/config'
-import CreateServer from './pages/CreateServer'
-import ResetPassword from './pages/ResetPassword'
-import Terms from './pages/Terms'
-import Privacy from './pages/Privacy'
-import Dashboard from './pages/Dashboard'
+} from './/utils/context'
+import NotFound from './/components/NotFound'
+import GlobalStyle from './/utils/style/GlobalStyle'
+import Join from './/pages/Join'
+import { app } from './/utils/firebase/config'
+import CreateServer from './/pages/CreateServer'
+import ResetPassword from './/pages/ResetPassword'
+import Terms from './/pages/Terms'
+import Privacy from './/pages/Privacy'
+import Dashboard from './/pages/Dashboard'
 import { ThemeProvider } from '@mui/material'
-import { themeMui } from './utils/style/colors'
+import { themeMui } from './/utils/style/colors'
 
 ReactDOM.render(
     <React.StrictMode>
