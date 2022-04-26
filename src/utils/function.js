@@ -8,13 +8,15 @@ import {
     remove,
 } from 'firebase/database'
 import { Timestamp } from 'firebase/firestore'
-import { getStorage, uploadBytes, ref as storageRef } from 'firebase/storage' // Need to alias it in order to avoid collision
+import { getStorage, uploadBytes, ref as storageRef } from 'firebase/storage'
+// Need to alias it in order to avoid collision
 
 function storeFiles(files, messageRef) {
     /* Stores the files in the storage, and returns the reference to the folder they're in.
      * If there are no files, returs null.
      * Takes the files and the reference to the message we're sending as arguments.
-     * Stores under the unique give name the files passed.
+     * Stores under the unique give name the files passed (using the array of arrays
+     * containing the file and its new name)
      */
     if (files.length !== 0) {
         const storage = getStorage()
