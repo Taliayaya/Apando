@@ -1,14 +1,13 @@
 import { useAuth } from '../../utils/hooks'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 
 function RequireAuth({ children }) {
     const { authed } = useAuth()
     const location = useLocation()
+    const navigate = useNavigate()
 
-    return authed ? (
-        children
-    ) : (
-        <Navigate to="/login" state={{ from: location }} replace />
-    )
+    !authed && navigate('/login')
+
+    return children
 }
 export default RequireAuth
