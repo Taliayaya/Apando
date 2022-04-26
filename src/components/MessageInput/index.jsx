@@ -62,10 +62,13 @@ const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
         <Stack direction="row" spacing={2}>
             {selectedFiles.map((file) => (
                 <Badge
+                    key={file[1]} // Giving a key so react stops complaining
                     badgeContent={<CloseIcon fontSize="small" />}
                     onClick={() => {
                         setSelectedFiles(
-                            selectedFiles.filter((elt) => (elt[1] = file[1]))
+                            // Because it's a state, copying the old list
+                            // without the removed element into the new state
+                            selectedFiles.filter((elt) => (elt[1] !== file[1]))
                         )
                     }}
                 >
@@ -86,20 +89,15 @@ function giveUniqueName(filename, filelist) {
      *     filelist: array of files, the files already inserted
      * Returns: The given name to the file
      */
-    console.log(filelist)
-    console.log(filename)
     if (filelist.every((file) => file[1] != `${filename}`)){
         return filename
     }
     else {
         const matching = filename.match(/(.*)(\.[a-zA-Z0-9]*$)/)
-        console.log(matching)
         // Gets the name and extension of the file
         var count = 0
-        while (count++) {
-            console.log(count)
+        while (++count) {
             const incname = matching[1] + '(' + count.toString() + ')' + matching[2]
-            console.log(incname)
             if (filelist.every((file) => file[1] !== incname)) {
                 return incname
             }
