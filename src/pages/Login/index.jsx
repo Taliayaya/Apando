@@ -107,7 +107,8 @@ function Login() {
                 })
 
                 login().then(() => {
-                    navigate(state?.path || '/app', { replace: true })
+                    console.log(state?.path)
+                    navigate('/app')
                 })
             }
         })
