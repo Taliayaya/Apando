@@ -7,10 +7,10 @@ import {
 
 import { Cherryblossom } from '../Cherryblossom'
 
-const BackgroundAnimation = ({ children }) => {
+const BackgroundAnimation = ({ children, sakura }) => {
     return (
         <HomePageBanner>
-            <Cherryblossom amount={60} size={10} />
+            {sakura && <Cherryblossom amount={60} size={10} />}
             <Clouds>
                 <HomePageTreeBelow>
                     <HomePageTreeAbove>{children}</HomePageTreeAbove>

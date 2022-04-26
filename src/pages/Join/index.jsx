@@ -91,7 +91,7 @@ const Join = () => {
                 <title>Apando / Rejoindre un serveur</title>
             </Helmet>
 
-            <BackgroundAnimation>
+            <BackgroundAnimation sakura={true}>
                 <Header />
                 <StyledLoginWrapper>
                     <StyledLoginTitle>
