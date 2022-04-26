@@ -5,7 +5,7 @@ import {
     HomePageTreeBelow,
 } from '../../pages/Home/HomeStyle'
 
-import { Cherryblossom } from 'react-cherryblossom'
+import { Cherryblossom } from '../Cherryblossom'
 
 const BackgroundAnimation = ({ children }) => {
     return (
