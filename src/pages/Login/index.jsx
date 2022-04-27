@@ -122,7 +122,7 @@ function Login() {
                     content="Connectez-vous à Apando pour retrouvez vos camarades en quelques clics."
                 />
             </Helmet>
-            <BackgroundAnimation sakura={false}>
+            <BackgroundAnimation sakura={true}>
                 <Header />
                 <StyledLoginWrapper>
                     <StyledLoginTitle>Connexion</StyledLoginTitle>
