@@ -17,8 +17,12 @@ import { getUserRole } from '../../utils/function'
 import ChannelName from '../ChannelName'
 import { getDatabase, onValue, ref } from 'firebase/database'
 import { askNotification } from '../../utils/notification'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
+/**
+ * The left side bar component of the app.
+ * This contains the server menu and the channels list systems
+ */
 function ChannelList() {
     const [channelList, setChannelList] = useState([])
     const [showMenu, setShowMenu] = useState(null)
@@ -34,7 +38,6 @@ function ChannelList() {
     const user = auth.currentUser
     const open = Boolean(showMenu)
     const params = useParams()
-    const navigate = useNavigate()
 
     const handleClick = (e) => {
         setShowMenu(e.currentTarget)
@@ -53,15 +56,18 @@ function ChannelList() {
         setRole()
     })
 
-    // Ne s'active que lors du premier chargement de la page
-    // (ou quand ya pas de salon)
     useEffect(() => {
+        /**
+         * Load the server list for the user
+         */
         const loadServerList = async () => {
             if (serverList?.length === 0) {
                 const userRef = doc(db, 'users', user.uid)
                 const userSnap = await getDoc(userRef)
                 if (userSnap.exists()) {
                     const serverList = userSnap.data().servers
+                    // If the user has joined at least a server
+                    // It will set this one as selected
                     if (serverList?.length > 0) {
                         setCurrentServer(serverList[0])
                         setServerList(serverList)
@@ -85,6 +91,7 @@ function ChannelList() {
                 const channelURLInServer = channelList.find(
                     (channelData) => channelData.key === params.channel_id
                 )
+                // The URL is right, so lets set this channel as selected
                 if (channelURLInServer) {
                     setCurrentChannelId({
                         id: channelURLInServer.key,
@@ -94,24 +101,44 @@ function ChannelList() {
             }
         }
         checkURLChannel()
-    }, [channelList, currentChannel, params.channel_id, setCurrentChannelId])
+    }, [
+        channelList,
+        currentChannel,
+        currentServer,
+        params.channel_id,
+        setCurrentChannelId,
+    ])
 
+    /**
+     * This create a realtime connection with the database
+     * On each modification in the channels/server_id/ node,
+     * it will refresh this component and by the same occasion,
+     * load the channels.
+     *
+     * If a server is added, or a new message sent, it will update
+     */
     useEffect(() => {
         if (currentServer) {
             const rldb = getDatabase()
+            // The channels location
             const channelRef = ref(rldb, `channels/${currentServer?.id}`)
+            // create a new connection
             const unsub = onValue(channelRef, (snapshot) => {
                 const obj = snapshot.val()
                 const datas = []
                 if (obj !== null) {
+                    // add the id/key to the object
                     Object.keys(obj).forEach((key) => {
                         const values = obj[key]
                         values.key = key
                         datas.push(values)
                     })
+                    // update the channels array
                     setChannelList(datas)
                 }
             })
+            // On each render, unsub to the database. Otherwise, it
+            // would create multiple connection... which isn't optimised
             return () => unsub()
         }
     }, [currentServer])
@@ -119,9 +146,8 @@ function ChannelList() {
     return (
         <StyledChannelList showChannel={showChannel ? 'true' : 'false'}>
             <StyledChannelListTop hovered={showMenu} onClick={handleClick}>
-                <h2>
-                    {currentServer?.name ? currentServer.name : 'Aucun serveur'}
-                </h2>
+                <h2>{currentServer.name ?? 'Aucun serveur'}</h2>
+                {/* Decide which icon to use, whether the menu is opened or not */}
                 {showMenu ? <MenuOpenIcon /> : <ExpandMoreIcon />}
             </StyledChannelListTop>
 
@@ -144,6 +170,7 @@ function ChannelList() {
                     left: -10,
                 }}
             >
+                {/* Show the Left Menu component */}
                 <LeftMenu
                     serverList={serverList}
                     setChannelList={setChannelList}
@@ -151,6 +178,7 @@ function ChannelList() {
             </Menu>
 
             <StyledChannelListBottom>
+                {/* Show every channel of the current Server */}
                 {channelList &&
                     channelList.map(
                         ({
@@ -177,11 +205,14 @@ function ChannelList() {
                         }
                     )}
             </StyledChannelListBottom>
-            <div>
-                <Button onClick={askNotification}>
-                    Recevoir les notifications
-                </Button>
-            </div>
+            {/* To receive the notification */}
+            {Notification.permission === 'default' && (
+                <div>
+                    <Button onClick={askNotification}>
+                        Recevoir les notifications
+                    </Button>
+                </div>
+            )}
         </StyledChannelList>
     )
 }
