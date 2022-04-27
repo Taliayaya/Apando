@@ -18,7 +18,14 @@ import {
 import { Add, Create, Dashboard } from '@mui/icons-material'
 import { addNewChannel } from '../../utils/function'
 import { Done } from '@mui/icons-material'
+import PropTypes from 'prop-types'
 
+/**
+ * The Top Left menu of the App.
+ * It allows users to change servers and admins to add new channels.
+ * It can redirects to the /join and /create pages to create or join a server.
+ * For admins only or more, it can also redirects to /dashboard.
+ */
 const LeftMenu = ({ serverList, setChannelList }) => {
     const [newChannelName, setNewChannelName] = useState('')
     const [error, setError] = useState(null)
@@ -30,13 +37,17 @@ const LeftMenu = ({ serverList, setChannelList }) => {
     const hasPower = ['Admin', 'Owner'].includes(userRole)
     const navigate = useNavigate()
 
+    /**
+     * Add a new channel to the server.
+     * @param {Object} e the event Object
+     */
     const addChannel = async (e) => {
         e.preventDefault()
+        // The string is empty or only contains spaces
         if (!newChannelName.trim()) {
             setError("Aucun nom de salon n'a été indiqué")
             return
         }
-        error && setError(null)
 
         addNewChannel(newChannelName, currentServer?.id)
 
@@ -64,6 +75,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
 
     return (
         <>
+            {/* A little snack bar to show error messages */}
             <Snackbar
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 open={Boolean(error)}
@@ -71,6 +83,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                 message={error}
                 key={'topleft'}
             />
+            {/* Only admins or owners can add new channels */}
             {hasPower && (
                 <MenuItem>
                     <Box
@@ -100,12 +113,14 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                     </Box>
                 </MenuItem>
             )}
+            {/* The server selector.
+            Users can change their current server here
+            */}
             <MenuItem>
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id="server-select-label">
                         Serveur actuel
                     </InputLabel>
-                    {console.log(currentServer)}
                     <Select
                         labelId="server-select-label"
                         id="server-select"
@@ -129,18 +144,22 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                     <FormHelperText>Change de serveur ici</FormHelperText>
                 </FormControl>
             </MenuItem>
+            {/* The menu item to redirect towards /join */}
             <MenuItem onClick={() => navigate('/join')}>
                 <ListItemIcon>
                     <Add />
                 </ListItemIcon>
                 <Typography>Utiliser un code</Typography>
             </MenuItem>
+            {/* The menu item to redirect towards /create */}
             <MenuItem onClick={() => navigate('/create')}>
                 <ListItemIcon>
                     <Create />
                 </ListItemIcon>
                 <Typography>Créer un serveur</Typography>
             </MenuItem>
+            {/* If the user is an admin, he can be redirected to the dashboard
+            of his server. */}
             {hasPower && (
                 <MenuItem
                     onClick={() => navigate(`/dashboard/${currentServer?.id}`)}
@@ -153,6 +172,16 @@ const LeftMenu = ({ serverList, setChannelList }) => {
             )}
         </>
     )
+}
+
+LeftMenu.propTypes = {
+    serverList: PropTypes.arrayOf(
+        PropTypes.exact({
+            id: PropTypes.string,
+            name: PropTypes.string,
+        })
+    ),
+    setChannelList: PropTypes.func,
 }
 
 export default LeftMenu
