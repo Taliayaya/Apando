@@ -109,7 +109,6 @@ function Login() {
 
                 login().then(() => {
                     navigate(from, { replace: true })
-                    navigate('/app')
                 })
             }
         })
