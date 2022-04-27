@@ -12,6 +12,7 @@ import {
 } from '../../utils/function'
 import { useAuth, useChannel } from '../../utils/hooks'
 import { Add, Block, Remove, VolumeOff } from '@mui/icons-material'
+import PropTypes from 'prop-types'
 
 const StyledBadge = styled(Badge)(() => ({
     '& .MuiBadge-badge': {
@@ -30,7 +31,12 @@ const StyledBadge = styled(Badge)(() => ({
     },
 }))
 
-export default function UserStatus({ avatar, datediff, name, logged, uid }) {
+/**
+ * Component that shows the user status on the right menu.
+ * Admins can handle users from here and set their role
+ * Or even ban evil users >:(
+ */
+function UserStatus({ avatar, datediff, name, logged, uid }) {
     const [contextMenu, setContextMenu] = useState(null)
     const { currentServer } = useChannel()
     const { userRole } = useAuth()
@@ -38,6 +44,10 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
     const isOwner = 'Owner' === userRole
     const hasPower = isOwner || userRole === 'Admin'
 
+    /**
+     * Open the menu next to the right click of the user
+     * @param {Object} event
+     */
     const handleContextMenu = (event) => {
         event.preventDefault()
         setContextMenu(
@@ -47,6 +57,9 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
         )
     }
 
+    /**
+     * Close the menu
+     */
     const handleClose = () => {
         setContextMenu(null)
     }
@@ -69,8 +82,12 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 <Avatar sx={{ width: 48, height: 48 }} src={avatar} />
             </StyledBadge>
 
+            {/* Show the online users with a better visibility than
+                offline ones
+                */}
             <StyleUser online={datediff <= 120}>{name}</StyleUser>
 
+            {/*  */}
             <Menu
                 open={contextMenu !== null}
                 onClose={handleClose}
@@ -80,9 +97,13 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                         ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
                         : undefined
                 }
+                // For the moment, only admins and owners can uses this menu,
+                // so no needs to show an "almost" empty menu to them
+                style={{ visibility: hasPower ? 'visible' : 'hidden' }}
             >
                 {isOwner && (
                     <MenuItem
+                        // Set the clicked user has admin
                         onClick={() => {
                             writeUserRole(uid, 'Admin', currentServer?.id)
                             handleClose()
@@ -97,6 +118,7 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
 
                 {hasPower && (
                     <MenuItem
+                        // set the clicked user as a representative
                         onClick={() => {
                             writeUserRole(uid, 'Délégué', currentServer?.id)
                             handleClose()
@@ -110,6 +132,7 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 )}
                 {isOwner && (
                     <MenuItem
+                        // Remove the role for the clicked user
                         onClick={() => {
                             removeUserRole(uid, currentServer?.id)
                             handleClose()
@@ -125,6 +148,7 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 {/* Separated to avoid Mui Fragment error */}
                 {hasPower && (
                     <MenuItem
+                        // Set the clicked user as mute, making him unable to send messages
                         onClick={() => {
                             writeUserRole(uid, 'Muted', currentServer?.id)
                             handleClose()
@@ -139,6 +163,8 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
                 )}
                 {hasPower && (
                     <MenuItem
+                        // Ban the user from the server, this is pretty violent, so
+                        // I recommend using mute first !
                         onClick={() => {
                             banUserFromServer(currentServer?.id, uid)
                             handleClose()
@@ -155,3 +181,13 @@ export default function UserStatus({ avatar, datediff, name, logged, uid }) {
         </StyledDiv>
     )
 }
+
+UserStatus.propTypes = {
+    avatar: PropTypes.string,
+    datediff: PropTypes.number,
+    logged: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+}
+
+export default UserStatus
