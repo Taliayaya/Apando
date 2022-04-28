@@ -13,13 +13,17 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkMath from 'remark-math'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import MessageMore from '../MessageMore'
 import { IconButton, Menu } from '@mui/material'
 import 'katex/dist/katex.min.css'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
 import rehypeMathjax from 'rehype-mathjax'
+
+// For the file stack
+import { getStorage, ref, listAll, getMetadata } from 'firebase/storage'
+import { Stack } from '@mui/material'
 
 const handleMonth = (month) => {
     if (month < 10) {
@@ -29,7 +33,7 @@ const handleMonth = (month) => {
 }
 
 function LinkRenderer(props) {
-    console.log({ props })
+    // console.log({ props })
     return (
         <a href={props.href} target="_blank" rel="noreferrer">
             {props.children}
@@ -72,6 +76,56 @@ const handleMessageData = (timestamp) => {
     return formattedTime
 }
 
+const FileContainer = (file) => {
+    /* A container component for files to be rendered under message.
+     * Arguments: file, an item passed from the listAll on a directory.
+     * */
+    // To Do : add icons next to the file's name
+    // To Do : Different behavior according to the file's type
+    //const metadata = getMetadata(file)
+    console.log("Be here")
+    const [metadata, setMetadata] = useState({})
+    const gotten = useRef(true)
+    useEffect(() => {
+        //gotten.current = true
+        getMetadata(file).then((data) => {if(gotten.current){setMetadata(data)}})
+        return () => gotten.current = false
+    })
+    console.log(metadata)
+    return (
+        <Container>
+            <p>{metadata?.name}</p>
+            <br />
+            <h5>{metadata?.size}</h5>
+        </Container>
+    )
+}
+
+const FilesList = (filesPath) => {
+    /* A stack with all the files from a directory of the storage, rendered by a
+     * file container each.
+     * Arguments: filesPath, the path under 'attachments/' of the files
+     *     directory.
+     * */
+    const storage = getStorage()
+    const dirRef = ref(storage, 'attachments/' + filesPath.filesPath)
+    // To Do : fix this strange behavior from the passed filesPath
+    const [listItems, setListItems] = useState([])
+    const gotten = useRef(true)
+    useEffect(() => {
+        //gotten.current = true
+        listAll(dirRef).then((data) => setListItems(data.items))
+        return () => gotten.current = false
+    }, [])
+    return (
+        <Stack spacing={1}>
+            {listItems?.map((file) => {
+                <FileContainer file={file} />
+            })}
+        </Stack>
+    )
+}
+
 function Message({
     messageID,
     username,
@@ -81,7 +135,13 @@ function Message({
     repeat,
     id_channel,
     uid,
+    filesPath,
 }) {
+    /* Component to render a message : displays the avatar, the date, the text, the
+     * person who posted the message, a menu to answer and delete, the render
+     * markdown, images, sent files ...
+     * Arguments: Everything attached to a message to be rendered
+     * */
     const [anchorEl, setAnchorEl] = useState(null)
     const [showMore, setShowMore] = useState(false)
     const open = Boolean(anchorEl)
@@ -166,6 +226,7 @@ function Message({
                                 },
                             }}
                         />
+                        {filesPath && <FilesList filesPath={filesPath} />}
                     </StyledUserMessage>
                 </StyledMessageInfo>
             </StyledMessage>
