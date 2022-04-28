@@ -13,7 +13,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkMath from 'remark-math'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import MessageMore from '../MessageMore'
 import { IconButton, Menu } from '@mui/material'
 import 'katex/dist/katex.min.css'
@@ -76,22 +76,28 @@ const handleMessageData = (timestamp) => {
     return formattedTime
 }
 
-const FileContainer = (file) => {
+const FileContainer = ({ file }) => {
     /* A container component for files to be rendered under message.
      * Arguments: file, an item passed from the listAll on a directory.
      * */
     // To Do : add icons next to the file's name
     // To Do : Different behavior according to the file's type
     //const metadata = getMetadata(file)
-    console.log("Be here")
+    const storage = getStorage()
+    const fileRef = ref(storage, file._location.path)
     const [metadata, setMetadata] = useState({})
-    const gotten = useRef(true)
+
     useEffect(() => {
-        //gotten.current = true
-        getMetadata(file).then((data) => {if(gotten.current){setMetadata(data)}})
-        return () => gotten.current = false
+        const loadMetadata = () => {
+            if (Object.keys(metadata).length === 0) {
+                getMetadata(fileRef).then((data) => {
+                    setMetadata(data)
+                })
+            }
+        }
+
+        loadMetadata()
     })
-    console.log(metadata)
     return (
         <Container>
             <p>{metadata?.name}</p>
@@ -101,26 +107,34 @@ const FileContainer = (file) => {
     )
 }
 
-const FilesList = (filesPath) => {
+const FilesList = ({ filesPath }) => {
     /* A stack with all the files from a directory of the storage, rendered by a
      * file container each.
      * Arguments: filesPath, the path under 'attachments/' of the files
      *     directory.
      * */
     const storage = getStorage()
-    const dirRef = ref(storage, 'attachments/' + filesPath.filesPath)
+    // console.log(filesPath)
+    const dirRef = ref(storage, 'attachments/' + filesPath)
     // To Do : fix this strange behavior from the passed filesPath
     const [listItems, setListItems] = useState([])
-    const gotten = useRef(true)
     useEffect(() => {
         //gotten.current = true
-        listAll(dirRef).then((data) => setListItems(data.items))
-        return () => gotten.current = false
-    }, [])
+        // listAll(dirRef).then((data) => setListItems(data.items))
+        const getFiles = () => {
+            if (listItems.length === 0) {
+                listAll(dirRef).then((res) => {
+                    setListItems(res.items)
+                })
+            }
+        }
+        getFiles()
+    }, [dirRef, listItems.length])
+    console.log(2)
     return (
         <Stack spacing={1}>
             {listItems?.map((file) => {
-                <FileContainer file={file} />
+                return <FileContainer key={file} file={file} />
             })}
         </Stack>
     )

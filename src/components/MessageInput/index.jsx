@@ -68,7 +68,7 @@ const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
                         setSelectedFiles(
                             // Because it's a state, copying the old list
                             // without the removed element into the new state
-                            selectedFiles.filter((elt) => (elt[1] !== file[1]))
+                            selectedFiles.filter((elt) => elt[1] !== file[1])
                         )
                     }}
                 >
@@ -89,15 +89,15 @@ function giveUniqueName(filename, filelist) {
      *     filelist: array of files, the files already inserted
      * Returns: The given name to the file
      */
-    if (filelist.every((file) => file[1] != `${filename}`)){
+    if (filelist.every((file) => file[1] !== `${filename}`)) {
         return filename
-    }
-    else {
+    } else {
         const matching = filename.match(/(.*)(\.[a-zA-Z0-9]*$)/)
         // Gets the name and extension of the file
         var count = 0
         while (++count) {
-            const incname = matching[1] + '(' + count.toString() + ')' + matching[2]
+            const incname =
+                matching[1] + '(' + count.toString() + ')' + matching[2]
             if (filelist.every((file) => file[1] !== incname)) {
                 return incname
             }
@@ -109,7 +109,6 @@ const MessageInput = ({ currentChannelId }) => {
     //File-uploading-related values
     const [success, setSuccess] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState([])
-    const { logout, resetPassword } = useAuth()
 
     const { message, setMessage } = useMessage()
     const user = getAuth().currentUser
