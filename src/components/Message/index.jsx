@@ -79,7 +79,7 @@ const handleMessageData = (timestamp) => {
             day = dateDay + '/' + dateMonth + '/' + dateYear
         }
     }
-    const hours = dateFormat.format(new Date(timestamp * 1e3))
+    const hours = dateFormat.format(new Date(timestamp * 1e3)).slice(0, -3)
     const formattedTime = day + ' ' + hours
     return formattedTime
 }

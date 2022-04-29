@@ -1,5 +1,4 @@
 import {
-    StyledLoginPage,
     StyledLoginTitle,
     StyledForm,
     StyledField,
@@ -7,15 +6,12 @@ import {
     StyledFieldLabel,
     StyledLoginWrapper,
     StyledSubmit,
-    StyledHeaderTitle,
     StyleLink,
     StyleError,
     StyledVisibilityOffIcon,
     StyledVisibilityOnIcon,
-    Wave,
 } from '../../utils/style/LoginSignStyle'
 import { useState } from 'react'
-// import { useNavigate } from 'react-router-dom'
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -26,17 +22,11 @@ import {
 } from 'firebase/auth'
 import { doc, setDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
-import { Link, useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
+import { useNavigate } from 'react-router-dom'
 import Helmet from 'react-helmet'
+import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Header from '../../components/Header'
 
-const StyledTitleLink = styled(Link)`
-    font-size: 25px;
-    text-decoration: none;
-    color: ${theme.font_color};
-    z-index: 0;
-`
 function Signup() {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -126,10 +116,8 @@ function Signup() {
                     content="Bienvenue sur Apando ! Vous pouvez vous inscrire ici pour accéder au reste du site."
                 />
             </Helmet>
-            <StyledLoginPage>
-                <StyledHeaderTitle>
-                    <StyledTitleLink to="/">Apando</StyledTitleLink>
-                </StyledHeaderTitle>
+            <BackgroundAnimation>
+                <Header />
                 <StyledLoginWrapper>
                     <StyledLoginTitle>Inscription</StyledLoginTitle>
                     <StyledForm action="#">
@@ -226,8 +214,7 @@ function Signup() {
                         </StyledField>
                     </StyledForm>
                 </StyledLoginWrapper>
-                <Wave />
-            </StyledLoginPage>
+            </BackgroundAnimation>
         </>
     )
 }

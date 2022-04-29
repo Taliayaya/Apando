@@ -170,9 +170,11 @@ const MessageInput = ({ currentChannelId }) => {
                 writeUserMessage(
                     user,
                     message,
-                    currentChannelId.id,
+                    currentChannel.id,
+                    currentServer?.id,
                     selectedFiles
                 )
+                updateMessageCount(currentServer?.id, currentChannel.id)
                 setMessage('')
                 setSelectedFiles([])
             } catch (error) {
@@ -192,8 +194,8 @@ const MessageInput = ({ currentChannelId }) => {
     const placeholder =
         userRole === 'Muted'
             ? 'Vous avez été bloqué par un administrateur. Par conséquent, vous ne pouvez plus envoyer de messages tant que vous ne serez pas débloqué.'
-            : currentChannelId?.name
-            ? `Écrivez dans le salon ${currentChannelId?.name}`
+            : currentChannel?.name
+            ? `Écrivez dans le salon ${currentChannel?.name}`
             : `Choisissez un salon pour commencer à discuter.`
 
     console.log(selectedFiles)
@@ -218,7 +220,7 @@ const MessageInput = ({ currentChannelId }) => {
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder={placeholder}
                         onKeyDown={(e) => handleSubmit(e)}
-                        disabled={currentChannelId?.name in window}
+                        disabled={currentChannel?.name in window}
                         rows="1"
                     ></StyledChatTextarea>
                 </form>

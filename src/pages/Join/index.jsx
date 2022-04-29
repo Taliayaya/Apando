@@ -2,17 +2,15 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
     StyledLoginWrapper,
-    StyledLoginPage,
     StyledForm,
     StyledLoginTitle,
-    StyledHeaderTitle,
     StyledFieldInput,
     StyledField,
     StyledFieldLabel,
     StyledSubmit,
     StyleLink,
 } from '../../utils/style/LoginSignStyle'
-import { StyledText, WaveJoin } from './JoinStyle'
+import { StyledText } from './JoinStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
@@ -21,6 +19,8 @@ import { getServer, joinServer, requestJoin } from '../../utils/function'
 import { Alert, Collapse, IconButton } from '@mui/material'
 import { Close } from '@material-ui/icons'
 import Helmet from 'react-helmet'
+import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Header from '../../components/Header'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -28,8 +28,8 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     width: '40px',
     height: '40px',
     cursor: 'pointer',
-    top: 50,
-    right: -200,
+    left: '5em',
+    top: '-2em',
     fontSize: 'large',
     zIndex: 999,
     borderRadius: 10,
@@ -91,11 +91,13 @@ const Join = () => {
                 <title>Apando / Rejoindre un serveur</title>
             </Helmet>
 
-            <StyledLoginPage>
-                <StyledHeaderTitle>Utilise ton code ici !</StyledHeaderTitle>
-                <StyledExitToAppIcon onClick={() => navigate('/app')} />
+            <BackgroundAnimation>
+                <Header />
                 <StyledLoginWrapper>
-                    <StyledLoginTitle>Mon code</StyledLoginTitle>
+                    <StyledLoginTitle>
+                        <span style={{ marginLeft: '30px' }}>Mon code</span>
+                        <StyledExitToAppIcon onClick={() => navigate('/app')} />
+                    </StyledLoginTitle>
                     <StyledText>
                         Ici tu peux rentrer le code que ton enseignant(e), ton
                         ami(e) ou tes camarades t'ont donné.
@@ -188,8 +190,7 @@ const Join = () => {
                         </StyledField>
                     </StyledForm>
                 </StyledLoginWrapper>
-                <WaveJoin />
-            </StyledLoginPage>
+            </BackgroundAnimation>
         </>
     )
 }

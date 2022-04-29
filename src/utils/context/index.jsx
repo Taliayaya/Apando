@@ -40,12 +40,12 @@ export const MessageListProvider = ({ children }) => {
 export const CurrentChannelContext = createContext()
 
 export const CurrentChannelProvider = ({ children }) => {
-    const [currentChannelId, setCurrentChannelId] = useState({})
+    const [currentChannel, setCurrentChannelId] = useState({})
     const [userList, setUserList] = useState([])
     return (
         <CurrentChannelContext.Provider
             value={{
-                currentChannelId,
+                currentChannel,
                 setCurrentChannelId,
                 userList,
                 setUserList,

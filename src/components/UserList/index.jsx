@@ -9,13 +9,13 @@ import Username from '../Username'
 import { getAuth } from 'firebase/auth'
 
 function UserList() {
-    const { currentChannelId } = useChannel()
+    const { currentChannel } = useChannel()
     const auth = getAuth()
     const { showUsers } = useAuth()
     return (
         <StyleUserList showUsers={showUsers ? 'true' : 'false'}>
             <StyleUserListTop>
-                <h2># {currentChannelId?.name}</h2>
+                <h2># {currentChannel?.name}</h2>
             </StyleUserListTop>
             <StyleUserListTopIcons></StyleUserListTopIcons>
             <div>

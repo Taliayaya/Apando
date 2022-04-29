@@ -3,10 +3,8 @@ import React, { useState } from 'react'
 import { db } from '../../utils/firebase/config'
 import {
     StyledLoginWrapper,
-    StyledLoginPage,
     StyledForm,
     StyledLoginTitle,
-    StyledHeaderTitle,
     StyledFieldInput,
     StyledField,
     StyledFieldLabel,
@@ -14,7 +12,7 @@ import {
     StyleError,
     StyleLink,
 } from '../../utils/style/LoginSignStyle'
-import { StyledText, WaveJoin, StyledTextarea } from './CreateServerStyle'
+import { StyledText, StyledTextarea } from './CreateServerStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
@@ -26,6 +24,8 @@ import {
     writeUserRole,
 } from '../../utils/function'
 import { getAuth } from 'firebase/auth'
+import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Header from '../../components/Header'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -33,8 +33,8 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     width: '40px',
     height: '40px',
     cursor: 'pointer',
-    top: 50,
-    right: -200,
+    left: '4em',
+    top: '-2em',
     fontSize: 'large',
     zIndex: 999,
     borderRadius: 10,
@@ -47,18 +47,12 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     position: 'relative',
 }))
 
-const handleServerNameTyping = (chr) => {
-    /** Vérifie que le nom donné ne soit pas vide
-     * ou supérieur à 12 caractères
-     * Sinon empêche de taper le caractère
-     */
-    const pattern = /^.{0,12}$/g
-    if (pattern.test(chr)) {
-        return chr
-    }
-    return chr.slice(0, -1)
-}
-
+/**
+ * Verify that each channel name is no longer than 12 chr
+ * Otherwise, it removes the last character of this name to match the size
+ * @param {string} chr a string of channel name separated by \n
+ * @returns the string of channel name with names no more longer than 12 chr
+ */
 const handleChannelListTyping = (chr) => {
     const pattern = /^.{0,12}$/g
     const words = chr.split('\n')
@@ -118,13 +112,13 @@ export default function CreateServer() {
         }
     }
     return (
-        <StyledLoginPage>
-            <StyledHeaderTitle>
-                Crée rapidement ton serveur ici !
-            </StyledHeaderTitle>
-            <StyledExitToAppIcon onClick={() => navigate('/app')} />
+        <BackgroundAnimation>
+            <Header />
             <StyledLoginWrapper>
-                <StyledLoginTitle>Mon serveur</StyledLoginTitle>
+                <StyledLoginTitle>
+                    <span style={{ marginLeft: '30px' }}>Mon serveur</span>
+                    <StyledExitToAppIcon onClick={() => navigate('/app')} />
+                </StyledLoginTitle>
                 <StyledText>
                     Ici tu peux créer ton propre serveur en quelques clics et
                     vite inviter tes amis en partageant le code que tu as créé
@@ -137,11 +131,8 @@ export default function CreateServer() {
                             type="text"
                             name="serverName"
                             value={serverName}
-                            onChange={(e) =>
-                                setServerName(
-                                    handleServerNameTyping(e.target.value)
-                                )
-                            }
+                            onChange={(e) => setServerName(e.target.value)}
+                            maxLength={'12'}
                             required
                         />
                         <StyledFieldLabel htmlFor="serverName">
@@ -160,25 +151,19 @@ export default function CreateServer() {
                             Créer mon code
                         </StyledFieldLabel>
                     </StyledField>
-                    <StyledField style={{ paddingBottom: '20px' }}>
-                        <StyledText>
-                            Écris en-dessous, ligne par ligne, le nom des salons
-                            que tu veux ajouter dans ton serveur. (Tu pourras en
-                            créer d'autre depuis l'app)
-                        </StyledText>
-                    </StyledField>
-                    <StyledField style={{ paddingBottom: '60px' }}>
-                        <StyledTextarea
-                            name="channels"
-                            cols={12}
-                            onChange={(e) =>
-                                setChannels(
-                                    handleChannelListTyping(e.target.value)
-                                )
-                            }
-                            value={channels}
-                        ></StyledTextarea>
-                    </StyledField>
+                    <StyledText>
+                        Écris en-dessous, ligne par ligne, le nom des salons que
+                        tu veux ajouter dans ton serveur. (Tu pourras en créer
+                        d'autre depuis l'app)
+                    </StyledText>
+                    <StyledTextarea
+                        name="channels"
+                        cols={12}
+                        onChange={(e) =>
+                            setChannels(handleChannelListTyping(e.target.value))
+                        }
+                        value={channels}
+                    ></StyledTextarea>
 
                     <StyledField>
                         <StyledSubmit
@@ -193,7 +178,6 @@ export default function CreateServer() {
                     </StyledField>
                 </StyledForm>
             </StyledLoginWrapper>
-            <WaveJoin />
-        </StyledLoginPage>
+        </BackgroundAnimation>
     )
 }

@@ -43,12 +43,23 @@ const LeftMenu = ({ serverList, setChannelList }) => {
         setNewChannelName('')
     }
 
+    /**
+     * Basically, it resets all states in order to change server.
+     * You probably won't appreciate being in a server and seeing that
+     * nothing changed...
+     * It also update the server id param in the url
+     * @param {String} value is the server id and name separated by a space
+     */
     const changeServer = (value) => {
-        const server = value.split(' ')
+        /** Why §§§§§§§§§§§§$ ? Because server name is 12 chr long
+         * This was written at midnight. Forgive me
+         */
+        const server = value.split('§§§§§§§§§§§§§')
         setCurrentServer({ id: server[0], name: server[1] })
         setChannelList([])
         setUserList([])
         setMessageList([])
+        navigate(`${server[1]}/${server[0]}`)
     }
 
     return (
@@ -94,6 +105,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                     <InputLabel id="server-select-label">
                         Serveur actuel
                     </InputLabel>
+                    {console.log(currentServer)}
                     <Select
                         labelId="server-select-label"
                         id="server-select"
@@ -102,11 +114,14 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                         onChange={(e) => {
                             changeServer(e.target.value)
                         }}
-                        defaultValue={`${currentServer?.id} ${currentServer?.name}`}
+                        defaultValue={`${currentServer?.id}§§§§§§§§§§§§§${currentServer?.name}`}
                     >
                         {serverList &&
                             serverList.map(({ id, name }) => (
-                                <MenuItem value={`${id} ${name}`} key={id}>
+                                <MenuItem
+                                    value={`${id}§§§§§§§§§§§§§${name}`}
+                                    key={id}
+                                >
                                     {name}
                                 </MenuItem>
                             ))}
