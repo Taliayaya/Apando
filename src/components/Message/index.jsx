@@ -32,6 +32,7 @@ import {
 import { Stack } from '@mui/material'
 import { FileDownload, FileDownloadDone } from '@mui/icons-material'
 import { theme } from '../../utils/style/colors'
+import ShowFiles from './ShowFiles'
 
 const handleMonth = (month) => {
     if (month < 10) {
@@ -112,34 +113,44 @@ const FileContainer = ({ file }) => {
     }, [fileRef, metadata])
 
     return (
-        <Container style={{ backgroundColor: theme.top_menu_bg_color }}>
-            <p>{metadata?.name}</p>
-            <br />
-            <h5>{metadata?.size}</h5>
-            {fileDownloaded ? (
-                <Tooltip
-                    title={`Fichier déjà téléchargé. Double click pour le télécharger à nouveau
+        <>
+            <Container
+                style={{
+                    backgroundColor: theme.top_menu_bg_color,
+                    maxWidth: '50vw',
+                }}
+            >
+                <p>{metadata?.name}</p>
+                <br />
+                <h5>{metadata?.size}</h5>
+                {fileDownloaded ? (
+                    <Tooltip
+                        title={`Fichier déjà téléchargé. Double click pour le télécharger à nouveau
                 `}
-                >
-                    <IconButton onDoubleClick={() => setFileDownloaded(false)}>
-                        <FileDownloadDone />
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <Tooltip title={`Télécharger ${metadata?.name}`}>
-                    <a
-                        href={downloadURL}
-                        target="_blank"
-                        rel="noreferrer"
-                        download
                     >
-                        <IconButton onClick={() => setFileDownloaded(true)}>
-                            <FileDownload />
+                        <IconButton
+                            onDoubleClick={() => setFileDownloaded(false)}
+                        >
+                            <FileDownloadDone />
                         </IconButton>
-                    </a>
-                </Tooltip>
-            )}
-        </Container>
+                    </Tooltip>
+                ) : (
+                    <Tooltip title={`Télécharger ${metadata?.name}`}>
+                        <a
+                            href={downloadURL}
+                            target="_blank"
+                            rel="noreferrer"
+                            download
+                        >
+                            <IconButton onClick={() => setFileDownloaded(true)}>
+                                <FileDownload />
+                            </IconButton>
+                        </a>
+                    </Tooltip>
+                )}
+            </Container>
+            <ShowFiles name={metadata?.name} url={downloadURL} />
+        </>
     )
 }
 
@@ -170,7 +181,13 @@ const FilesList = ({ filesPath }) => {
     return (
         <Stack spacing={1}>
             {listItems?.map((file) => {
-                return <FileContainer key={file} file={file} />
+                return (
+                    <FileContainer
+                        style={{ maxWidth: '50vw' }}
+                        key={file}
+                        file={file}
+                    />
+                )
             })}
         </Stack>
     )
