@@ -61,7 +61,7 @@ export const StyledChatMessage = styled.div`
 export const StyledChatInput = styled.div`
     color: ${theme.font_color};
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: space-between;
     border-radius: 5px;
     margin: 20px;

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { theme } from '../../utils/style/colors'
 
-export const Container = styled.div`
+const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,7 +12,7 @@ export const Container = styled.div`
         props.repeat === 'true' ? `padding: 0px 20px;` : `padding: 5px 20px;`}
 `
 
-export const StyledMessage = styled.div`
+const StyledMessage = styled.div`
     display: flex;
     align-items: left;
 
@@ -20,18 +20,18 @@ export const StyledMessage = styled.div`
     justify-content: space-between;
 `
 
-export const StyledMessageInfo = styled.div`
+const StyledMessageInfo = styled.div`
     margin-left: 20px;
     font-size: large;
 `
 
-export const StyledMessageTimestamp = styled.span`
+const StyledMessageTimestamp = styled.span`
     color: lightgray;
     margin-left: 20px;
     font-size: x-small;
 `
 
-export const StyledUserMessage = styled.span`
+const StyledUserMessage = styled.span`
     white-space: pre-line;
     font-size: medium;
 
@@ -43,6 +43,15 @@ export const StyledUserMessage = styled.span`
     }
 `
 
-export const Align = styled.span`
+const Align = styled.span`
     align-items: center;
 `
+
+export {
+    Align,
+    Container,
+    StyledMessage,
+    StyledMessageInfo,
+    StyledMessageTimestamp,
+    StyledUserMessage,
+}
