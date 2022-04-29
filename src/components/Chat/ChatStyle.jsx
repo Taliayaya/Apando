@@ -14,16 +14,16 @@ export const StyledChatMessage = styled.div`
     overflow-y: scroll;
 
     img {
-        max-width: 50vh;
+        max-width: 50vw;
         @media screen and (max-width: 720px) {
-            ${(props) => props.shouldresize === 'true' && 'max-width: 25vh;'}
+            ${(props) => props.shouldresize === 'true' && 'max-width: 25vw;'}
         }
         @media screen and (max-width: 480px) {
-            max-width: 20vh;
+            max-width: 20vw;
         }
     }
     code {
-        max-width: 50vh;
+        max-width: 50vw;
     }
     word-break: break-all;
     white-space: pre-wrap;
