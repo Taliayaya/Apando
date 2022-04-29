@@ -46,7 +46,6 @@ const StyledUserMessage = styled.span`
 const Align = styled.span`
     align-items: center;
 `
-
 export {
     Align,
     Container,

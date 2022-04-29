@@ -15,15 +15,23 @@ import remarkMath from 'remark-math'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { useEffect, useState } from 'react'
 import MessageMore from '../MessageMore'
-import { IconButton, Menu } from '@mui/material'
+import { IconButton, Menu, Tooltip } from '@mui/material'
 import 'katex/dist/katex.min.css'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
 import rehypeMathjax from 'rehype-mathjax'
 
 // For the file stack
-import { getStorage, ref, listAll, getMetadata } from 'firebase/storage'
+import {
+    getStorage,
+    ref,
+    listAll,
+    getMetadata,
+    getDownloadURL,
+} from 'firebase/storage'
 import { Stack } from '@mui/material'
+import { FileDownload, FileDownloadDone } from '@mui/icons-material'
+import { theme } from '../../utils/style/colors'
 
 const handleMonth = (month) => {
     if (month < 10) {
@@ -86,6 +94,8 @@ const FileContainer = ({ file }) => {
     const storage = getStorage()
     const fileRef = ref(storage, file._location.path)
     const [metadata, setMetadata] = useState({})
+    const [fileDownloaded, setFileDownloaded] = useState(false)
+    const [downloadURL, setDownloadURL] = useState(null)
 
     useEffect(() => {
         const loadMetadata = () => {
@@ -93,17 +103,42 @@ const FileContainer = ({ file }) => {
                 getMetadata(fileRef).then((data) => {
                     setMetadata(data)
                 })
+                getDownloadURL(fileRef).then((url) => {
+                    setDownloadURL(url)
+                })
             }
         }
-        console.log(metadata)
-
         loadMetadata()
     }, [fileRef, metadata])
+
     return (
-        <Container>
+        <Container style={{ backgroundColor: theme.top_menu_bg_color }}>
             <p>{metadata?.name}</p>
             <br />
             <h5>{metadata?.size}</h5>
+            {fileDownloaded ? (
+                <Tooltip
+                    title={`Fichier déjà téléchargé. Double click pour le télécharger à nouveau
+                `}
+                >
+                    <IconButton onDoubleClick={() => setFileDownloaded(false)}>
+                        <FileDownloadDone />
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <Tooltip title={`Télécharger ${metadata?.name}`}>
+                    <a
+                        href={downloadURL}
+                        target="_blank"
+                        rel="noreferrer"
+                        download
+                    >
+                        <IconButton onClick={() => setFileDownloaded(true)}>
+                            <FileDownload />
+                        </IconButton>
+                    </a>
+                </Tooltip>
+            )}
         </Container>
     )
 }
