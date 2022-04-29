@@ -35,7 +35,6 @@ function Login() {
     const [password, setpassword] = useState('')
     const [error, setError] = useState(null)
     const [showPassword, setShowPassword] = useState(false)
-    const [stayLogged, setStayLogged] = useState(false)
     const auth = getAuth()
     const from = location.state?.from?.pathname || '/app'
 
@@ -166,14 +165,7 @@ function Login() {
                                 />
                             )}
                         </StyledField>
-                        <StyledField>
-                            <input
-                                type="checkbox"
-                                name="remember-me"
-                                onChange={(e) => setStayLogged(!stayLogged)}
-                            />
-                            <label htmlFor="remember-me">Rester connecté</label>
-                        </StyledField>
+
                         <StyledField>
                             <StyledSubmit onClick={(e) => handleLogin(e)} />
                         </StyledField>

@@ -198,7 +198,6 @@ const MessageInput = ({ currentChannel }) => {
             ? `Écrivez dans le salon ${currentChannel?.name}`
             : `Choisissez un salon pour commencer à discuter.`
 
-    console.log(selectedFiles)
     return (
         <>
             <StyledChatInput>
