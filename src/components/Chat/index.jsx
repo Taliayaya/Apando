@@ -80,7 +80,7 @@ function Chat() {
             <TopMenu />
             <StyledChatMessage shouldresize={shouldresize}>
                 {messageListSorted.map(
-                    ({ message, timestamp, user, key, id_channel }) => {
+                    ({ message, timestamp, user, key, id_channel, files }) => {
                         let repeat = user?.uid === previousUser
                         previousUser = user?.uid
 
@@ -88,9 +88,7 @@ function Chat() {
                             <Message
                                 key={key}
                                 username={
-                                    user.displayName
-                                        ? user?.displayName
-                                        : 'Utilisateur supprimé'
+                                    user.displayName ?? 'Utilisateur supprimé'
                                 }
                                 message={message}
                                 timestamp={timestamp.seconds}
@@ -99,6 +97,7 @@ function Chat() {
                                 messageID={key}
                                 id_channel={id_channel}
                                 uid={user.uid}
+                                filesPath={files}
                             />
                         )
                     }

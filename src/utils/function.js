@@ -22,12 +22,36 @@ import {
     getDoc,
 } from 'firebase/firestore'
 import { db } from './firebase/config'
+import { getStorage, uploadBytes, ref as storageRef } from 'firebase/storage'
+// Need to alias it in order to avoid collision
 
-function writeUserMessage(user, message, id_channel) {
+function storeFiles(files, messageRef) {
+    /* Stores the files in the storage, and returns the reference to the folder they're in.
+     * If there are no files, returs null.
+     * Takes the files and the reference to the message we're sending as arguments.
+     * Stores under the unique give name the files passed (using the array of arrays
+     * containing the file and its new name)
+     */
+    if (files.length !== 0) {
+        const storage = getStorage()
+        const filesPath = messageRef._path.pieces_.slice(1).join('/')
+        // The whole path except the 'messages' directory
+        files.forEach(async (file) => {
+            const filesRef = storageRef(
+                storage,
+                `attachments/${filesPath}/${file[1]}`
+            )
+            await uploadBytes(filesRef, file[0])
+        })
+        return filesPath
+    } else return null
+}
+
+function writeUserMessage(user, message, id_channel, files = []) {
     const db = getDatabase()
     const messageListRef = ref(db, 'messages/' + id_channel)
     const newMessageRef = push(messageListRef)
-
+    const filesRef = storeFiles(files, newMessageRef)
     set(newMessageRef, {
         message: message,
         id_channel: id_channel,
@@ -37,6 +61,7 @@ function writeUserMessage(user, message, id_channel) {
             displayName: user.displayName,
             photoURL: user.photoURL,
         },
+        files: filesRef ? filesRef : null,
     })
 }
 

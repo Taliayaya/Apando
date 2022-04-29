@@ -13,13 +13,26 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkMath from 'remark-math'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MessageMore from '../MessageMore'
-import { IconButton, Menu } from '@mui/material'
+import { IconButton, Menu, Tooltip } from '@mui/material'
 import 'katex/dist/katex.min.css'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
 import rehypeMathjax from 'rehype-mathjax'
+
+// For the file stack
+import {
+    getStorage,
+    ref,
+    listAll,
+    getMetadata,
+    getDownloadURL,
+} from 'firebase/storage'
+import { Stack } from '@mui/material'
+import { FileDownload, FileDownloadDone } from '@mui/icons-material'
+import { theme } from '../../utils/style/colors'
+import ShowFiles from './ShowFiles'
 
 const handleMonth = (month) => {
     if (month < 10) {
@@ -71,6 +84,114 @@ const handleMessageData = (timestamp) => {
     return formattedTime
 }
 
+const FileContainer = ({ file }) => {
+    /* A container component for files to be rendered under message.
+     * Arguments: file, an item passed from the listAll on a directory.
+     * */
+    // To Do : add icons next to the file's name
+    // To Do : Different behavior according to the file's type
+    //const metadata = getMetadata(file)
+    const storage = getStorage()
+    const fileRef = ref(storage, file._location.path)
+    const [metadata, setMetadata] = useState({})
+    const [fileDownloaded, setFileDownloaded] = useState(false)
+    const [downloadURL, setDownloadURL] = useState(null)
+
+    useEffect(() => {
+        const loadMetadata = () => {
+            if (Object.keys(metadata).length === 0) {
+                getMetadata(fileRef).then((data) => {
+                    setMetadata(data)
+                })
+                getDownloadURL(fileRef).then((url) => {
+                    setDownloadURL(url)
+                })
+            }
+        }
+        loadMetadata()
+    }, [fileRef, metadata])
+
+    return (
+        <>
+            <Container
+                style={{
+                    backgroundColor: theme.top_menu_bg_color,
+                    maxWidth: '50vw',
+                }}
+            >
+                <p>{metadata?.name}</p>
+                <br />
+                <h5>{metadata?.size}</h5>
+                {fileDownloaded ? (
+                    <Tooltip
+                        title={`Fichier déjà téléchargé. Double click pour le télécharger à nouveau
+                `}
+                    >
+                        <IconButton
+                            onDoubleClick={() => setFileDownloaded(false)}
+                        >
+                            <FileDownloadDone />
+                        </IconButton>
+                    </Tooltip>
+                ) : (
+                    <Tooltip title={`Télécharger ${metadata?.name}`}>
+                        <a
+                            href={downloadURL}
+                            target="_blank"
+                            rel="noreferrer"
+                            download
+                        >
+                            <IconButton onClick={() => setFileDownloaded(true)}>
+                                <FileDownload />
+                            </IconButton>
+                        </a>
+                    </Tooltip>
+                )}
+            </Container>
+            <ShowFiles name={metadata?.name} url={downloadURL} />
+        </>
+    )
+}
+
+const FilesList = ({ filesPath }) => {
+    /* A stack with all the files from a directory of the storage, rendered by a
+     * file container each.
+     * Arguments: filesPath, the path under 'attachments/' of the files
+     *     directory.
+     * */
+    const storage = getStorage()
+    // console.log(filesPath)
+    const dirRef = ref(storage, 'attachments/' + filesPath)
+    // To Do : fix this strange behavior from the passed filesPath
+    const [listItems, setListItems] = useState([])
+    useEffect(() => {
+        //gotten.current = true
+        // listAll(dirRef).then((data) => setListItems(data.items))
+        const getFiles = () => {
+            if (listItems.length === 0) {
+                listAll(dirRef).then((res) => {
+                    setListItems(res.items)
+                })
+            }
+        }
+        getFiles()
+    }, [dirRef, listItems.length])
+    console.log(2)
+    return (
+        <Stack spacing={1}>
+            {listItems?.map((file) => {
+                return (
+                    <FileContainer
+                        style={{ maxWidth: '50vw' }}
+                        key={file}
+                        file={file}
+                    />
+                )
+            })}
+        </Stack>
+    )
+}
+
 function Message({
     messageID,
     username,
@@ -80,7 +201,13 @@ function Message({
     repeat,
     id_channel,
     uid,
+    filesPath,
 }) {
+    /* Component to render a message : displays the avatar, the date, the text, the
+     * person who posted the message, a menu to answer and delete, the render
+     * markdown, images, sent files ...
+     * Arguments: Everything attached to a message to be rendered
+     * */
     const [anchorEl, setAnchorEl] = useState(null)
     const [showMore, setShowMore] = useState(false)
     const open = Boolean(anchorEl)
@@ -165,6 +292,7 @@ function Message({
                                 },
                             }}
                         />
+                        {filesPath && <FilesList filesPath={filesPath} />}
                     </StyledUserMessage>
                 </StyledMessageInfo>
             </StyledMessage>

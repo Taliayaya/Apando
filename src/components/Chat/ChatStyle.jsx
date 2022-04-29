@@ -13,17 +13,8 @@ export const StyledChatMessage = styled.div`
     flex: 1;
     overflow-y: scroll;
 
-    img {
-        max-width: 50vh;
-        @media screen and (max-width: 720px) {
-            ${(props) => props.shouldresize === 'true' && 'max-width: 25vh;'}
-        }
-        @media screen and (max-width: 480px) {
-            max-width: 20vh;
-        }
-    }
     code {
-        max-width: 50vh;
+        max-width: 50vw;
     }
     word-break: break-all;
     white-space: pre-wrap;
@@ -61,7 +52,7 @@ export const StyledChatMessage = styled.div`
 export const StyledChatInput = styled.div`
     color: ${theme.font_color};
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: space-between;
     border-radius: 5px;
     margin: 20px;
