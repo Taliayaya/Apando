@@ -13,18 +13,6 @@ export const StyledChatMessage = styled.div`
     flex: 1;
     overflow-y: scroll;
 
-    img {
-        max-width: 25vw;
-        max-height: 25vh;
-        height: auto;
-        width: auto;
-        @media screen and (max-width: 720px) {
-            ${(props) => props.shouldresize === 'true' && 'max-width: 40vw;'}
-        }
-        @media screen and (max-width: 480px) {
-            max-width: 50vw;
-        }
-    }
     code {
         max-width: 50vw;
     }
