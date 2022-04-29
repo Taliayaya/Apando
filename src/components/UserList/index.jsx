@@ -3,7 +3,7 @@ import CategorieUser from '../CategorieUser'
 import {
     StyleUserList,
     StyleUserListTop,
-    StyleUserListTopIcons,
+    // StyleUserListTopIcons,
 } from './UserListStyle'
 import Username from '../Username'
 import { getAuth } from 'firebase/auth'
@@ -17,7 +17,10 @@ function UserList() {
             <StyleUserListTop>
                 <h2># {currentChannel?.name}</h2>
             </StyleUserListTop>
-            <StyleUserListTopIcons></StyleUserListTopIcons>
+            {/* To add further icons to interact with.
+            Currently not an important task
+            */}
+            {/* <StyleUserListTopIcons></StyleUserListTopIcons> */}
             <div>
                 <CategorieUser />
             </div>

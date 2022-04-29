@@ -27,16 +27,17 @@ function sendNotificationWeb(
 ) {
     if (Notification.permission === 'granted') {
         const notification = new Notification(
-            `${serverName}/${channelName} - ${username}`,
+            `Apando - ${serverName}/${channelName} - ${username}`,
             {
                 body: message,
                 icon: img,
             }
         )
         notification.onclick = (e) => {
-            // `http://localhost:3000/app/${serverName}/${id_server}/${id_channel}`
             window.open(
-                `https://apando.fr/app/${serverName}/${id_server}/${id_channel}`
+                process.env.NODE_ENV === 'production'
+                    ? `https://apando.fr/app/${serverName}/${id_server}/${id_channel}`
+                    : `http://localhost:3000/app/${serverName}/${id_server}/${id_channel}`
             )
         }
         document.addEventListener('visibilitychange', () => {
@@ -46,8 +47,6 @@ function sendNotificationWeb(
         })
     }
     setNotificationAsSent(uid, id_channel, id_server)
-
-    console.log('not sent')
 }
 
 export { setNotificationAsSent, askNotification, sendNotificationWeb }

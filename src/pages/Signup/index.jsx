@@ -116,7 +116,7 @@ function Signup() {
                     content="Bienvenue sur Apando ! Vous pouvez vous inscrire ici pour accéder au reste du site."
                 />
             </Helmet>
-            <BackgroundAnimation>
+            <BackgroundAnimation sakura={true}>
                 <Header />
                 <StyledLoginWrapper>
                     <StyledLoginTitle>Inscription</StyledLoginTitle>

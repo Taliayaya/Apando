@@ -111,7 +111,7 @@ const Dashboard = () => {
                     content="Retrouvez toutes les statistiques relatives à votre serveur et configurez-le comme vous le souhaitez."
                 />
             </Helmet>
-            <BackgroundAnimation>
+            <BackgroundAnimation sakura={true}>
                 <DashboardMain>
                     <DashboardTitle>
                         <StyledExitToAppIcon onClick={() => navigate('/app')} />

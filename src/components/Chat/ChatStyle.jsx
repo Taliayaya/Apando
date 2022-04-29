@@ -86,6 +86,9 @@ export const ScrollDown = styled.div`
     flex-direction: row;
     justify-content: space-between;
     color: #fff;
-    margin: 50px;
-    margin-top: -100px;
+    margin-top: -5em;
+    margin-left: 80%;
+    @media screen and (min-width: 720px) {
+        margin-left: 90%;
+    }
 `

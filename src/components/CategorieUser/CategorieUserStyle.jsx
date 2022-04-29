@@ -4,7 +4,7 @@ import { theme } from '../../utils/style/colors'
 export const ContainerUser = styled.div`
     overflow-y: scroll;
     @media screen and (min-height: 720px) {
-        height: 75vh;
+        height: 80vh;
     }
     @media screen and (min-height: 680px) and (max-height: 720px) {
         height: 65vh;

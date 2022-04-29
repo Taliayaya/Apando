@@ -30,13 +30,14 @@ import Header from '../../components/Header'
 function Login() {
     const navigate = useNavigate()
     const { login } = useAuth()
-    const { state } = useLocation()
+    const location = useLocation()
     const [nameEmail, setnameEmail] = useState('')
     const [password, setpassword] = useState('')
     const [error, setError] = useState(null)
     const [showPassword, setShowPassword] = useState(false)
     const [stayLogged, setStayLogged] = useState(false)
     const auth = getAuth()
+    const from = location.state?.from?.pathname || '/app'
 
     auth.useDeviceLanguage()
     const provider = new GoogleAuthProvider()
@@ -50,7 +51,7 @@ function Login() {
                     })
 
                     login().then(() => {
-                        navigate(state?.path || '/app')
+                        navigate(from, { replace: true })
                     })
                 } catch {
                     setError(
@@ -90,7 +91,7 @@ function Login() {
 
                 // Signed in
                 login().then(() => {
-                    navigate(state?.path || '/app')
+                    navigate(from, { replace: true })
                 })
             })
             .catch((error) => {
@@ -107,7 +108,7 @@ function Login() {
                 })
 
                 login().then(() => {
-                    navigate(state?.path || '/app', { replace: true })
+                    navigate(from, { replace: true })
                 })
             }
         })
@@ -121,7 +122,7 @@ function Login() {
                     content="Connectez-vous à Apando pour retrouvez vos camarades en quelques clics."
                 />
             </Helmet>
-            <BackgroundAnimation>
+            <BackgroundAnimation sakura={true}>
                 <Header />
                 <StyledLoginWrapper>
                     <StyledLoginTitle>Connexion</StyledLoginTitle>

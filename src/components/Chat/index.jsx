@@ -5,7 +5,7 @@ import Message from '../Message'
 import MessageInput from '../MessageInput'
 import TopMenu from '../TopMenu'
 import { Badge, IconButton, Tooltip } from '@mui/material'
-import { ArrowCircleDown, Autorenew } from '@mui/icons-material'
+import { Autorenew, KeyboardDoubleArrowDown } from '@mui/icons-material'
 import { styled } from '@material-ui/styles'
 import { theme } from '../../utils/style/colors'
 import { getDatabase, ref, onValue } from 'firebase/database'
@@ -34,6 +34,10 @@ const StyledBadge = styled(Badge)((props) => ({
     },
 }))
 
+/**
+ * The chat component. It handles showing all the message sent
+ * in the selected channel and the message input... to send new messages
+ */
 function Chat() {
     const messageEndRef = useRef(null)
     const { currentChannel, currentServer } = useChannel()
@@ -42,14 +46,24 @@ function Chat() {
     const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true)
     const user = getAuth().currentUser
 
+    /**
+     * This create a realtime connection with the database
+     * On each modification in the messages/channel_id/ node,
+     * it will refresh this component and by the same occasion,
+     * load the messages.
+     *
+     * It sets messages as seen for this channel.
+     */
     useEffect(() => {
         if (currentChannel.id) {
             const rltdb = getDatabase()
             const messageListRef = ref(rltdb, 'messages/' + currentChannel.id)
+            // create the connection
             const unsub = onValue(messageListRef, (snapshot) => {
                 const obj = snapshot.val()
                 const datas = []
                 if (obj !== null) {
+                    // add the id/key to the object
                     Object.keys(obj).forEach((key) => {
                         const values = obj[key]
                         values.key = key
@@ -57,13 +71,18 @@ function Chat() {
                     })
                     setMessageList(datas)
                 }
+                // Messages are seen when they are loaded.
                 setMessageAsSeen(user.uid, currentChannel.id, currentServer.id)
             })
+            // On each render, unsub to the database. Otherwise, it
+            // would create multiple connection... which isn't optimised
             return () => unsub()
         }
     }, [currentChannel.id, currentServer.id, setMessageList, user.uid])
 
     useEffect(() => {
+        // If the autoscroll is turned on, it gently scroll bottom on
+        // each render
         if (shouldScrollToBottom) {
             messageEndRef.current?.scrollIntoView({
                 block: 'start',
@@ -74,6 +93,7 @@ function Chat() {
     })
 
     let previousUser = -1
+    // sort message by date. The latest at the top
     const messageListSorted = messageList.sort((a, b) => {
         return a.timestamp - b.timestamp
     })
@@ -83,8 +103,13 @@ function Chat() {
         <StyledChat shouldresize={shouldresize}>
             <TopMenu />
             <StyledChatMessage shouldresize={shouldresize}>
+                {/* Load each messages of the array */}
                 {messageListSorted.map(
                     ({ message, timestamp, user, key, id_channel, files }) => {
+                        /* If this message was sent by the same user
+                         * than the previous one. Then we don't want to
+                         * show all the metadata again right ?
+                         */
                         let repeat = user?.uid === previousUser
                         previousUser = user?.uid
 
@@ -109,8 +134,11 @@ function Chat() {
 
                 <div ref={messageEndRef} />
             </StyledChatMessage>
+
+            {/* A button to scroll to the bottom of the chat.
+            It can also turn on/off the autoscroll
+            */}
             <ScrollDown>
-                <div style={{ visibility: 'hidden' }}>Test</div>
                 <StyledBadge
                     overlap="circular"
                     anchorOrigin={{
@@ -137,12 +165,15 @@ function Chat() {
                         </Tooltip>
                     }
                     shouldscrolltobottom={
+                        // change the color of the autoscroll button
+                        // to tell the user it state changed
                         shouldScrollToBottom ? 'true' : 'false'
                     }
                 >
                     <Tooltip title="Scroll vers le bas">
                         <IconButton
                             onClick={() =>
+                                // scroll to the bottom
                                 messageEndRef.current?.scrollIntoView({
                                     block: 'start',
                                     behavior: 'smooth',
@@ -150,7 +181,7 @@ function Chat() {
                                 })
                             }
                         >
-                            <ArrowCircleDown
+                            <KeyboardDoubleArrowDown
                                 style={{
                                     backgroundColor: theme.chat_input_bg_color,
                                     borderRadius: '60px',

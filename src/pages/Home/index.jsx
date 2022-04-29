@@ -24,7 +24,7 @@ function Home() {
     const navigate = useNavigate()
     return (
         <>
-            <BackgroundAnimation>
+            <BackgroundAnimation sakura={true}>
                 <Header authLinks={true} />
             </BackgroundAnimation>
             <Container>

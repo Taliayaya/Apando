@@ -41,14 +41,11 @@ export function useAuth() {
             })
         },
         logout() {
-            return new Promise((res) => {
-                signOut(auth).then(() => {
-                    setCurrentChannelId({})
-                    setAuthed(false)
-                    navigate('/login')
-                    setCurrentServer(false)
-                })
-                res()
+            navigate('/login')
+            signOut(auth).then(() => {
+                setCurrentChannelId({})
+                setAuthed(false)
+                setCurrentServer(false)
             })
         },
         resetPassword,

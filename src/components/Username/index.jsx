@@ -7,6 +7,10 @@ import {
 } from './UsernameStyle'
 import { getAuth } from 'firebase/auth'
 
+/**
+ * The bottom right widget showing WHO U ARE.
+ * It shows the username, avatar and a button Link to his settings
+ */
 function Username() {
     const auth = getAuth()
     const user = auth.currentUser

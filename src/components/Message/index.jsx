@@ -33,56 +33,8 @@ import { Stack } from '@mui/material'
 import { FileDownload, FileDownloadDone } from '@mui/icons-material'
 import { theme } from '../../utils/style/colors'
 import ShowFiles from './ShowFiles'
-
-const handleMonth = (month) => {
-    if (month < 10) {
-        return '0' + month
-    }
-    return month
-}
-
-function LinkRenderer(props) {
-    return (
-        <a href={props.href} target="_blank" rel="noreferrer">
-            {props.children}
-        </a>
-    )
-}
-
-const handleMessageData = (timestamp) => {
-    const dateFormat = new Intl.DateTimeFormat('fr-FR', {
-        timeStyle: 'medium',
-        timeZone: 'CET',
-    })
-    const now = new Date()
-    const date = new Date(timestamp * 1000)
-    let day
-
-    if (
-        now.getDate() === date.getDate() &&
-        now.getMonth() === date.getMonth() &&
-        now.getFullYear() === date.getFullYear()
-    ) {
-        day = "Aujourd'hui à "
-    } else {
-        if (
-            now.getDate() - 1 === date.getDate() &&
-            now.getMonth() === date.getMonth() &&
-            now.getFullYear() === date.getFullYear()
-        ) {
-            day = 'Hier à '
-        } else {
-            const dateDay = date.getDate()
-            const monthsInt = date.getMonth() + 1
-            const dateMonth = handleMonth(monthsInt)
-            const dateYear = date.getFullYear()
-            day = dateDay + '/' + dateMonth + '/' + dateYear
-        }
-    }
-    const hours = dateFormat.format(new Date(timestamp * 1e3)).slice(0, -3)
-    const formattedTime = day + ' ' + hours
-    return formattedTime
-}
+import { handleMessageData, LinkRenderer } from './MessageFunctions'
+import PropTypes from 'prop-types'
 
 const FileContainer = ({ file }) => {
     /* A container component for files to be rendered under message.
@@ -219,6 +171,7 @@ function Message({
         setAnchorEl(null)
     }
 
+    // Lets get a better date format than a timestamp... shall we ?
     const formattedTime = handleMessageData(timestamp)
 
     return (
@@ -233,6 +186,10 @@ function Message({
                     style={{ visibility: !repeat ? 'visible' : 'hidden' }}
                 />
                 <StyledMessageInfo>
+                    {/* The users info : Name, and when the message was sent.
+                    Repeat this information when multiple messages were sent in
+                    row isn't necessary.......
+                    */}
                     {!repeat && (
                         <Align>
                             {username}
@@ -242,6 +199,10 @@ function Message({
                         </Align>
                     )}
                     <StyledUserMessage>
+                        {/* This huge code is what analyze the message sent 
+                        and format it with Markdown. 
+                        It can use Latex, Code syntax, Links... 
+                        */}
                         <ReactMarkdown
                             children={message}
                             remarkPlugins={[remarkMath, remarkGfm]}
@@ -251,6 +212,15 @@ function Message({
                                 rehypeStringify,
                             ]}
                             components={{
+                                /* We modified the link interaction so that
+                                 * the user is redirected in an other tab.
+                                 * We want to keep our users :3
+                                 *
+                                 * this can be useful if we want to add a
+                                 * confirmation like :
+                                 * "Are you sure you want to follow this link ?
+                                 * it's dangerous to go alone, take this!"
+                                 */
                                 a: LinkRenderer,
                                 code({
                                     node,
@@ -269,6 +239,10 @@ function Message({
                                                 ''
                                             )}
                                             lineProps={{
+                                                /* If messages are too long,
+                                                 * breaks it so that it stays INSIDE
+                                                 * the chat
+                                                 */
                                                 style: {
                                                     wordBreak: 'break-all',
                                                     whiteSpace: 'pre-wrap',
@@ -296,43 +270,59 @@ function Message({
                     </StyledUserMessage>
                 </StyledMessageInfo>
             </StyledMessage>
-            {showMore && (
-                <div>
-                    <IconButton
-                        id="long-button"
-                        aria-label="more"
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={(e) => handleClick(e)}
-                    >
-                        <MoreVertIcon
-                            style={{
-                                cursor: 'pointer',
-                                color: '#aaa',
-                                position: 'relative',
-                            }}
-                        />
-                    </IconButton>
-                    <Menu
-                        id="long-menu"
-                        MenuListProps={{ 'aria-labelledby': 'long-button' }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={() => handleClose()}
-                        onClick={() => handleClose()}
-                    >
-                        <MessageMore
-                            id={messageID}
-                            message={message}
-                            id_channel={id_channel}
-                            uid={uid}
-                        />
-                    </Menu>
-                </div>
-            )}
+
+            {/* When the user hover this message,
+            a dot menu can be spawned to get further interaction with it
+            such as delete for admins or reply. 
+            */}
+            <div style={{ visibility: showMore ? 'visible' : 'hidden' }}>
+                <IconButton
+                    id="long-button"
+                    aria-label="more"
+                    aria-controls={open ? 'long-menu' : undefined}
+                    aria-expanded={open ? 'true' : undefined}
+                    aria-haspopup="true"
+                    onClick={(e) => handleClick(e)}
+                >
+                    <MoreVertIcon
+                        style={{
+                            cursor: 'pointer',
+                            color: '#aaa',
+                            position: 'relative',
+                        }}
+                    />
+                </IconButton>
+                {/* This is the menu opened when the dot button is pressed
+                This section is in an another component to keep it clear
+                */}
+                <Menu
+                    id="long-menu"
+                    MenuListProps={{ 'aria-labelledby': 'long-button' }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={() => handleClose()}
+                    onClick={() => handleClose()}
+                >
+                    <MessageMore
+                        id={messageID}
+                        message={message}
+                        id_channel={id_channel}
+                        uid={uid}
+                    />
+                </Menu>
+            </div>
         </Container>
     )
+}
+Message.propTypes = {
+    username: PropTypes.string,
+    timestamp: PropTypes.number,
+    avatar: PropTypes.string,
+    repeat: PropTypes.bool,
+    messageID: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
+    id_channel: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
 }
 
 export default Message

@@ -1,9 +1,9 @@
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { useState } from 'react'
 import Helmet from 'react-helmet'
+import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Header from '../../components/Header'
 import {
-    StyledLoginPage,
-    StyledHeaderTitle,
     StyledLoginWrapper,
     StyledLoginTitle,
     StyledForm,
@@ -16,7 +16,6 @@ import {
     StyleLink,
 } from '../../utils/style/LoginSignStyle'
 import { StyledText } from '../Join/JoinStyle'
-import { WaveReset } from './WaveReset'
 
 const ResetPassword = () => {
     const [email, setEmail] = useState('')
@@ -43,10 +42,8 @@ const ResetPassword = () => {
             <Helmet>
                 <title>Apando / Mot de passe oublié</title>
             </Helmet>
-            <StyledLoginPage>
-                <StyledHeaderTitle>
-                    Réinitialiser le mot de passe
-                </StyledHeaderTitle>
+            <BackgroundAnimation sakura={true}>
+                <Header authLinks={true} />
                 <StyledLoginWrapper>
                     <StyledLoginTitle>Mot de passe oublié</StyledLoginTitle>
                     <StyledText>
@@ -84,8 +81,7 @@ const ResetPassword = () => {
                         </StyledField>
                     </StyledForm>
                 </StyledLoginWrapper>
-                <WaveReset />
-            </StyledLoginPage>
+            </BackgroundAnimation>
         </>
     )
 }

@@ -112,7 +112,7 @@ export default function CreateServer() {
         }
     }
     return (
-        <BackgroundAnimation>
+        <BackgroundAnimation sakura={true}>
             <Header />
             <StyledLoginWrapper>
                 <StyledLoginTitle>
