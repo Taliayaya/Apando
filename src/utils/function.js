@@ -22,12 +22,12 @@ function storeFiles(files, messageRef) {
         const storage = getStorage()
         const filesPath = messageRef._path.pieces_.slice(1).join('/')
         // The whole path except the 'messages' directory
-        files.forEach((file) => {
+        files.forEach(async (file) => {
             const filesRef = storageRef(
                 storage,
                 `attachments/${filesPath}/${file[1]}`
             )
-            uploadBytes(filesRef, file)
+            await uploadBytes(filesRef, file[0])
         })
         return filesPath
     } else return null
