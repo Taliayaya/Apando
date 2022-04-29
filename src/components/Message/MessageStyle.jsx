@@ -1,3 +1,4 @@
+import ReactPlayer from 'react-player'
 import styled from 'styled-components'
 import { theme } from '../../utils/style/colors'
 
@@ -46,6 +47,19 @@ const StyledUserMessage = styled.span`
 const Align = styled.span`
     align-items: center;
 `
+
+const StyleReactPlayer = styled(ReactPlayer)`
+    max-width: 25vw;
+    max-height: 25vh;
+
+    @media screen and (max-width: 720px) {
+        max-width: 40vw;
+    }
+    @media screen and (max-width: 480px) {
+        max-width: 50vw;
+    }
+`
+
 export {
     Align,
     Container,
@@ -53,4 +67,5 @@ export {
     StyledMessageInfo,
     StyledMessageTimestamp,
     StyledUserMessage,
+    StyleReactPlayer,
 }
