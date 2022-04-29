@@ -17,7 +17,7 @@ const BackgroundAnimation = ({ children, sakura }) => {
     return (
         <HomePageBanner>
             {/* Later to turn on/off the blossom animation */}
-            {sakura && <Cherryblossom amount={80} size={10} />}
+            {sakura && <Cherryblossom amount={60} size={10} />}
             <Clouds>
                 <HomePageTreeBelow>
                     <HomePageTreeAbove>{children}</HomePageTreeAbove>
