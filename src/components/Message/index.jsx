@@ -95,9 +95,10 @@ const FileContainer = ({ file }) => {
                 })
             }
         }
+        console.log(metadata)
 
         loadMetadata()
-    })
+    }, [fileRef, metadata])
     return (
         <Container>
             <p>{metadata?.name}</p>

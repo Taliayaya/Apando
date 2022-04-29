@@ -5,10 +5,14 @@ import { Send } from '@material-ui/icons'
 import { useAuth, useMessage } from '../../utils/hooks'
 import { writeUserMessage } from '../../utils/function'
 import { styled } from '@mui/material'
-import { StyleMobileSendingContainer } from './StyleMessageInput'
+import {
+    StyleFileUploadContainer,
+    StyleMobileSendingContainer,
+} from './StyleMessageInput'
 // For the files tray
 import { Stack, Badge, Button } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import Tooltip from '@mui/material/Tooltip'
 
 //For the upload icon
 import FileUploadIcon from '@mui/icons-material/FileUpload'
@@ -19,7 +23,20 @@ const StyledSend = styled(Send)(() => ({
     margin: '0',
 }))
 
-const UploadIcon = ({ success, onFileSelectError, onFileSelectSuccess }) => {
+const StyledFileUploadIcon = styled(FileUploadIcon)(() => ({
+    cursor: 'pointer',
+}))
+
+const StyledCloseIcon = styled(CloseIcon)(() => ({
+    cursor: 'pointer',
+}))
+
+const UploadIcon = ({
+    success,
+    onFileSelectError,
+    onFileSelectSuccess,
+    selectedFiles,
+}) => {
     // Create a reference to the hidden file input element
     const hiddenFileInput = useRef(null)
 
@@ -32,20 +49,39 @@ const UploadIcon = ({ success, onFileSelectError, onFileSelectSuccess }) => {
     // Call a function (passed as a prop from the parent component)
     // to handle the user-selected file
     const handleChange = (event) => {
-        const fileUploaded = event.target.files[0]
-        if (fileUploaded.size > 10 ** 7)
-            onFileSelectError({ error: fileUploaded.size })
-        else onFileSelectSuccess(fileUploaded)
+        const fileSelected = []
+        for (let i = 0; i < event.target.files.length; i++) {
+            console.log(event.target.files[i])
+            const fileUploaded = event.target.files[i]
+            if (fileUploaded.size > 10 ** 7) {
+                onFileSelectError({ error: fileUploaded.size })
+            } else {
+                const name = giveUniqueName(
+                    `${fileUploaded?.name}`,
+                    selectedFiles
+                )
+                fileSelected.push([fileUploaded, name])
+            }
+        }
+        onFileSelectSuccess(fileSelected)
     }
     return (
         <>
-            <FileUploadIcon onClick={(e) => handleClick(e)} />
-            <input
-                type="file"
-                ref={hiddenFileInput}
-                onChange={handleChange}
-                style={{ display: 'none' }}
-            />
+            <StyleFileUploadContainer>
+                <input
+                    type="file"
+                    ref={hiddenFileInput}
+                    onChange={handleChange}
+                    style={{ display: 'none' }}
+                    multiple
+                />
+                <Tooltip title="Ajouter des pièces-jointes">
+                    <StyledFileUploadIcon
+                        onClick={(e) => handleClick(e)}
+                        fontSize={'32px'}
+                    />
+                </Tooltip>
+            </StyleFileUploadContainer>
         </>
     )
 }
@@ -63,14 +99,22 @@ const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
             {selectedFiles.map((file) => (
                 <Badge
                     key={file[1]} // Giving a key so react stops complaining
-                    badgeContent={<CloseIcon fontSize="small" />}
-                    onClick={() => {
-                        setSelectedFiles(
-                            // Because it's a state, copying the old list
-                            // without the removed element into the new state
-                            selectedFiles.filter((elt) => elt[1] !== file[1])
-                        )
-                    }}
+                    badgeContent={
+                        <Tooltip
+                            title="Retirer ce fichier"
+                            onClick={() => {
+                                setSelectedFiles(
+                                    // Because it's a state, copying the old list
+                                    // without the removed element into the new state
+                                    selectedFiles.filter(
+                                        (elt) => elt[1] !== file[1]
+                                    )
+                                )
+                            }}
+                        >
+                            <StyledCloseIcon fontSize="small" />
+                        </Tooltip>
+                    }
                 >
                     <Button>{file[1]}</Button>
                 </Badge>
@@ -145,27 +189,19 @@ const MessageInput = ({ currentChannelId }) => {
             ? `Écrivez dans le salon ${currentChannelId?.name}`
             : `Choisissez un salon pour commencer à discuter.`
 
+    console.log(selectedFiles)
     return (
         <>
             <StyledChatInput>
+                <UploadIcon
+                    onFileSelectSuccess={(file) => {
+                        setSelectedFiles([...selectedFiles, ...file])
+                    }}
+                    onFileSelectError={({ error }) => alert(error)}
+                    selectedFiles={selectedFiles}
+                    success={success}
+                />
                 <form>
-                    <UploadIcon
-                        onFileSelectSuccess={(file) => {
-                            setSelectedFiles([
-                                ...selectedFiles,
-                                [
-                                    file,
-                                    giveUniqueName(
-                                        `${file.name}`,
-                                        selectedFiles
-                                    ),
-                                ],
-                            ])
-                        }}
-                        onFileSelectError={({ error }) => alert(error)}
-                        selectedFiles={selectedFiles}
-                        success={success}
-                    />
                     <FilesTray
                         selectedFiles={selectedFiles}
                         setSelectedFiles={setSelectedFiles}
