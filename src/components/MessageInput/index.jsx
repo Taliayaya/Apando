@@ -154,7 +154,7 @@ function giveUniqueName(filename, filelist) {
     }
 }
 
-const MessageInput = ({ currentChannelId }) => {
+const MessageInput = ({ currentChannel }) => {
     //File-uploading-related values
     const [success, setSuccess] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState([])
