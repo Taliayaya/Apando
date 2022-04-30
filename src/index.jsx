@@ -14,7 +14,7 @@ import {
     CurrentServerProvider,
     ChatMessageProvider,
 } from './/utils/context'
-import NotFound from './/components/NotFound'
+import NotFound from './/pages/NotFound'
 import GlobalStyle from './/utils/style/GlobalStyle'
 import Join from './/pages/Join'
 import { app } from './/utils/firebase/config'
