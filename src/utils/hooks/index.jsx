@@ -21,7 +21,7 @@ export function useAuth() {
         setUserRole,
         userRole,
     } = useContext(AuthContext)
-    const { setCurrentChannelId, setCurrentServer } = useChannel()
+    const { setCurrentChannel, setCurrentServer } = useChannel()
     const auth = getAuth()
     const navigate = useNavigate()
 
@@ -43,7 +43,7 @@ export function useAuth() {
         logout() {
             navigate('/login')
             signOut(auth).then(() => {
-                setCurrentChannelId({})
+                setCurrentChannel({})
                 setAuthed(false)
                 setCurrentServer(false)
             })
@@ -89,13 +89,13 @@ export function useMessageList() {
 }
 
 export function useChannel() {
-    const { currentChannel, setCurrentChannelId, userList, setUserList } =
+    const { currentChannel, setCurrentChannel, userList, setUserList } =
         useContext(CurrentChannelContext)
     const { currentServer, setCurrentServer } = useContext(CurrentServerContext)
 
     return {
         currentChannel,
-        setCurrentChannelId,
+        setCurrentChannel,
         currentServer,
         setCurrentServer,
         userList,

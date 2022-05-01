@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 
 const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
     const { setMessageList } = useMessageList()
-    const { setCurrentChannelId, currentChannel, currentServer } = useChannel()
+    const { setCurrentChannel, currentChannel, currentServer } = useChannel()
     const navigate = useNavigate()
     const [contextMenu, setContextMenu] = useState(null)
     const { userRole } = useAuth()
@@ -46,7 +46,7 @@ const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
      * @param {string} name the channel name
      */
     const selectChannel = (id_channel, name) => {
-        setCurrentChannelId({ id: id_channel, name: name })
+        setCurrentChannel({ id: id_channel, name: name })
         // Reset the message list, so that new messages can be loaded
         setMessageList([])
         navigate(`${currentServer.name}/${currentServer.id}/${id_channel}`)

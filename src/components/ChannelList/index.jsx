@@ -30,7 +30,7 @@ function ChannelList() {
         currentServer,
         setCurrentServer,
         currentChannel,
-        setCurrentChannelId,
+        setCurrentChannel,
     } = useChannel()
     const [serverList, setServerList] = useState([])
     const { showChannel, setUserRole } = useAuth()
@@ -93,7 +93,7 @@ function ChannelList() {
                 )
                 // The URL is right, so lets set this channel as selected
                 if (channelURLInServer) {
-                    setCurrentChannelId({
+                    setCurrentChannel({
                         id: channelURLInServer.key,
                         name: channelURLInServer.name,
                     })
@@ -106,7 +106,7 @@ function ChannelList() {
         currentChannel,
         currentServer,
         params.channel_id,
-        setCurrentChannelId,
+        setCurrentChannel,
     ])
 
     /**
