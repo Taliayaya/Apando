@@ -10,6 +10,12 @@ import axios from 'axios'
 import { getAuth, signOut, sendPasswordResetEmail } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 
+/*
+ * Hooks are function callable in every react component that can
+ * contain other functions or states. This avoid using props and
+ * gives a better lisibility / DRY
+ */
+
 export function useAuth() {
     const {
         authed,

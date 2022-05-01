@@ -24,7 +24,14 @@ import { theme } from '../../utils/style/colors'
 import { useEffect, useState } from 'react'
 import { Close } from '@mui/icons-material'
 import { getServerInfo, setServerChanges } from '../../utils/function'
+import PropTypes from 'prop-types'
 
+/**
+ * Widget that allows owners/admins to change their server params.
+ * - Allowed email domain (ex: @gmail.com)
+ * - Code to enter the server
+ * - Join type (auto or manual)
+ */
 const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
     const [isEditing, setIsEditing] = useState(false)
     const [joinType, setJoinType] = useState('')
@@ -38,6 +45,7 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
     const errorOpen = Boolean(error)
     const successOpen = Boolean(success)
 
+    // to update states when not editing ofc
     useEffect(() => {
         if (!isEditing) {
             setCodeValue(code)
@@ -45,11 +53,16 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
             setJoinType(autoJoin)
         }
     }, [autoJoin, code, domain, isEditing, joinType])
+
     const editParams = () => {
         setIsEditing(!isEditing)
         setError(null)
     }
 
+    /**
+     * Validate changes for the user.
+     * A progress bar was set up. Other forms will have to follow this.
+     */
     const validChanges = async () => {
         setSuccess(null)
         setError(null)
@@ -71,9 +84,9 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
         }
     }
 
-    code = serverInfo?.code ? serverInfo.code : code
-    domain = serverInfo?.domain ? serverInfo.domain : domain
-    autoJoin = serverInfo?.jointype ? serverInfo.jointype : autoJoin
+    code = serverInfo?.code ?? code
+    domain = serverInfo?.domain ?? domain
+    autoJoin = serverInfo?.jointype ?? autoJoin
 
     return (
         <>
@@ -249,6 +262,14 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
             </ParamsCase>
         </>
     )
+}
+
+ServerParams.propTypes = {
+    domain: PropTypes.string,
+    serverName: PropTypes.string,
+    code: PropTypes.string,
+    autoJoin: PropTypes.string,
+    server_id: PropTypes.string,
 }
 
 export default ServerParams

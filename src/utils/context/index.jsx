@@ -59,7 +59,7 @@ export const CurrentChannelProvider = ({ children }) => {
 export const CurrentServerContext = createContext()
 
 export const CurrentServerProvider = ({ children }) => {
-    const [currentServer, setCurrentServer] = useState([])
+    const [currentServer, setCurrentServer] = useState({})
 
     return (
         <CurrentServerContext.Provider

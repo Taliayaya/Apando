@@ -34,13 +34,22 @@ import {
     UserInfo,
 } from './DashboardStyle'
 import RemoveIcon from '@mui/icons-material/Remove'
+import PropTypes from 'prop-types'
 
+/**
+ * Widget that allows admins and owners to manage their members.
+ * It can ban/remove users from a server. Join demands are also
+ * showed here if join type is on manual.
+ */
 const MemberList = ({ serverName, server_id, server, joinType }) => {
     const [usersArray, setUsersArray] = useState([])
     const [requestArray, setRequestArray] = useState({})
 
     const serverInfo = { ...server, id: server_id }
 
+    /**
+     * Get the member list of this server
+     */
     useEffect(() => {
         const getUsersArray = async () => {
             const userArray = await getServerUserList(server_id)
@@ -49,6 +58,10 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
         getUsersArray()
     }, [server_id, requestArray])
 
+    /**
+     * Show in realtime users asking to show this server (nothing is displayed if
+     * join type is auto )
+     */
     useEffect(() => {
         const db = getDatabase()
         const serverStatsRef = ref(db, `requests/` + server_id)
@@ -68,6 +81,9 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
         return () => unsub()
     }, [server_id])
 
+    /**
+     * Accept all requests at once (if join type is manual)
+     */
     const acceptAllRequests = () => {
         requestArray.forEach((user) => {
             joinServer(user, serverInfo).then(() => {
@@ -128,10 +144,27 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
         </MemberListCase>
     )
 }
+MemberList.propTypes = {
+    serverName: PropTypes.string,
+    server_id: PropTypes.string,
+    server: PropTypes.exact({
+        name: PropTypes.string,
+        jointype: PropTypes.string,
+        code: PropTypes.string,
+        domain: PropTypes.string,
+        id: PropTypes.string,
+    }),
+    joinType: PropTypes.string,
+}
 
+/**
+ * Case containing users in the server or asking to join it.
+ * Interaction are possible : refusing invite, ban, accept invite...
+ */
 const UserCase = ({ avatar, name, email, invite, server, id }) => {
     const [contextMenu, setContextMenu] = useState(null)
 
+    // Right click menu
     const handleContextMenu = (event) => {
         event.preventDefault()
         setContextMenu(
@@ -143,9 +176,11 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
 
+    // Open menu
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget)
     }
+    // Close menu
     const handleClose = () => {
         setAnchorEl(null)
         setContextMenu(null)
@@ -174,9 +209,16 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
                 <Avatar sx={{ width: 48, height: 48 }} src={avatar} />
                 <UserInfo>
                     <StyleUser>{name}</StyleUser>
-                    <UserEmailStyle>{email}</UserEmailStyle>
+                    {/* User emails can sometimes be too long, so its cropped.
+                    This tooltip allows to show the full email on hover
+                    */}
+                    <Tooltip title={email}>
+                        <UserEmailStyle>{email}</UserEmailStyle>
+                    </Tooltip>
                 </UserInfo>
             </UserContainer>
+            {/* if this is an invitation, a button to accept it,
+            or right click to refuse it. */}
             {invite === 'true' ? (
                 <StyleDone
                     sx={{ fontSize: '30px' }}
@@ -184,6 +226,7 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
                 />
             ) : (
                 <Tooltip title="Plus d'actions">
+                    {/* Else a horiz menu for further interactions */}
                     <IconButton
                         onClick={(e) => handleClick(e)}
                         aria-controls={open ? 'user-menu' : undefined}
@@ -263,6 +306,20 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
             )}
         </StyledDiv>
     )
+}
+UserCase.propTypes = {
+    avatar: PropTypes.string,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    invite: PropTypes.string,
+    server: PropTypes.exact({
+        name: PropTypes.string,
+        jointype: PropTypes.string,
+        code: PropTypes.string,
+        domain: PropTypes.string,
+        id: PropTypes.string,
+    }),
+    id: PropTypes.string,
 }
 
 export default MemberList

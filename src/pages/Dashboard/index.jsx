@@ -53,6 +53,12 @@ const StyledExitToAppIcon = styled(ExitToApp)(() => ({
     },
 }))
 
+/**
+ * The dashboard main component.
+ * It contains the server stats, updating in real time,
+ * a widget to change the server settings (allowed domain, code, join type)
+ * a widget to manage server members and invited members
+ */
 const Dashboard = () => {
     const { currentServer } = useChannel()
     const params = useParams()
@@ -62,7 +68,13 @@ const Dashboard = () => {
     const [serverInfo, setServerInfo] = useState({})
     const [serverStats, setServerStats] = useState({})
 
+    /**
+     * Verify whether this user is allowed being here or not
+     * (if admins/owner and in the server)
+     * Otherwise, he's redirected.
+     */
     const checkUser = async () => {
+        console.log(server_id, user.uid)
         const isUserValid = await isUserInTargetServer(user.uid, server_id)
 
         if (!isUserValid) {
@@ -73,13 +85,14 @@ const Dashboard = () => {
             navigate('/app')
         }
     }
-    if (currentServer) {
+    if (Object.keys(currentServer).length !== 0) {
         server_id = currentServer?.id
     } else {
         server_id = params.serverid
     }
     checkUser()
 
+    // update info when the server_id change
     useEffect(() => {
         const getServer = async () => {
             const serverInfo = await getServerInfo(server_id)
@@ -89,6 +102,7 @@ const Dashboard = () => {
         getServer()
     }, [server_id])
 
+    // update server states in realtime
     useEffect(() => {
         const db = getDatabase()
         const serverStatsRef = ref(db, `/serverstats/${server_id}`)
@@ -102,10 +116,7 @@ const Dashboard = () => {
     return (
         <>
             <Helmet>
-                <title>
-                    Apando / Dashboard /{' '}
-                    {currentServer?.name ? currentServer.name : ''}
-                </title>
+                <title>Apando / Dashboard / {currentServer?.name ?? ''}</title>
                 <meta
                     name="description"
                     content="Retrouvez toutes les statistiques relatives à votre serveur et configurez-le comme vous le souhaitez."
@@ -125,15 +136,9 @@ const Dashboard = () => {
                     <Row2>
                         <ServerParams
                             serverName={serverInfo?.name}
-                            code={serverInfo?.code ? serverInfo.code : ''}
-                            autoJoin={
-                                serverInfo?.jointype
-                                    ? serverInfo?.jointype
-                                    : 'auto'
-                            }
-                            domain={
-                                serverInfo?.domain ? serverInfo?.domain : ''
-                            }
+                            code={serverInfo?.code ?? ''}
+                            autoJoin={serverInfo?.jointype ?? 'auto'}
+                            domain={serverInfo?.domain ?? ''}
                             server_id={server_id}
                         />
                         <MemberList

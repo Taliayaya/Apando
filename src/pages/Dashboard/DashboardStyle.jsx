@@ -165,6 +165,7 @@ const MemberListCase = styled.div`
 const StyledDiv = styled.div`
     position: relative;
     width: 100%;
+    text-overflow: ellipsis;
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -295,10 +296,18 @@ const UserInfo = styled.div`
     justify-content: center;
     text-overflow: ellipsis;
     overflow: hidden;
+    max-width: 10vw;
+    @media screen and (max-width: 1400px) {
+        max-width: 5vw;
+    }
+    @media screen and (max-width: 1079px) {
+        max-width: 20vw;
+    }
 `
 const UserEmailStyle = styled.span`
     font-size: 'small';
     color: #aaa;
+    text-overflow: ellipsis;
 `
 const StyleUser = styled.span`
     color: ${theme.font_color};
