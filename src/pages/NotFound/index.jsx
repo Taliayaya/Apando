@@ -13,8 +13,7 @@ function NotFound() {
             <Container>
                 <Image404 />
                 <NotFoundTitle>
-                    Oupsss, il semblerait que tu te sois perdue dans cette
-                    forêt.
+                    Oupsss, il semblerait que tu te sois perdu dans cette forêt.
                 </NotFoundTitle>
                 <Button
                     variant="contained"
