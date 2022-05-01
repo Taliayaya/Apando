@@ -13,7 +13,7 @@ import { styled } from '@mui/material'
 import {
     StyleFileUploadContainer,
     StyleMobileSendingContainer,
-} from './StyleMessageInput'
+} from './/StyleMessageInput'
 // For the files tray
 import { Stack, Badge, Button } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
@@ -99,6 +99,7 @@ const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
      *      selectedFiles: the state of the files, a list containing the files
      *      setSelectedFiles: the state selector of the list of files
      * */
+    console.log(selectedFiles)
     return (
         <Stack direction="row" spacing={2}>
             {selectedFiles.map((file) => (
@@ -121,7 +122,7 @@ const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
                         </Tooltip>
                     }
                 >
-                    <Button>{file[1]}</Button>
+                    <Button variant="contained">{file[1]}</Button>
                 </Badge>
             ))}
         </Stack>
