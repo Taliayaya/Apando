@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { theme } from '../../utils/style/colors'
+import PropTypes from 'prop-types'
 
 const StyledNav = styled.nav`
     display: flex;
@@ -62,6 +63,10 @@ function Header({ authLinks }) {
             )}
         </StyledNav>
     )
+}
+
+Header.propTypes = {
+    authLinks: PropTypes.bool,
 }
 
 export default Header

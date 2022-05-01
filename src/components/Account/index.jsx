@@ -49,6 +49,10 @@ function Account() {
     const user = auth.currentUser
     const storage = getStorage()
     const [reset, setReset] = useState(null)
+
+    /**
+     * Allows the user to change its avatar
+     */
     const submitNewAvatar = async () => {
         const avatarRef = ref(storage, `avatars/${user.uid}`)
         uploadBytes(avatarRef, selectedFile).then(() => {

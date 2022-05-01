@@ -5,6 +5,7 @@ export const StyleUser = styled.p`
     padding-left: 20px;
     font-weight: normal;
     font-size: medium;
+    max-width: 100px;
     text-overflow: ellipsis;
     overflow: hidden;
     color: ${(props) =>
