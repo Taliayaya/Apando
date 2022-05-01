@@ -191,12 +191,14 @@ function createChannelListFromString(channelsString, id_server) {
  * @param {string} id_channel the channel to delete
  * @param {string} id_server where to delete the channel
  */
-function deleteChannel(id_channel, id_server) {
+async function deleteChannel(id_channel, id_server) {
+    // TODO : also Delete file folder
     const db = getDatabase()
     const channelRef = ref(db, `channels/${id_server}/` + id_channel)
     const messagesOfChannelsRef = ref(db, `messages/${id_server}/` + id_channel)
-    remove(channelRef)
-    remove(messagesOfChannelsRef)
+
+    await remove(channelRef)
+    await remove(messagesOfChannelsRef)
 }
 
 /**
