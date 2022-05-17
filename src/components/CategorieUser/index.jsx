@@ -1,4 +1,4 @@
-import { ContainerUser, StyleCategorie } from './CategorieUserStyle'
+import { ContainerUser, StyleCategorie } from './/CategorieUserStyle'
 import { useChannel } from '../../utils/hooks'
 import { useEffect } from 'react'
 

@@ -4,7 +4,7 @@ import {
     StyleUserList,
     StyleUserListTop,
     // StyleUserListTopIcons,
-} from './UserListStyle'
+} from './/UserListStyle'
 import Username from '../Username'
 import { getAuth } from 'firebase/auth'
 
