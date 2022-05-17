@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import Avatar from '@mui/material/Avatar'
-import { styled } from '@material-ui/styles'
+import { styled } from '@mui/system'
 import Badge from '@mui/material/Badge'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import { theme } from '../../utils/style/colors'

@@ -11,10 +11,10 @@ import {
     StyledSubmit,
     StyleError,
     StyleLink,
-} from '../../utils/style/LoginSignStyle'
+} from '../Login/LoginSignStyle'
 import { StyledText, StyledTextarea } from './CreateServerStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
-import { styled } from '@material-ui/styles'
+import { styled } from '@mui/system'
 import { theme } from '../../utils/style/colors'
 import { useNavigate } from 'react-router-dom'
 import {
