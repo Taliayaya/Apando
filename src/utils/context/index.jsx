@@ -42,6 +42,7 @@ export const CurrentChannelContext = createContext()
 export const CurrentChannelProvider = ({ children }) => {
     const [currentChannel, setCurrentChannel] = useState({})
     const [userList, setUserList] = useState([])
+    const [channelList, setChannelList] = useState([])
     return (
         <CurrentChannelContext.Provider
             value={{
@@ -49,6 +50,8 @@ export const CurrentChannelProvider = ({ children }) => {
                 setCurrentChannel,
                 userList,
                 setUserList,
+                channelList,
+                setChannelList,
             }}
         >
             {children}
