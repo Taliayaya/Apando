@@ -1,7 +1,7 @@
 import { StyledChatInput, StyledChatTextarea } from '../Chat/ChatStyle'
 import React, { useRef } from 'react'
 import { getAuth } from 'firebase/auth'
-import { Send } from '@material-ui/icons'
+import SendIcon from '@mui/icons-material/Send'
 import { useAuth, useChannel, useMessage } from '../../utils/hooks'
 import { updateMessageCount, writeUserMessage } from '../../utils/function'
 
@@ -23,7 +23,7 @@ import Tooltip from '@mui/material/Tooltip'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import { useState } from 'react'
 
-const StyledSend = styled(Send)(() => ({
+const StyledSend = styled(SendIcon)(() => ({
     position: 'relative',
     margin: '0',
 }))
@@ -222,12 +222,13 @@ const MessageInput = ({ currentChannel }) => {
                         onKeyDown={(e) => handleSubmit(e)}
                         disabled={currentChannel?.name in window}
                         rows="1"
+                        maxLength={1000}
                     ></StyledChatTextarea>
                 </form>
                 {message.trim().length > 0 && (
                     <StyleMobileSendingContainer>
                         <StyledSend
-                            sx={{ fontSize: '80px' }}
+                            sx={{ fontSize: '25px' }}
                             onClick={() => handleSending()}
                         />
                     </StyleMobileSendingContainer>

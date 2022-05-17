@@ -1,5 +1,6 @@
-import { Block, MoreHoriz } from '@material-ui/icons'
+import BlockIcon from '@mui/icons-material/Block'
 import { DoneAll } from '@mui/icons-material'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import {
     Avatar,
     IconButton,
@@ -233,7 +234,7 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <MoreHoriz />
+                        <MoreHorizIcon />
                     </IconButton>
                 </Tooltip>
             )}
@@ -274,7 +275,7 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
             >
                 <MenuItem onClick={handleBan}>
                     <ListItemIcon>
-                        <Block />
+                        <BlockIcon />
                     </ListItemIcon>
                     <Typography>Retirer du serveur</Typography>
                 </MenuItem>

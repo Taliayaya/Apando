@@ -1,4 +1,4 @@
-import { People } from '@material-ui/icons'
+import PeopleIcon from '@mui/icons-material/People'
 import React from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../../utils/hooks'
@@ -39,7 +39,7 @@ const TopMenu = () => {
                 }
             >
                 <IconButton onClick={() => setShowUsers(!showUsers)}>
-                    <People
+                    <PeopleIcon
                         style={{ cursor: 'pointer', color: theme.font_color }}
                     />
                 </IconButton>
