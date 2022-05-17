@@ -25,116 +25,98 @@ import Privacy from './/pages/Privacy'
 import Dashboard from './/pages/Dashboard'
 import { ThemeProvider } from '@mui/material'
 import { themeMui } from './/utils/style/colors'
+import IsUserInServer from './/pages/App/IsUserInServer'
+import IsUserInChannel from './/pages/App/IsUserInChannel'
+import { HelmetProvider } from 'react-helmet-async'
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
-            <ThemeProvider theme={themeMui}>
-                <AuthProvider>
-                    <MessageListProvider>
-                        <CurrentServerProvider>
-                            <CurrentChannelProvider>
-                                <ChatMessageProvider>
-                                    <GlobalStyle />
-
-                                    <Routes>
-                                        <Route
-                                            path="/"
-                                            element={
-                                                <>
-                                                    <Home />
-                                                </>
-                                            }
-                                        />
-                                        <Route
-                                            path="/terms"
-                                            element={<Terms />}
-                                        />
-                                        <Route
-                                            path="/privacy"
-                                            element={<Privacy />}
-                                        />
-                                        <Route
-                                            path="/signup"
-                                            element={<Signup />}
-                                        />
-                                        <Route
-                                            path="/app"
-                                            element={
-                                                <RequireAuth>
-                                                    <App />
-                                                </RequireAuth>
-                                            }
-                                        >
+            <HelmetProvider>
+                <ThemeProvider theme={themeMui}>
+                    <GlobalStyle />
+                    <AuthProvider>
+                        <MessageListProvider>
+                            <CurrentServerProvider>
+                                <CurrentChannelProvider>
+                                    <ChatMessageProvider>
+                                        <Routes>
                                             <Route
-                                                path=":server_name/:server_id"
+                                                path="/"
                                                 element={
-                                                    <RequireAuth>
-                                                        <App />
-                                                    </RequireAuth>
+                                                    <>
+                                                        <Home />
+                                                    </>
                                                 }
-                                            >
+                                            />
+                                            <Route
+                                                path="/terms"
+                                                element={<Terms />}
+                                            />
+                                            <Route
+                                                path="/privacy"
+                                                element={<Privacy />}
+                                            />
+                                            <Route
+                                                path="/signup"
+                                                element={<Signup />}
+                                            />
+                                            <Route element={<RequireAuth />}>
                                                 <Route
-                                                    path=":channel_id"
-                                                    element={
-                                                        <RequireAuth>
-                                                            <App />
-                                                        </RequireAuth>
-                                                    }
+                                                    path="/app"
+                                                    element={<App />}
+                                                >
+                                                    <Route
+                                                        path=":server_name/:server_id"
+                                                        element={
+                                                            <IsUserInServer />
+                                                        }
+                                                    >
+                                                        <Route
+                                                            path=":channel_id"
+                                                            element={
+                                                                <IsUserInChannel />
+                                                            }
+                                                        />
+                                                    </Route>
+                                                </Route>
+                                                <Route
+                                                    path="/settings"
+                                                    element={<Settings />}
+                                                />
+                                                <Route
+                                                    path="/join"
+                                                    element={<Join />}
+                                                />
+                                                <Route
+                                                    path="/create"
+                                                    element={<CreateServer />}
+                                                />
+                                                <Route
+                                                    path="/dashboard/:serverid"
+                                                    element={<Dashboard />}
                                                 />
                                             </Route>
-                                        </Route>
-                                        <Route
-                                            path="/settings"
-                                            element={
-                                                <RequireAuth>
-                                                    <Settings />
-                                                </RequireAuth>
-                                            }
-                                        />
-                                        <Route
-                                            path="/join"
-                                            element={
-                                                <RequireAuth>
-                                                    <Join />
-                                                </RequireAuth>
-                                            }
-                                        />
-                                        <Route
-                                            path="/create"
-                                            element={
-                                                <RequireAuth>
-                                                    <CreateServer />
-                                                </RequireAuth>
-                                            }
-                                        />
-                                        <Route
-                                            path="/dashboard/:serverid"
-                                            element={
-                                                <RequireAuth>
-                                                    <Dashboard />
-                                                </RequireAuth>
-                                            }
-                                        />
-                                        <Route
-                                            path="/login"
-                                            element={<Login />}
-                                        />
-                                        <Route
-                                            path="/reset"
-                                            element={<ResetPassword />}
-                                        />
-                                        <Route
-                                            path="*"
-                                            element={<NotFound />}
-                                        />
-                                    </Routes>
-                                </ChatMessageProvider>
-                            </CurrentChannelProvider>
-                        </CurrentServerProvider>
-                    </MessageListProvider>
-                </AuthProvider>
-            </ThemeProvider>
+                                            <Route
+                                                path="/login"
+                                                element={<Login />}
+                                            />
+                                            <Route
+                                                path="/reset"
+                                                element={<ResetPassword />}
+                                            />
+                                            <Route
+                                                path="*"
+                                                element={<NotFound />}
+                                            />
+                                        </Routes>
+                                    </ChatMessageProvider>
+                                </CurrentChannelProvider>
+                            </CurrentServerProvider>
+                        </MessageListProvider>
+                    </AuthProvider>
+                </ThemeProvider>
+            </HelmetProvider>
         </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
