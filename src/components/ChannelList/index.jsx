@@ -5,7 +5,7 @@ import {
     StyledChannelList,
     StyledChannelListTop,
     StyledChannelListBottom,
-} from './ChannelListStyle'
+} from './/ChannelListStyle'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import LeftMenu from '../LeftMenu'
@@ -17,27 +17,20 @@ import { getUserRole } from '../../utils/function'
 import ChannelName from '../ChannelName'
 import { getDatabase, onValue, ref } from 'firebase/database'
 import { askNotification } from '../../utils/notification'
-import { useParams } from 'react-router-dom'
 
 /**
  * The left side bar component of the app.
  * This contains the server menu and the channels list systems
  */
 function ChannelList() {
-    const [channelList, setChannelList] = useState([])
     const [showMenu, setShowMenu] = useState(null)
-    const {
-        currentServer,
-        setCurrentServer,
-        currentChannel,
-        setCurrentChannel,
-    } = useChannel()
+    const { currentServer, setCurrentServer, channelList, setChannelList } =
+        useChannel()
     const [serverList, setServerList] = useState([])
     const { showChannel, setUserRole } = useAuth()
     const auth = getAuth()
     const user = auth.currentUser
     const open = Boolean(showMenu)
-    const params = useParams()
 
     const handleClick = (e) => {
         setShowMenu(e.currentTarget)
@@ -79,36 +72,6 @@ function ChannelList() {
         // firstLoadChannel()
     })
 
-    useEffect(() => {
-        /**
-         * It checks the url params channel_id and whether it is existing or not.
-         * If it does, it sets it as a selected channel, and so load messages
-         * afterward
-         * Else it updates the URL and remove the wrong channel id
-         */
-        const checkURLChannel = async () => {
-            if (params.channel_id && currentChannel.id !== params.channel_id) {
-                const channelURLInServer = channelList.find(
-                    (channelData) => channelData.key === params.channel_id
-                )
-                // The URL is right, so lets set this channel as selected
-                if (channelURLInServer) {
-                    setCurrentChannel({
-                        id: channelURLInServer.key,
-                        name: channelURLInServer.name,
-                    })
-                }
-            }
-        }
-        checkURLChannel()
-    }, [
-        channelList,
-        currentChannel,
-        currentServer,
-        params.channel_id,
-        setCurrentChannel,
-    ])
-
     /**
      * This create a realtime connection with the database
      * On each modification in the channels/server_id/ node,
@@ -141,7 +104,7 @@ function ChannelList() {
             // would create multiple connection... which isn't optimised
             return () => unsub()
         }
-    }, [currentServer])
+    }, [currentServer, setChannelList])
 
     return (
         <StyledChannelList showChannel={showChannel ? 'true' : 'false'}>
