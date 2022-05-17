@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Icon } from '../../utils/style/LoginSignStyle'
+import { Icon } from '../Login/LoginSignStyle'
 
 export const StyledText = styled.p`
     color: #999;

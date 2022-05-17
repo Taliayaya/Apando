@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Icon } from '../../utils/style/LoginSignStyle'
+import { Icon } from '../Login/LoginSignStyle'
 import { Link } from 'react-router-dom'
 
 const StyledText = styled.p`
