@@ -22,8 +22,8 @@ import { useEffect, useState } from 'react'
 import { getDatabase, onValue, ref } from 'firebase/database'
 import { styled } from '@mui/material'
 import { theme } from '../../utils/style/colors'
-import { ExitToApp } from '@material-ui/icons'
-import Helmet from 'react-helmet'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import { Helmet } from 'react-helmet-async'
 import BackgroundAnimation from '../../components/BackgroundAnimation'
 
 // const BootstrapTooltip = styled(({ className, ...props }) => (
@@ -36,7 +36,7 @@ import BackgroundAnimation from '../../components/BackgroundAnimation'
 //         backgroundColor: theme.palette.common.black,
 //     },
 // }))
-const StyledExitToAppIcon = styled(ExitToApp)(() => ({
+const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
     backgroundColor: theme.chat_input_bg_color,
     width: '40px',
@@ -44,7 +44,7 @@ const StyledExitToAppIcon = styled(ExitToApp)(() => ({
     cursor: 'pointer',
     zIndex: 999,
     borderRadius: 10,
-    left: -20,
+    left: -40,
     position: 'absolute',
 
     '&:hover': {

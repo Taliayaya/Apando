@@ -1,6 +1,6 @@
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { useState } from 'react'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import BackgroundAnimation from '../../components/BackgroundAnimation'
 import Header from '../../components/Header'
 import {
@@ -14,7 +14,7 @@ import {
     StyleError,
     StyleAlert,
     StyleLink,
-} from '../../utils/style/LoginSignStyle'
+} from '../Login/LoginSignStyle'
 import { StyledText } from '../Join/JoinStyle'
 
 const ResetPassword = () => {

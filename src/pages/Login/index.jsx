@@ -7,13 +7,13 @@ import {
     StyledField,
     StyledFieldInput,
     StyledFieldLabel,
-    StyledLoginWrapper,
     StyledSubmit,
     StyleLink,
     StyleError,
     StyledVisibilityOffIcon,
     StyledVisibilityOnIcon,
-} from '../../utils/style/LoginSignStyle'
+    StyledLoginWrapper,
+} from './/LoginSignStyle'
 import { useState, useEffect } from 'react'
 import {
     getAuth,
@@ -23,7 +23,7 @@ import {
 } from 'firebase/auth'
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import BackgroundAnimation from '../../components/BackgroundAnimation'
 import Header from '../../components/Header'
 
@@ -123,7 +123,7 @@ function Login() {
             </Helmet>
             <BackgroundAnimation sakura={true}>
                 <Header />
-                <StyledLoginWrapper>
+                <StyledLoginWrapper className="wrapper">
                     <StyledLoginTitle>Connexion</StyledLoginTitle>
                     <StyledForm action="#">
                         {error && <StyleError>{error}</StyleError>}
@@ -135,7 +135,10 @@ function Login() {
                                 value={nameEmail}
                                 required
                             />
-                            <StyledFieldLabel htmlFor="username_or_email">
+                            <StyledFieldLabel
+                                className="field-label"
+                                htmlFor="username_or_email"
+                            >
                                 adresse mail
                             </StyledFieldLabel>
                         </StyledField>
