@@ -48,7 +48,7 @@ function Chat() {
 
     // Basically the slice for the array of messages,
     // TODO : user should be able to load more
-    const showLastsMessagesNumber = 50
+    const showLastsMessagesNumber = -50
 
     /**
      * This create a realtime connection with the database
