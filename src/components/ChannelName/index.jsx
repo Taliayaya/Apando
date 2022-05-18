@@ -46,10 +46,12 @@ const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
      * @param {string} name the channel name
      */
     const selectChannel = (id_channel, name) => {
-        setCurrentChannel({ id: id_channel, name: name })
-        // Reset the message list, so that new messages can be loaded
-        setMessageList([])
-        navigate(`${currentServer.name}/${currentServer.id}/${id_channel}`)
+        if (!isCurrentChannel) {
+            setCurrentChannel({ id: id_channel, name: name })
+            // Reset the message list, so that new messages can be loaded
+            setMessageList([])
+            navigate(`${currentServer.name}/${currentServer.id}/${id_channel}`)
+        }
     }
 
     /**
