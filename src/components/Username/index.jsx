@@ -4,7 +4,7 @@ import {
     StyledUsernameContainer,
     StyledUsername,
     StyledLink,
-} from './UsernameStyle'
+} from './/UsernameStyle'
 import { getAuth } from 'firebase/auth'
 
 /**

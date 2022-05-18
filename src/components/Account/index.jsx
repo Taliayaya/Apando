@@ -11,13 +11,13 @@ import {
     StyledButton,
     StyledDangerousButton,
 } from './AccountStyle'
-import { styled } from '@material-ui/styles'
+import { styled } from '@mui/system'
 import { theme } from '../../utils/style/colors'
 import { deleteUser, getAuth, updateProfile } from 'firebase/auth'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',

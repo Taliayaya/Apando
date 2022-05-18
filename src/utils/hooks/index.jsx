@@ -6,7 +6,6 @@ import {
     CurrentServerContext,
     ChatMessageContext,
 } from '../context'
-import axios from 'axios'
 import { getAuth, signOut, sendPasswordResetEmail } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -68,35 +67,20 @@ export default function AuthConsumer() {
     return useContext(AuthContext)
 }
 
-export function useApi() {
-    return {
-        sender(url, formData) {
-            return new Promise((res) => {
-                axios
-                    .post(url, formData, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    })
-                    .then((result) => {
-                        res(result.data)
-                    })
-                    .catch((error) => {
-                        res(error.response.data)
-                    })
-            })
-        },
-    }
-}
-
 export function useMessageList() {
     const { messageList, setMessageList } = useContext(MessageListContext)
     return { messageList, setMessageList }
 }
 
 export function useChannel() {
-    const { currentChannel, setCurrentChannel, userList, setUserList } =
-        useContext(CurrentChannelContext)
+    const {
+        currentChannel,
+        setCurrentChannel,
+        userList,
+        setUserList,
+        channelList,
+        setChannelList,
+    } = useContext(CurrentChannelContext)
     const { currentServer, setCurrentServer } = useContext(CurrentServerContext)
 
     return {
@@ -106,6 +90,8 @@ export function useChannel() {
         setCurrentServer,
         userList,
         setUserList,
+        channelList,
+        setChannelList,
     }
 }
 

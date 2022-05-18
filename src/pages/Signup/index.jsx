@@ -10,7 +10,7 @@ import {
     StyleError,
     StyledVisibilityOffIcon,
     StyledVisibilityOnIcon,
-} from '../../utils/style/LoginSignStyle'
+} from '../Login/LoginSignStyle'
 import { useState } from 'react'
 import {
     getAuth,
@@ -23,7 +23,7 @@ import {
 import { doc, setDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
 import { useNavigate } from 'react-router-dom'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import BackgroundAnimation from '../../components/BackgroundAnimation'
 import Header from '../../components/Header'
 

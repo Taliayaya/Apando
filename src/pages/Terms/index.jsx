@@ -1,9 +1,9 @@
 import React from 'react'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import { theme } from '../../utils/style/colors'
-import { StyledLoginPage } from '../../utils/style/LoginSignStyle'
+import { StyledLoginPage } from '../Login/LoginSignStyle'
 import { WaveJoin } from '../Join/JoinStyle'
 import {
     HomePage,

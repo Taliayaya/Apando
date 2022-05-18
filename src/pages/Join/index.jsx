@@ -9,16 +9,16 @@ import {
     StyledFieldLabel,
     StyledSubmit,
     StyleLink,
-} from '../../utils/style/LoginSignStyle'
+} from '../Login/LoginSignStyle'
 import { StyledText } from './JoinStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
-import { styled } from '@material-ui/styles'
+import { styled } from '@mui/system'
 import { theme } from '../../utils/style/colors'
 import { getAuth } from 'firebase/auth'
 import { getServer, joinServer, requestJoin } from '../../utils/function'
 import { Alert, Collapse, IconButton } from '@mui/material'
-import { Close } from '@material-ui/icons'
-import Helmet from 'react-helmet'
+import CloseIcon from '@mui/icons-material/Close'
+import { Helmet } from 'react-helmet-async'
 import BackgroundAnimation from '../../components/BackgroundAnimation'
 import Header from '../../components/Header'
 
@@ -125,7 +125,7 @@ const Join = () => {
                                     size="small"
                                     onClick={() => setError(null)}
                                 >
-                                    <Close fontSize="inherit" />
+                                    <CloseIcon fontSize="inherit" />
                                 </IconButton>
                             }
                             sx={{ mb: 2 }}
@@ -175,7 +175,7 @@ const Join = () => {
                                         size="small"
                                         onClick={() => setError(null)}
                                     >
-                                        <Close fontSize="inherit" />
+                                        <CloseIcon fontSize="inherit" />
                                     </IconButton>
                                 }
                                 sx={{ mb: 2 }}

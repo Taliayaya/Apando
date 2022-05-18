@@ -1,6 +1,6 @@
 import { ListItemIcon, MenuItem, Typography } from '@mui/material'
 import { useAuth, useChannel, useMessage } from '../../utils/hooks'
-import { StyledMessageMoreMenu } from './MessageMoreStyle'
+import { StyledMessageMoreMenu } from './/MessageMoreStyle'
 import ReplyIcon from '@mui/icons-material/Reply'
 import { DeleteForever } from '@mui/icons-material'
 import { getDatabase, ref, remove } from 'firebase/database'

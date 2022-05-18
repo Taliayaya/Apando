@@ -6,7 +6,7 @@ import {
     StyledUserMessage,
     Container,
     Align,
-} from './MessageStyle'
+} from './/MessageStyle'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -32,7 +32,7 @@ import {
 import { Stack } from '@mui/material'
 import { FileDownload, FileDownloadDone } from '@mui/icons-material'
 import { theme } from '../../utils/style/colors'
-import ShowFiles from './ShowFiles'
+import ShowFiles from './/ShowFiles'
 import { handleMessageData, LinkRenderer } from './MessageFunctions'
 import PropTypes from 'prop-types'
 
