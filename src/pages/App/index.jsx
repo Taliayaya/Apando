@@ -8,6 +8,8 @@ import UserList from '../../components/UserList'
 import { db } from '../../utils/firebase/config'
 import { useAuth, useChannel } from '../../utils/hooks'
 import { StyledStructure } from './/AppStyle'
+import IsUserInChannel from './IsUserInChannel'
+import IsUserInServer from './IsUserInServer'
 
 function App() {
     const auth = getAuth()
@@ -64,6 +66,8 @@ function App() {
                     Apando / {currentServer?.name ? currentServer.name : 'App'}
                 </title>
             </Helmet>
+            <IsUserInServer />
+            <IsUserInChannel />
             <StyledStructure>
                 <ChannelList />
                 <Chat />

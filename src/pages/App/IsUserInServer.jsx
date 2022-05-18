@@ -18,7 +18,6 @@ const IsUserInServer = () => {
     useEffect(() => {
         const checkUser = async (server_id) => {
             const isUserValid = await isUserInTargetServer(user.uid, server_id)
-
             if (isUserValid) {
                 // The currentServer is as the URL, so no changes needed
                 if (currentServer?.id === server_id) return
@@ -53,6 +52,8 @@ const IsUserInServer = () => {
         setCurrentServer,
         user?.uid,
     ])
+
+    return null
 }
 
 export default IsUserInServer

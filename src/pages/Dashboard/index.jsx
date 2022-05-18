@@ -74,7 +74,6 @@ const Dashboard = () => {
      * Otherwise, he's redirected.
      */
     const checkUser = async () => {
-        console.log(server_id, user.uid)
         const isUserValid = await isUserInTargetServer(user.uid, server_id)
 
         if (!isUserValid) {

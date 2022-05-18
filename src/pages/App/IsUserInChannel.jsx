@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useChannel } from '../../utils/hooks'
 
 const IsUserInChannel = () => {
     const { currentChannel, setCurrentChannel, channelList, currentServer } =
         useChannel()
     const params = useParams()
+    const navigate = useNavigate()
     useEffect(() => {
         /**
          * It checks the url params channel_id and whether it is existing or not.
@@ -32,9 +33,12 @@ const IsUserInChannel = () => {
         channelList,
         currentChannel,
         currentServer,
+        navigate,
         params.channel_id,
         setCurrentChannel,
     ])
+
+    return null
 }
 
 export default IsUserInChannel
