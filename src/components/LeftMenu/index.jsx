@@ -85,7 +85,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
             />
             {/* Only admins or owners can add new channels */}
             {hasPower && (
-                <MenuItem>
+                <MenuItem onKeyDown={(e) => e.stopPropagation()}>
                     <Box
                         sx={{
                             display: 'flex',
