@@ -30,7 +30,8 @@ const LeftMenu = ({ serverList, setChannelList }) => {
     const [newChannelName, setNewChannelName] = useState('')
     const [error, setError] = useState(null)
 
-    const { currentServer, setCurrentServer, setUserList } = useChannel()
+    const { currentServer, setCurrentServer, setUserList, setCurrentChannel } =
+        useChannel()
     const { setMessageList } = useMessageList()
 
     const { userRole } = useAuth()
@@ -66,10 +67,11 @@ const LeftMenu = ({ serverList, setChannelList }) => {
          * This was written at midnight. Forgive me
          */
         const server = value.split('§§§§§§§§§§§§§')
-        setCurrentServer({ id: server[0], name: server[1] })
-        setChannelList([])
-        setUserList([])
+        setCurrentChannel({})
         setMessageList([])
+        setChannelList([])
+        setCurrentServer({ id: server[0], name: server[1] })
+        setUserList([])
         navigate(`${server[1]}/${server[0]}`)
     }
 
