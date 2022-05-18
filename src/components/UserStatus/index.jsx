@@ -14,10 +14,10 @@ import { useAuth, useChannel } from '../../utils/hooks'
 import { Add, Block, Remove, VolumeOff } from '@mui/icons-material'
 import PropTypes from 'prop-types'
 
-const StyledBadge = styled(Badge)(() => ({
+const StyledBadge = styled(Badge)((props) => ({
     '& .MuiBadge-badge': {
-        backgroundColor: (props) => (props.logged ? '#44b700' : '#888888'),
-        color: (props) => (props.logged ? '#44b700' : '#888888'),
+        backgroundColor: props.logged ? '#44b700' : '#888888',
+        color: props.logged ? '#44b700' : '#888888',
         boxShadow: `0 0 0 5px ${theme.sides_bg_color}`,
         animation: 'ripple 1s infinite ease',
         '&::after': {
@@ -70,17 +70,20 @@ function UserStatus({ avatar, datediff, name, logged, uid }) {
             style={{ opacity: opacityValue, cursor: 'context-menu' }}
             onContextMenu={handleContextMenu}
         >
-            <StyledBadge
-                overlap="circular"
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                }}
-                variant="dot"
-                logged={logged}
-            >
-                <Avatar sx={{ width: 48, height: 48 }} src={avatar} />
-            </StyledBadge>
+            {/* To avoid the dot leaving away~~~~ */}
+            <div>
+                <StyledBadge
+                    overlap="circular"
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    variant="dot"
+                    logged={logged}
+                >
+                    <Avatar sx={{ width: 48, height: 48 }} src={avatar} />
+                </StyledBadge>
+            </div>
 
             {/* Show the online users with a better visibility than
                 offline ones

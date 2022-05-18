@@ -46,6 +46,10 @@ function Chat() {
     const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true)
     const user = getAuth().currentUser
 
+    // Basically the slice for the array of messages,
+    // TODO : user should be able to load more
+    const showLastsMessagesNumber = -50
+
     /**
      * This create a realtime connection with the database
      * On each modification in the messages/channel_id/ node,
@@ -94,9 +98,11 @@ function Chat() {
 
     let previousUser = -1
     // sort message by date. The latest at the top
-    const messageListSorted = messageList.sort((a, b) => {
-        return a.timestamp - b.timestamp
-    })
+    const messageListSorted = messageList
+        .sort((a, b) => {
+            return a.timestamp - b.timestamp
+        })
+        .slice(showLastsMessagesNumber)
 
     const shouldresize = showUsers || showChannel ? 'true' : 'false'
     return (

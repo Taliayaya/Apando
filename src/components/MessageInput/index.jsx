@@ -166,7 +166,10 @@ const MessageInput = ({ currentChannel }) => {
     const { currentServer } = useChannel()
 
     const handleSending = async () => {
-        if (message.trim().length > 0 && userRole !== 'Muted') {
+        if (
+            (message.trim().length > 0 || selectedFiles.length > 0) &&
+            userRole !== 'Muted'
+        ) {
             try {
                 writeUserMessage(
                     user,
@@ -225,7 +228,7 @@ const MessageInput = ({ currentChannel }) => {
                         maxLength={1000}
                     ></StyledChatTextarea>
                 </form>
-                {message.trim().length > 0 && (
+                {(message.trim().length > 0 || selectedFiles.length > 0) && (
                     <StyleMobileSendingContainer>
                         <StyledSend
                             sx={{ fontSize: '25px' }}
