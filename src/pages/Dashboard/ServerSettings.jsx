@@ -90,12 +90,13 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
 
     return (
         <>
-            <ParamsCase>
+            <ParamsCase data-testid="params">
                 <ParamsHeader>
                     Paramètres de {serverName}
                     <StyleEditContainer
                         onClick={editParams}
                         isediting={isEditing ? 'true' : 'false'}
+                        data-testid="edit-params"
                     >
                         {isEditing ? (
                             <Tooltip title="Annuler les modifications">
@@ -151,6 +152,8 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
                             hiddenLabel
                             id="domain-input"
                             variant="filled"
+                            name="domain-input"
+                            data-testid="domain-input"
                             onChange={(e) => setDomainValue(e.target.value)}
                             value={domainValue}
                         />
@@ -167,6 +170,7 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
                             hiddenLabel
                             id="code-input"
                             variant="filled"
+                            name="code-input"
                             value={codeValue}
                             onChange={(e) => setCodeValue(e.target.value)}
                         />
