@@ -18,6 +18,10 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
 import { Helmet } from 'react-helmet-async'
+import Button from '@mui/material/Button'
+import ThemeDialog from '../ThemeDialog'
+import { setCookie } from '../../utils/function'
+import { ThemeProvider } from 'styled-components'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -42,13 +46,15 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
 function Account() {
     const [success, setSuccess] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null)
-    const { logout, resetPassword } = useAuth()
+    const { logout, resetPassword, themeUsed, setThemeUsed } = useAuth()
 
     const navigate = useNavigate()
     const auth = getAuth()
     const user = auth.currentUser
     const storage = getStorage()
     const [reset, setReset] = useState(null)
+
+    const [open, setOpen] = useState(false)
 
     /**
      * Allows the user to change its avatar
@@ -92,15 +98,13 @@ function Account() {
         }
     }
 
-    const handleNavigateClick = (e) => {
-        e.preventDefault()
-        navigate('/app')
+    const handleDialogClickOpen = () => {
+        setOpen(true)
     }
-    const handleNavigateEscape = (e) => {
-        const keyCode = e.which || e.keyCode
-        if (keyCode === 27) {
-            navigate('/app')
-        }
+    const handleDialogClose = (value) => {
+        setOpen(false)
+        setThemeUsed({ ...value.palette, name: value.name })
+        setCookie('theme', value?.name, 365)
     }
 
     if (selectedFile) {
@@ -111,49 +115,62 @@ function Account() {
             <Helmet>
                 <title>Apando / {user.displayName}</title>
             </Helmet>
-            <StyledBody>
-                <StyledExitToAppIcon
-                    onClick={(e) => handleNavigateClick(e)}
-                    onKeyDown={(e) => handleNavigateEscape(e)}
-                />
-                <div>
-                    <StyledCompte>
-                        <h1>Mon compte</h1>
+            <ThemeProvider theme={themeUsed}>
+                <StyledBody>
+                    <StyledExitToAppIcon onClick={(e) => navigate('/app')} />
+                    <div>
+                        <StyledCompte>
+                            <h1>Mon compte</h1>
 
-                        <div>
-                            <FileUploader
-                                onFileSelectSuccess={(file) =>
-                                    setSelectedFile(file)
-                                }
-                                onFileSelectError={({ error }) => alert(error)}
-                                selectedFile={selectedFile}
-                                success={success}
+                            <div>
+                                <FileUploader
+                                    onFileSelectSuccess={(file) =>
+                                        setSelectedFile(file)
+                                    }
+                                    onFileSelectError={({ error }) =>
+                                        alert(error)
+                                    }
+                                    selectedFile={selectedFile}
+                                    success={success}
+                                />
+                                <StyledField>Nom d'utilisateur</StyledField>
+                                <div id="pseudo">{user?.displayName}</div>
+                                <StyledField>Adresse mail</StyledField>
+                                <div id="mail">{user?.email}</div>
+                            </div>
+                            <Button
+                                variant="contained"
+                                onClick={handleDialogClickOpen}
+                                style={{ marginTop: '50px' }}
+                            >
+                                Changer de thème
+                            </Button>
+                            <ThemeDialog
+                                selectedValue={themeUsed}
+                                open={open}
+                                onClose={handleDialogClose}
                             />
-                            <StyledField>Nom d'utilisateur</StyledField>
-                            <div id="pseudo">{user?.displayName}</div>
-                            <StyledField>Adresse mail</StyledField>
-                            <div id="mail">{user?.email}</div>
-                        </div>
-                    </StyledCompte>
-                    <Separator />
-                    <StyledCompte>
-                        <h1>Mot de passe</h1>
-                        <StyledButton
-                            onClick={() => resetPassword(auth, user.email)}
-                        >
-                            Changer le mot de passe
-                        </StyledButton>
-                        <StyledButton onClick={() => logout()}>
-                            Déconnexion
-                        </StyledButton>
-                        <StyledDangerousButton
-                            onClick={() => handleDeleteAccount()}
-                        >
-                            Supprimer le compte
-                        </StyledDangerousButton>
-                    </StyledCompte>
-                </div>
-            </StyledBody>
+                        </StyledCompte>
+                        <Separator />
+                        <StyledCompte>
+                            <h1>Mot de passe</h1>
+                            <StyledButton
+                                onClick={() => resetPassword(auth, user.email)}
+                            >
+                                Changer le mot de passe
+                            </StyledButton>
+                            <StyledButton onClick={() => logout()}>
+                                Déconnexion
+                            </StyledButton>
+                            <StyledDangerousButton
+                                onClick={() => handleDeleteAccount()}
+                            >
+                                Supprimer le compte
+                            </StyledDangerousButton>
+                        </StyledCompte>
+                    </div>
+                </StyledBody>
+            </ThemeProvider>
         </>
     )
 }
