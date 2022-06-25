@@ -1,0 +1,25 @@
+{
+    "name": "spring",
+    "main_color": "purple",
+    "date": "20/01/2022",
+    "creator": "Irène Fioc",
+    "palette": {
+        "sides_bg_color": "rgb(30, 18, 79)",
+        "menus_bg_color": "rgb(20, 10, 60)",
+        "sides_font_color": "rgb(240, 233, 210)",
+        "top_menu_bg_color": "rgb(40, 26, 91)",
+    
+        "userList_font_color": "rgb(200, 200, 200)",
+    
+        "chat_bg_color": "rgb(54, 42, 113)",
+        "chat_input_bg_color": "rgb(81, 85, 147)",
+        "chat_message_hover": "#33237f",
+    
+        "border_color": "rgb(51, 35, 121)",
+        "username_font_color": "rgb(240, 233, 210)",
+    
+        "font_color": "#fff",
+        "home_page_bg_color": "#9fa1e0",
+        "home_gradient": "#be80e0"
+    }
+}
