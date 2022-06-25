@@ -24,8 +24,10 @@ import {
     writeUserRole,
 } from '../../utils/function'
 import { getAuth } from 'firebase/auth'
-import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Backgrounds from '../../components/Backgrounds'
 import Header from '../../components/Header'
+import { ThemeProvider } from 'styled-components'
+import { useAuth } from '../../utils/hooks'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -72,6 +74,7 @@ export default function CreateServer() {
     const [error, setError] = useState(null)
     const navigate = useNavigate()
     const user = getAuth().currentUser
+    const { themeUsed } = useAuth()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -112,72 +115,78 @@ export default function CreateServer() {
         }
     }
     return (
-        <BackgroundAnimation sakura={true}>
-            <Header />
-            <StyledLoginWrapper>
-                <StyledLoginTitle>
-                    <span style={{ marginLeft: '30px' }}>Mon serveur</span>
-                    <StyledExitToAppIcon onClick={() => navigate('/app')} />
-                </StyledLoginTitle>
-                <StyledText>
-                    Ici tu peux créer ton propre serveur en quelques clics et
-                    vite inviter tes amis en partageant le code que tu as créé
-                    toi même !
-                </StyledText>
-                {error && <StyleError>{error}</StyleError>}
-                <StyledForm action="#">
-                    <StyledField>
-                        <StyledFieldInput
-                            type="text"
-                            name="serverName"
-                            value={serverName}
-                            onChange={(e) => setServerName(e.target.value)}
-                            maxLength={'12'}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="serverName">
-                            Nom de mon serveur
-                        </StyledFieldLabel>
-                    </StyledField>
-                    <StyledField>
-                        <StyledFieldInput
-                            type="text"
-                            name="code"
-                            value={code}
-                            onChange={(e) => setCode(e.target.value)}
-                            required
-                        />
-                        <StyledFieldLabel htmlFor="code">
-                            Créer mon code
-                        </StyledFieldLabel>
-                    </StyledField>
+        <ThemeProvider theme={themeUsed}>
+            <Backgrounds sakura={true}>
+                <Header />
+                <StyledLoginWrapper>
+                    <StyledLoginTitle>
+                        <span style={{ marginLeft: '30px' }}>Mon serveur</span>
+                        <StyledExitToAppIcon onClick={() => navigate('/app')} />
+                    </StyledLoginTitle>
                     <StyledText>
-                        Écris en-dessous, ligne par ligne, le nom des salons que
-                        tu veux ajouter dans ton serveur. (Tu pourras en créer
-                        d'autre depuis l'app)
+                        Ici tu peux créer ton propre serveur en quelques clics
+                        et vite inviter tes amis en partageant le code que tu as
+                        créé toi même !
                     </StyledText>
-                    <StyledTextarea
-                        name="channels"
-                        cols={12}
-                        onChange={(e) =>
-                            setChannels(handleChannelListTyping(e.target.value))
-                        }
-                        value={channels}
-                    ></StyledTextarea>
+                    {error && <StyleError>{error}</StyleError>}
+                    <StyledForm action="#">
+                        <StyledField>
+                            <StyledFieldInput
+                                type="text"
+                                name="serverName"
+                                value={serverName}
+                                onChange={(e) => setServerName(e.target.value)}
+                                maxLength={'12'}
+                                required
+                            />
+                            <StyledFieldLabel htmlFor="serverName">
+                                Nom de mon serveur
+                            </StyledFieldLabel>
+                        </StyledField>
+                        <StyledField>
+                            <StyledFieldInput
+                                type="text"
+                                name="code"
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                                required
+                            />
+                            <StyledFieldLabel htmlFor="code">
+                                Créer mon code
+                            </StyledFieldLabel>
+                        </StyledField>
+                        <StyledText>
+                            Écris en-dessous, ligne par ligne, le nom des salons
+                            que tu veux ajouter dans ton serveur. (Tu pourras en
+                            créer d'autre depuis l'app)
+                        </StyledText>
+                        <StyledTextarea
+                            name="channels"
+                            cols={12}
+                            onChange={(e) =>
+                                setChannels(
+                                    handleChannelListTyping(e.target.value)
+                                )
+                            }
+                            value={channels}
+                        ></StyledTextarea>
 
-                    <StyledField>
-                        <StyledSubmit
-                            type="submit"
-                            value="Créer"
-                            onClick={(e) => handleSubmit(e)}
-                        />
-                    </StyledField>
-                    <StyledField>
-                        Déjà un code ?{' '}
-                        <StyleLink to="/join">Rejoins un serveur !</StyleLink>
-                    </StyledField>
-                </StyledForm>
-            </StyledLoginWrapper>
-        </BackgroundAnimation>
+                        <StyledField>
+                            <StyledSubmit
+                                type="submit"
+                                value="Créer"
+                                onClick={(e) => handleSubmit(e)}
+                            />
+                        </StyledField>
+                        <StyledField>
+                            Déjà un code ?{' '}
+                            <StyleLink to="/join">
+                                Rejoins un serveur !
+                            </StyleLink>
+                        </StyledField>
+                    </StyledForm>
+                </StyledLoginWrapper>
+            </Backgrounds>
+        </ThemeProvider>
     )
 }

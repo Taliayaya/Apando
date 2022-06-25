@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
 
 const StyleMobileSendingContainer = styled.div`
-    background-color: ${theme.sides_bg_color};
+    background-color: ${(props) => props.theme.sides_bg_color};
     border-radius: 60px;
     cursor: pointer;
     padding: 8px;
@@ -16,7 +15,7 @@ const StyleMobileSendingContainer = styled.div`
 `
 
 const StyleFileUploadContainer = styled.div`
-    background-color: ${theme.sides_bg_color};
+    background-color: ${(props) => props.theme.sides_bg_color};
     border-radius: 60px;
     cursor: pointer;
     padding: 6px 8px;

@@ -2,6 +2,7 @@ import { getAuth } from 'firebase/auth'
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { ThemeProvider } from 'styled-components'
 import ChannelList from '../../components/ChannelList'
 import Chat from '../../components/Chat'
 import UserList from '../../components/UserList'
@@ -14,7 +15,7 @@ import IsUserInServer from './IsUserInServer'
 function App() {
     const auth = getAuth()
     const user = auth.currentUser
-    const { setShowChannel, setShowUsers } = useAuth()
+    const { setShowChannel, setShowUsers, themeUsed } = useAuth()
     const [firstMobileTime, setFirstMobileTime] = useState(true)
     const { currentServer } = useChannel()
 
@@ -66,13 +67,15 @@ function App() {
                     Apando / {currentServer?.name ? currentServer.name : 'App'}
                 </title>
             </Helmet>
-            <IsUserInServer />
-            <IsUserInChannel />
-            <StyledStructure>
-                <ChannelList />
-                <Chat />
-                <UserList />
-            </StyledStructure>
+            <ThemeProvider theme={themeUsed}>
+                <IsUserInServer />
+                <IsUserInChannel />
+                <StyledStructure>
+                    <ChannelList />
+                    <Chat />
+                    <UserList />
+                </StyledStructure>
+            </ThemeProvider>
         </>
     )
 }

@@ -3,6 +3,8 @@ import {
     ParamsCase,
     ParamsHeader,
     StyleEditContainer,
+    StyledEditIcon,
+    StyledEditOffIcon,
 } from './DashboardStyle'
 
 import {
@@ -18,9 +20,6 @@ import {
     TextField,
     Tooltip,
 } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit'
-import EditOffIcon from '@mui/icons-material/EditOff'
-import { theme } from '../../utils/style/colors'
 import { useEffect, useState } from 'react'
 import { Close } from '@mui/icons-material'
 import { getServerInfo, setServerChanges } from '../../utils/function'
@@ -100,17 +99,13 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
                         {isEditing ? (
                             <Tooltip title="Annuler les modifications">
                                 <IconButton>
-                                    <EditOffIcon
-                                        style={{ color: theme.font_color }}
-                                    />
+                                    <StyledEditOffIcon />
                                 </IconButton>
                             </Tooltip>
                         ) : (
                             <Tooltip title="Modifier">
                                 <IconButton>
-                                    <EditIcon
-                                        style={{ color: theme.font_color }}
-                                    />
+                                    <StyledEditIcon />
                                 </IconButton>
                             </Tooltip>
                         )}

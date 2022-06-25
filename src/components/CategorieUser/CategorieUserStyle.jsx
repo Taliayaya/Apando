@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
 
 export const ContainerUser = styled.div`
     overflow-y: scroll;
@@ -21,5 +20,5 @@ export const StyleCategorie = styled.h4`
     padding: 10px;
     font-size: medium;
     text-transform: uppercase;
-    color: ${theme.userList_font_color};
+    color: ${(props) => props.theme.userList_font_color};
 `

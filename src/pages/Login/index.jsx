@@ -24,12 +24,13 @@ import {
 import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
 import { Helmet } from 'react-helmet-async'
-import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Backgrounds from '../../components/Backgrounds'
 import Header from '../../components/Header'
+import { ThemeProvider } from 'styled-components'
 
 function Login() {
     const navigate = useNavigate()
-    const { login } = useAuth()
+    const { login, themeUsed } = useAuth()
     const location = useLocation()
     const [nameEmail, setnameEmail] = useState('')
     const [password, setpassword] = useState('')
@@ -121,83 +122,89 @@ function Login() {
                     content="Connectez-vous à Apando pour retrouvez vos camarades en quelques clics."
                 />
             </Helmet>
-            <BackgroundAnimation sakura={true}>
-                <Header />
-                <StyledLoginWrapper className="wrapper">
-                    <StyledLoginTitle>Connexion</StyledLoginTitle>
-                    <StyledForm action="#">
-                        {error && <StyleError>{error}</StyleError>}
-                        <StyledField>
-                            <StyledFieldInput
-                                type="text"
-                                name="username_or_email"
-                                onChange={(e) => setnameEmail(e.target.value)}
-                                value={nameEmail}
-                                required
-                            />
-                            <StyledFieldLabel
-                                className="field-label"
-                                htmlFor="username_or_email"
+            <ThemeProvider theme={themeUsed}>
+                <Backgrounds sakura={true}>
+                    <Header />
+                    <StyledLoginWrapper className="wrapper">
+                        <StyledLoginTitle>Connexion</StyledLoginTitle>
+                        <StyledForm action="#">
+                            {error && <StyleError>{error}</StyleError>}
+                            <StyledField>
+                                <StyledFieldInput
+                                    type="text"
+                                    name="username_or_email"
+                                    onChange={(e) =>
+                                        setnameEmail(e.target.value)
+                                    }
+                                    value={nameEmail}
+                                    required
+                                />
+                                <StyledFieldLabel
+                                    className="field-label"
+                                    htmlFor="username_or_email"
+                                >
+                                    adresse mail
+                                </StyledFieldLabel>
+                            </StyledField>
+                            <StyledField>
+                                <StyledFieldInput
+                                    type={showPassword ? 'text' : 'password'}
+                                    name="password"
+                                    value={password}
+                                    onChange={(e) =>
+                                        setpassword(e.target.value)
+                                    }
+                                    required
+                                />
+
+                                <StyledFieldLabel htmlFor="password">
+                                    mot de passe
+                                </StyledFieldLabel>
+                                {showPassword ? (
+                                    <StyledVisibilityOnIcon
+                                        onClick={() =>
+                                            setShowPassword(!showPassword)
+                                        }
+                                    />
+                                ) : (
+                                    <StyledVisibilityOffIcon
+                                        onClick={() =>
+                                            setShowPassword(!showPassword)
+                                        }
+                                    />
+                                )}
+                            </StyledField>
+
+                            <StyledField>
+                                <StyledSubmit onClick={(e) => handleLogin(e)} />
+                            </StyledField>
+                            <StyledField>
+                                Nouveau ?
+                                <StyleLink to="/signup"> S'inscrire</StyleLink>{' '}
+                                <br /> <br />
+                                <StyleLink to="/reset">
+                                    Mot de passe oublié
+                                </StyleLink>
+                            </StyledField>
+                            <StyledField
+                                onClick={() => googleSignInApi()}
+                                style={{
+                                    cursor: 'pointer',
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}
                             >
-                                adresse mail
-                            </StyledFieldLabel>
-                        </StyledField>
-                        <StyledField>
-                            <StyledFieldInput
-                                type={showPassword ? 'text' : 'password'}
-                                name="password"
-                                value={password}
-                                onChange={(e) => setpassword(e.target.value)}
-                                required
-                            />
-
-                            <StyledFieldLabel htmlFor="password">
-                                mot de passe
-                            </StyledFieldLabel>
-                            {showPassword ? (
-                                <StyledVisibilityOnIcon
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
+                                <img
+                                    src="https://img.icons8.com/fluency/48/000000/google-logo.png"
+                                    alt="Google Icon for SignIn popup"
                                 />
-                            ) : (
-                                <StyledVisibilityOffIcon
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
-                                />
-                            )}
-                        </StyledField>
-
-                        <StyledField>
-                            <StyledSubmit onClick={(e) => handleLogin(e)} />
-                        </StyledField>
-                        <StyledField>
-                            Nouveau ?
-                            <StyleLink to="/signup"> S'inscrire</StyleLink>{' '}
-                            <br /> <br />
-                            <StyleLink to="/reset">
-                                Mot de passe oublié
-                            </StyleLink>
-                        </StyledField>
-                        <StyledField
-                            onClick={() => googleSignInApi()}
-                            style={{
-                                cursor: 'pointer',
-                                alignItems: 'center',
-                                display: 'flex',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <img
-                                src="https://img.icons8.com/fluency/48/000000/google-logo.png"
-                                alt="Google Icon for SignIn popup"
-                            />
-                            <span> Continuer avec Google</span>
-                        </StyledField>
-                    </StyledForm>
-                </StyledLoginWrapper>
-            </BackgroundAnimation>
+                                <span> Continuer avec Google</span>
+                            </StyledField>
+                        </StyledForm>
+                    </StyledLoginWrapper>
+                </Backgrounds>
+            </ThemeProvider>
         </>
     )
 }

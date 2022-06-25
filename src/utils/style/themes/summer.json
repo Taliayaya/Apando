@@ -1,0 +1,26 @@
+{
+    "name": "summer",
+    "main_color": "blue",
+    "date": "13/06/2022",
+    "creator": "Irène Fioc",
+    "palette": {
+        "sides_bg_color": "rgb(18, 34, 79)",
+        "menus_bg_color": "rgb(16, 32, 61)",
+        "sides_font_color": "rgb(240, 233, 210)",
+        "top_menu_bg_color": "rgb(25, 52, 103)",
+
+        "userList_font_color": "rgb(200, 200, 200)",
+
+        "chat_bg_color": "rgb(38, 64, 113)",
+        "chat_input_bg_color": "rgb(65, 88, 130)",
+        "chat_message_hover": "rgb(46, 77, 134)",
+
+        "border_color": "rgb(38, 64, 113)",
+        "username_font_color": "rgb(240, 233, 210)",
+
+        "font_color": "#fff",
+
+        "home_page_bg_color": "rgb(23, 125, 221)",
+        "home_gradient": "#fdf1d7"
+    }
+}

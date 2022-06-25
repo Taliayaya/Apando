@@ -3,9 +3,9 @@ import {
     Clouds,
     HomePageTreeAbove,
     HomePageTreeBelow,
-} from '../../pages/Home/HomeStyle'
+} from './SpringStyle'
 import PropTypes from 'prop-types'
-import { Cherryblossom } from '../Cherryblossom'
+import { Cherryblossom } from './Cherryblossom'
 
 /**
  * The background menu/animation of Apando.
@@ -13,7 +13,7 @@ import { Cherryblossom } from '../Cherryblossom'
  * Currently only the spring theme is set.
  * Summer, Fall and Winter will be out when the time will come~~
  */
-const BackgroundAnimation = ({ children, sakura }) => {
+const Spring = ({ children, sakura }) => {
     return (
         <HomePageBanner>
             {/* Later to turn on/off the blossom animation */}
@@ -27,9 +27,9 @@ const BackgroundAnimation = ({ children, sakura }) => {
     )
 }
 
-BackgroundAnimation.propTypes = {
+Spring.propTypes = {
     children: PropTypes.node,
     sakura: PropTypes.bool,
 }
 
-export default BackgroundAnimation
+export default Spring
