@@ -25,6 +25,8 @@ export function useAuth() {
         setShowUsers,
         setUserRole,
         userRole,
+        themeUsed,
+        setThemeUsed,
     } = useContext(AuthContext)
     const { setCurrentChannel, setCurrentServer } = useChannel()
     const auth = getAuth()
@@ -60,6 +62,8 @@ export function useAuth() {
         setShowUsers,
         setUserRole,
         userRole,
+        themeUsed,
+        setThemeUsed,
     }
 }
 
