@@ -59,6 +59,12 @@ const Mascotte = styled.div`
     width: 100vw;
 `
 
+/*
+ * CREDITS
+ * Wave Animation made by https://codepen.io/ava-s
+ * at https://codepen.io/ava-s/pen/xxxOPvz
+ */
+
 const waveanim = keyframes`
   0% {    transform:  scaleY(1.00) ;  }
   35% {    transform:  scaleY(1.3) ;  }
