@@ -1,13 +1,12 @@
 import ReactPlayer from 'react-player'
 import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
 
 const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     &:hover {
-        background-color: #33237f;
+        background-color: ${(props) => props.theme.chat_message_hover};
     }
     ${(props) =>
         props.repeat === 'true' ? `padding: 0px 20px;` : `padding: 5px 20px;`}
@@ -17,7 +16,7 @@ const StyledMessage = styled.div`
     display: flex;
     align-items: left;
 
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     justify-content: space-between;
 `
 

@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { theme } from '../../utils/style/colors'
 import PropTypes from 'prop-types'
 
 const StyledNav = styled.nav`
@@ -15,21 +14,21 @@ const StyledNav = styled.nav`
 
 const StyledSignUp = styled(Link)`
     padding: 15px;
-    background-color: ${theme.chat_bg_color};
-    color: ${theme.font_color};
+    background-color: ${(props) => props.theme.chat_bg_color};
+    color: ${(props) => props.theme.font_color};
     border-radius: 30px;
     outline: none;
     text-decoration: none;
     cursor: pointer;
 
     &:hover {
-        background-color: ${theme.sides_bg_color};
+        background-color: ${(props) => props.theme.sides_bg_color};
     }
 `
 const StyledTitleLink = styled(Link)`
     font-size: 25px;
     text-decoration: none;
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     z-index: 0;
     padding: 3px;
     border-radius: 30px;
@@ -42,7 +41,7 @@ const StyledTitleLink = styled(Link)`
 
 const StyledLoginLink = styled(Link)`
     padding: 15px;
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     z-index: 5;
     text-decoration: none;
 

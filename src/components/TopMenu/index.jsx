@@ -2,7 +2,6 @@ import PeopleIcon from '@mui/icons-material/People'
 import React from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../../utils/hooks'
-import { theme } from '../../utils/style/colors'
 import MenuIcon from '@mui/icons-material/Menu'
 import { IconButton, Tooltip } from '@mui/material'
 
@@ -11,7 +10,15 @@ const StyledMenu = styled.div`
     flex-direction: row;
     justify-content: space-between;
     padding: 5px;
-    background-color: ${theme.top_menu_bg_color};
+    background-color: ${(props) => props.theme.top_menu_bg_color};
+`
+
+const StyledMenuIcon = styled(MenuIcon)`
+    color: ${(props) => props.theme.font_color};
+`
+
+const StyledPeopleIcon = styled(PeopleIcon)`
+    color: ${(props) => props.theme.font_color};
 `
 
 const TopMenu = () => {
@@ -26,9 +33,7 @@ const TopMenu = () => {
                 }
             >
                 <IconButton onClick={() => setShowChannel(!showChannel)}>
-                    <MenuIcon
-                        style={{ cursor: 'pointer', color: theme.font_color }}
-                    />
+                    <StyledMenuIcon />
                 </IconButton>
             </Tooltip>
             <Tooltip
@@ -39,9 +44,7 @@ const TopMenu = () => {
                 }
             >
                 <IconButton onClick={() => setShowUsers(!showUsers)}>
-                    <PeopleIcon
-                        style={{ cursor: 'pointer', color: theme.font_color }}
-                    />
+                    <StyledPeopleIcon />
                 </IconButton>
             </Tooltip>
         </StyledMenu>

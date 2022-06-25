@@ -1,11 +1,10 @@
 import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
 import { Link } from 'react-router-dom'
 
 export const StyledUsernameContainer = styled.div`
-    color: ${theme.username_font_color};
+    color: ${(props) => props.theme.username_font_color};
     width: 100%;
-    background-color: #17094f;
+    background-color: ${(props) => props.theme.menus_bg_color};
     position: absolute;
     bottom: 0px;
     display: flex;
@@ -21,7 +20,7 @@ export const StyledUsername = styled.div`
 `
 
 export const StyledLink = styled(Link)`
-    color: ${theme.username_font_color};
+    color: ${(props) => props.theme.username_font_color};
     &:hover {
         color: #555;
         font-size: large;

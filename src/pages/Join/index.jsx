@@ -19,8 +19,10 @@ import { getServer, joinServer, requestJoin } from '../../utils/function'
 import { Alert, Collapse, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Helmet } from 'react-helmet-async'
-import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Backgrounds from '../../components/Backgrounds'
 import Header from '../../components/Header'
+import { useAuth } from '../../utils/hooks'
+import { ThemeProvider } from 'styled-components'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -50,6 +52,7 @@ const Join = () => {
     const auth = getAuth()
     const user = auth.currentUser
     const [success, setSuccess] = useState(null)
+    const { themeUsed } = useAuth()
 
     const handleCode = async (e) => {
         e.preventDefault()
@@ -91,82 +94,36 @@ const Join = () => {
                 <title>Apando / Rejoindre un serveur</title>
             </Helmet>
 
-            <BackgroundAnimation sakura={true}>
-                <Header />
-                <StyledLoginWrapper>
-                    <StyledLoginTitle>
-                        <span style={{ marginLeft: '30px' }}>Mon code</span>
-                        <StyledExitToAppIcon onClick={() => navigate('/app')} />
-                    </StyledLoginTitle>
-                    <StyledText>
-                        Ici tu peux rentrer le code que ton enseignant(e), ton
-                        ami(e) ou tes camarades t'ont donné.
-                    </StyledText>
-                    <StyledText>
-                        Courage c'est la dernière étape avant de les rejoindre !
-                    </StyledText>
-                    <StyledText>
-                        Dans le cadre de la beta, tu peux utiliser comme nom et
-                        code <b>beta</b> pour rejoindre le serveur de la beta et
-                        obtenir un avant-goût de Apando !
-                    </StyledText>
+            <ThemeProvider theme={themeUsed}>
+                <Backgrounds sakura={true}>
+                    <Header />
+                    <StyledLoginWrapper>
+                        <StyledLoginTitle>
+                            <span style={{ marginLeft: '30px' }}>Mon code</span>
+                            <StyledExitToAppIcon
+                                onClick={() => navigate('/app')}
+                            />
+                        </StyledLoginTitle>
+                        <StyledText>
+                            Ici tu peux rentrer le code que ton enseignant(e),
+                            ton ami(e) ou tes camarades t'ont donné.
+                        </StyledText>
+                        <StyledText>
+                            Courage c'est la dernière étape avant de les
+                            rejoindre !
+                        </StyledText>
+                        <StyledText>
+                            Dans le cadre de la beta, tu peux utiliser comme nom
+                            et code <b>beta</b> pour rejoindre le serveur de la
+                            beta et obtenir un avant-goût de Apando !
+                        </StyledText>
 
-                    {/*
+                        {/*
                 ===============
                 ERROR COMPONENT
                 ===============
                 */}
-                    <Collapse in={Boolean(error)}>
-                        <Alert
-                            action={
-                                <IconButton
-                                    aria-label="close"
-                                    color="inherit"
-                                    size="small"
-                                    onClick={() => setError(null)}
-                                >
-                                    <CloseIcon fontSize="inherit" />
-                                </IconButton>
-                            }
-                            sx={{ mb: 2 }}
-                            severity="error"
-                        >
-                            {error}
-                        </Alert>
-                    </Collapse>
-
-                    <StyledForm action="#">
-                        <StyledField>
-                            <StyledFieldInput
-                                type="text"
-                                name="serverName"
-                                value={serverName}
-                                onChange={(e) => setServerName(e.target.value)}
-                                required
-                            />
-                            <StyledFieldLabel htmlFor="mycode">
-                                Entrer le nom du serveur
-                            </StyledFieldLabel>
-                        </StyledField>
-                        <StyledField>
-                            <StyledFieldInput
-                                type="text"
-                                name="mycode"
-                                value={code}
-                                onChange={(e) => setCode(e.target.value)}
-                                required
-                            />
-                            <StyledFieldLabel htmlFor="mycode">
-                                Entrer mon code
-                            </StyledFieldLabel>
-                        </StyledField>
-                        <StyledField>
-                            <StyledSubmit
-                                type="submit"
-                                onClick={(e) => handleCode(e)}
-                            />
-                        </StyledField>
-                        <Collapse in={Boolean(success)}>
+                        <Collapse in={Boolean(error)}>
                             <Alert
                                 action={
                                     <IconButton
@@ -179,18 +136,73 @@ const Join = () => {
                                     </IconButton>
                                 }
                                 sx={{ mb: 2 }}
-                                severity="success"
+                                severity="error"
                             >
-                                {success}
+                                {error}
                             </Alert>
                         </Collapse>
-                        <StyledField>
-                            Pas de code ?{' '}
-                            <StyleLink to="/create">Crée ton serveur</StyleLink>
-                        </StyledField>
-                    </StyledForm>
-                </StyledLoginWrapper>
-            </BackgroundAnimation>
+
+                        <StyledForm action="#">
+                            <StyledField>
+                                <StyledFieldInput
+                                    type="text"
+                                    name="serverName"
+                                    value={serverName}
+                                    onChange={(e) =>
+                                        setServerName(e.target.value)
+                                    }
+                                    required
+                                />
+                                <StyledFieldLabel htmlFor="mycode">
+                                    Entrer le nom du serveur
+                                </StyledFieldLabel>
+                            </StyledField>
+                            <StyledField>
+                                <StyledFieldInput
+                                    type="text"
+                                    name="mycode"
+                                    value={code}
+                                    onChange={(e) => setCode(e.target.value)}
+                                    required
+                                />
+                                <StyledFieldLabel htmlFor="mycode">
+                                    Entrer mon code
+                                </StyledFieldLabel>
+                            </StyledField>
+                            <StyledField>
+                                <StyledSubmit
+                                    type="submit"
+                                    onClick={(e) => handleCode(e)}
+                                />
+                            </StyledField>
+                            <Collapse in={Boolean(success)}>
+                                <Alert
+                                    action={
+                                        <IconButton
+                                            aria-label="close"
+                                            color="inherit"
+                                            size="small"
+                                            onClick={() => setError(null)}
+                                        >
+                                            <CloseIcon fontSize="inherit" />
+                                        </IconButton>
+                                    }
+                                    sx={{ mb: 2 }}
+                                    severity="success"
+                                >
+                                    {success}
+                                </Alert>
+                            </Collapse>
+                            <StyledField>
+                                Pas de code ?{' '}
+                                <StyleLink to="/create">
+                                    Crée ton serveur
+                                </StyleLink>
+                            </StyledField>
+                        </StyledForm>
+                    </StyledLoginWrapper>
+                </Backgrounds>
+            </ThemeProvider>
         </>
     )
 }

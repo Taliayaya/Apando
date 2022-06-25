@@ -1,9 +1,17 @@
 import { Done } from '@mui/icons-material'
 import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
+import EditIcon from '@mui/icons-material/Edit'
+import EditOffIcon from '@mui/icons-material/EditOff'
 
-const DashboardBackground = styled.div`
-    color: ${theme.font_color}
+const StyledEditIcon = styled(EditIcon)`
+    color: ${(props) => props.theme.font_color};
+`
+const StyledEditOffIcon = styled(EditOffIcon)`
+    color: ${(props) => props.theme.font_color};
+`
+
+const DashboardBackgrounds = styled.div`
+    color: ${(props) => props.theme.font_color};
     width: 100%;
     min-height: 100vh;
     height: 100%;
@@ -11,10 +19,10 @@ const DashboardBackground = styled.div`
     background: rgb(63, 94, 251);
     background: radial-gradient(
         circle,
-        ${theme.sides_bg_color} 0%,
-        ${theme.chat_input_bg_color} 80%
+        ${(props) => props.theme.sides_bg_color} 0%,
+        ${(props) => props.theme.chat_input_bg_color} 80%
     );
-    `
+`
 const DashboardMain = styled.div`
     margin-left: 15%;
     padding-top: 5%;
@@ -35,22 +43,22 @@ const Row2 = styled.div`
 const DashboardTitle = styled.div`
     position: relative;
     font-size: large;
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     padding: 10px;
 `
 
 const ServerStatsContainer = styled.div`
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     display: flex;
     flex-direction: row;
-    background-color: ${theme.sides_bg_color};
+    background-color: ${(props) => props.theme.sides_bg_color};
     border-radius: 30px;
     padding: 15px;
     justify-content: space-around;
     transition: all 0.3s ease;
     height: 100%;
     &:hover {
-        box-shadow: 0 0 15px ${theme.menus_bg_color};
+        box-shadow: 0 0 15px ${(props) => props.theme.menus_bg_color};
     }
     box-shadow: 0px 13px 30px 23px rgba(0, 0, 0, 0.2);
 `
@@ -61,7 +69,7 @@ const NumberCase = styled.div`
     width: 100%;
     height: 100px;
     padding: 10px;
-    background-color: ${theme.chat_bg_color};
+    background-color: ${(props) => props.theme.chat_bg_color};
     border-radius: 15px;
     justify-content: center;
     align-items: center;
@@ -76,25 +84,25 @@ const NumberCase = styled.div`
     }
 
     &:hover {
-        box-shadow: 0 0 15px ${theme.chat_input_bg_color};
-        background-color: ${theme.chat_input_bg_color};
+        box-shadow: 0 0 15px ${(props) => props.theme.chat_input_bg_color};
+        background-color: ${(props) => props.theme.chat_input_bg_color};
     }
 `
 
 const ParamsCase = styled.div`
-    background-color: ${theme.menus_bg_color};
+    background-color: ${(props) => props.theme.menus_bg_color};
     width: 40%;
     margin: 40px 0;
     border-radius: 15px;
     padding: 20px;
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     line-height: 40px;
     @media screen and (max-width: 720px) {
         width: 100%;
     }
     transition: all 0.3s ease;
     &:hover {
-        box-shadow: 0 0 15px ${theme.sides_bg_color};
+        box-shadow: 0 0 15px ${(props) => props.theme.sides_bg_color};
     }
     box-shadow: 0px 33px 40px 33px rgba(0, 0, 0, 0.2);
 `
@@ -105,14 +113,14 @@ const Params = styled.div`
 
     color: #aaa;
     line-height: 30px;
-    background-color: ${theme.sides_bg_color};
+    background-color: ${(props) => props.theme.sides_bg_color};
     padding: 20px;
     margin: 10px 0;
     border-radius: 30px;
     transition: all 0.3s ease;
     &:hover {
-        color: ${theme.font_color};
-        background-color: ${theme.chat_bg_color};
+        color: ${(props) => props.theme.font_color};
+        background-color: ${(props) => props.theme.chat_bg_color};
     }
 `
 
@@ -123,25 +131,26 @@ const ParamsHeader = styled.div`
     justify-content: space-between;
 `
 const StyleEditContainer = styled.div`
-    background-color: ${theme.chat_bg_color};
+    background-color: ${(props) => props.theme.chat_bg_color};
     border-radius: 60px;
     cursor: pointer;
     padding: 4px;
     align-items: center;
     justify-content: center;
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
 
     transition: all 0.3s ease;
     &:hover {
         ${(props) =>
             props.isediting === 'true'
                 ? `background-color: 	#FF6666;`
-                : `background-color: ${theme.chat_input_bg_color};`}
+                : `background-color: ${(props) =>
+                      props.theme.chat_input_bg_color};`}
     }
 `
 const StyledOption = styled.option`
-    color: ${theme.font_color};
-    background-color: ${theme.chat_input_bg_color};
+    color: ${(props) => props.theme.font_color};
+    background-color: ${(props) => props.theme.chat_input_bg_color};
 `
 
 const MemberListCase = styled.div`
@@ -151,9 +160,9 @@ const MemberListCase = styled.div`
     border-radius: 15px;
     padding: 20px;
     transition: all 0.3s ease;
-    background-color: ${theme.menus_bg_color};
+    background-color: ${(props) => props.theme.menus_bg_color};
     &:hover {
-        box-shadow: 0 0 15px ${theme.sides_bg_color};
+        box-shadow: 0 0 15px ${(props) => props.theme.sides_bg_color};
     }
     box-shadow: 0px 33px 40px 33px rgba(0, 0, 0, 0.2);
 
@@ -172,7 +181,7 @@ const StyledDiv = styled.div`
     ${(props) =>
         props.invite === 'true'
             ? `background-color:rgb(42, 102, 42);`
-            : `background-color: ${theme.sides_bg_color};`}
+            : `background-color: ${props.theme.sides_bg_color};`}
     margin: 10px 0;
     border-radius: 30px;
     transition: all 0.3s ease;
@@ -186,11 +195,11 @@ const StyledDiv = styled.div`
     }
 
     &:hover {
-        color: ${theme.font_color};
+        color: ${(props) => props.theme.font_color};
         ${(props) =>
             props.invite === 'true'
                 ? `background-color:rgb(62, 143, 62);`
-                : `background-color: ${theme.chat_bg_color};`}
+                : `background-color: ${props.theme.chat_bg_color};`}
     }
     @media screen and (min-width: 1080px) {
         width: 40%;
@@ -310,13 +319,13 @@ const UserEmailStyle = styled.span`
     text-overflow: ellipsis;
 `
 const StyleUser = styled.span`
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     font-weight: normal;
     font-size: medium;
     margin: 10px 0;
 `
 const StyleDone = styled(Done)`
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     justify-content: right;
     margin: 0 10px;
     cursor: pointer;
@@ -343,18 +352,18 @@ const MemberHeader = styled.div`
 `
 
 const Separator = styled.hr`
-    color: ${theme.chat_bg_color};
+    color: ${(props) => props.theme.chat_bg_color};
     margin: 20px 0;
 `
 
 const StyleDoneAllContainer = styled.div`
-    background-color: ${theme.chat_bg_color};
+    background-color: ${(props) => props.theme.chat_bg_color};
     border-radius: 60px;
     cursor: pointer;
     padding: 4px;
     align-items: center;
     justify-content: center;
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
 
     transition: all 0.3s ease;
     &:hover {
@@ -362,7 +371,7 @@ const StyleDoneAllContainer = styled.div`
     }
 `
 export {
-    DashboardBackground,
+    DashboardBackgrounds,
     DashboardTitle,
     DashboardMain,
     ServerStatsContainer,
@@ -384,4 +393,6 @@ export {
     MemberHeader,
     Separator,
     StyleDoneAllContainer,
+    StyledEditIcon,
+    StyledEditOffIcon,
 }

@@ -10,7 +10,7 @@ import {
 import { InviteCase, MemberCase, MessageCase } from './StatsCase'
 import ServerParams from './ServerSettings'
 import MemberList from './MemberList'
-import { useChannel } from '../../utils/hooks'
+import { useAuth, useChannel } from '../../utils/hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getAuth } from 'firebase/auth'
 import {
@@ -24,7 +24,8 @@ import { styled } from '@mui/material'
 import { theme } from '../../utils/style/colors'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { Helmet } from 'react-helmet-async'
-import BackgroundAnimation from '../../components/BackgroundAnimation'
+import Backgrounds from '../../components/Backgrounds'
+import { ThemeProvider } from 'styled-components'
 
 // const BootstrapTooltip = styled(({ className, ...props }) => (
 //     <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -67,6 +68,7 @@ const Dashboard = () => {
     const navigate = useNavigate()
     const [serverInfo, setServerInfo] = useState({})
     const [serverStats, setServerStats] = useState({})
+    const { themeUsed } = useAuth()
 
     /**
      * Verify whether this user is allowed being here or not
@@ -121,34 +123,38 @@ const Dashboard = () => {
                     content="Retrouvez toutes les statistiques relatives à votre serveur et configurez-le comme vous le souhaitez."
                 />
             </Helmet>
-            <BackgroundAnimation sakura={true}>
-                <DashboardMain>
-                    <DashboardTitle>
-                        <StyledExitToAppIcon onClick={() => navigate('/app')} />
-                        <div>Dashboard de {serverInfo?.name}</div>
-                    </DashboardTitle>
-                    <ServerStatsContainer>
-                        <MemberCase nb={serverStats?.memberCount} />
-                        <InviteCase nb={serverStats?.currentInviteCount} />
-                        <MessageCase nb={serverStats?.messageCount} />
-                    </ServerStatsContainer>
-                    <Row2>
-                        <ServerParams
-                            serverName={serverInfo?.name}
-                            code={serverInfo?.code ?? ''}
-                            autoJoin={serverInfo?.jointype ?? 'auto'}
-                            domain={serverInfo?.domain ?? ''}
-                            server_id={server_id}
-                        />
-                        <MemberList
-                            serverName={serverInfo?.name}
-                            server_id={server_id}
-                            server={serverInfo}
-                            joinType={serverInfo?.jointype}
-                        />
-                    </Row2>
-                </DashboardMain>
-            </BackgroundAnimation>
+            <ThemeProvider theme={themeUsed}>
+                <Backgrounds sakura={true}>
+                    <DashboardMain>
+                        <DashboardTitle>
+                            <StyledExitToAppIcon
+                                onClick={() => navigate('/app')}
+                            />
+                            <div>Dashboard de {serverInfo?.name}</div>
+                        </DashboardTitle>
+                        <ServerStatsContainer>
+                            <MemberCase nb={serverStats?.memberCount} />
+                            <InviteCase nb={serverStats?.currentInviteCount} />
+                            <MessageCase nb={serverStats?.messageCount} />
+                        </ServerStatsContainer>
+                        <Row2>
+                            <ServerParams
+                                serverName={serverInfo?.name}
+                                code={serverInfo?.code ?? ''}
+                                autoJoin={serverInfo?.jointype ?? 'auto'}
+                                domain={serverInfo?.domain ?? ''}
+                                server_id={server_id}
+                            />
+                            <MemberList
+                                serverName={serverInfo?.name}
+                                server_id={server_id}
+                                server={serverInfo}
+                                joinType={serverInfo?.jointype}
+                            />
+                        </Row2>
+                    </DashboardMain>
+                </Backgrounds>
+            </ThemeProvider>
         </>
     )
 }

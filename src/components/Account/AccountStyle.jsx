@@ -1,13 +1,12 @@
 import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
 
 export const StyledBody = styled.div`
-    background-color: ${theme.sides_bg_color};
+    background-color: ${(props) => props.theme.sides_bg_color};
     align-items: center;
     justify-content: center;
     margin: 0;
     text-align: center;
-    color: #fff
+    color: #fff;
     width: 100%;
     min-height: 100vh;
     height: 100%;
@@ -22,7 +21,7 @@ export const StyledCompte = styled.div`
     justify-content: space-around;
     align-items: center;
     color: #fff;
-    background-color: ${theme.chat_bg_color};
+    background-color: ${(props) => props.theme.chat_bg_color};
     border-radius: 25px;
     width: 380px;
     left: 50%;
@@ -48,7 +47,7 @@ export const StyledButton = styled.button`
     padding: 10px;
     cursor: pointer;
     border-radius: 10px;
-    background-color: ${theme.chat_input_bg_color};
+    background-color: ${(props) => props.theme.chat_input_bg_color};
     margin: 5px;
     &:hover {
         background-color: #33398e;
@@ -61,7 +60,7 @@ export const StyledDangerousButton = styled.button`
     font-weight: 600;
     cursor: pointer;
     border-radius: 10px;
-    background-color: ${theme.sides_bg_color};
+    background-color: ${(props) => props.theme.sides_bg_color};
     border: 1px solid #ca0b00;
     margin: 5px;
 `

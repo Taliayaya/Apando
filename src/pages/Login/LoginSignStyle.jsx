@@ -1,13 +1,12 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { theme } from '../../utils/style/colors'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
 export const StyledLoginPage = styled.div`
     margin-top: -21px;
     text-align: center;
-    color: #fff
+    color: #fff;
     width: 100%;
     min-height: 100vh;
     height: 100%;
@@ -15,10 +14,10 @@ export const StyledLoginPage = styled.div`
     background: rgb(63, 94, 251);
     background: radial-gradient(
         circle,
-        ${theme.sides_bg_color} 0%,
-        ${theme.chat_input_bg_color} 80%
+        hsl(${(props) => props.theme.sides_bg_color} 0%),
+        hsl(${(props) => props.theme.chat_input_bg_color} 80%)
     );
-    `
+`
 
 export const StyledVisibilityOffIcon = styled(VisibilityOffIcon)`
     margin-left: -30px;
@@ -46,13 +45,13 @@ export const StyledLoginTitle = styled.h2`
     font-weight: 600;
     text-align: center;
     line-height: 100px;
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     user-select: none;
     border-radius: 15px 15px 0 0;
     background: linear-gradient(
         90deg,
-        ${theme.sides_bg_color} 0%,
-        ${theme.chat_input_bg_color} 80%
+        ${(props) => props.theme.sides_bg_color} 0%,
+        ${(props) => props.theme.chat_input_bg_color} 80%
     );
 `
 export const StyledForm = styled.form`
@@ -109,7 +108,7 @@ export const StyledLoginWrapper = styled.div`
     transform: translateX(-50%);
 `
 export const StyledHeaderTitle = styled.h1`
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
 
     font-family: Arial;
     padding: 20px;
@@ -121,8 +120,8 @@ export const StyleLink = styled(Link)`
     text-decoration: none;
     &:hover {
         cursor: pointer;
-        color: ${theme.chat_bg_color}
-        border-bottom: ${theme.chat_bg_color} 1px solid;
+        color: ${(props) => props.theme.chat_bg_color};
+        border-bottom: ${(props) => props.theme.chat_bg_color} 1px solid;
         transition: all 300ms ease;
     }
 `
@@ -168,13 +167,10 @@ export const Wave = () => (
     </Svg>
 )
 
-export const StyledSubmit = styled.input.attrs((props) => ({
-    type: 'submit',
-    value: 'Valider',
-}))`
+export const StyledSubmit = styled.input`
     height: 100%;
     width: 100%;
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     outline: none;
     border: none;
     padding-left: 0;
@@ -185,8 +181,8 @@ export const StyledSubmit = styled.input.attrs((props) => ({
     border-radius: 25px;
     background: linear-gradient(
         90deg,
-        ${theme.sides_bg_color} 0%,
-        ${theme.chat_input_bg_color} 80%
+        ${(props) => props.theme.sides_bg_color} 0%,
+        ${(props) => props.theme.chat_input_bg_color} 80%
     );
     transition: all 300ms ease;
     &:active {

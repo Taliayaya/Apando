@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { theme } from '../../utils/style/colors'
 
 export const StyledChannelList = styled.div`
     display: flex;
@@ -7,7 +6,7 @@ export const StyledChannelList = styled.div`
     ${(props) => (props.showChannel === 'true' ? '' : 'display: none;')}
     flex: 0.15;
     height: 100vh;
-    background-color: ${theme.sides_bg_color};
+    background-color: ${(props) => props.theme.sides_bg_color};
 
     @media screen and (max-width: 480px) {
         max-width: 25vh;
@@ -23,11 +22,11 @@ export const StyledChannelListTop = styled.div`
     ${(props) =>
         props.hovered &&
         `
-    background-color: #241172;
-    border: 1px solid ${theme.sides_font_color};`}
+    background-color: ${(props) => props.theme.menus_bg_color};
+    border: 1px solid ${(props) => props.theme.sides_font_color};`}
 
-    color: ${theme.sides_font_color};
-    border-bottom: 3px solid ${theme.border_color};
+    color: ${(props) => props.theme.sides_font_color};
+    border-bottom: 3px solid ${(props) => props.theme.border_color};
 `
 
 export const StyledChannelListBottom = styled.div`
@@ -36,22 +35,22 @@ export const StyledChannelListBottom = styled.div`
 `
 export const StyledChannel = styled.div`
     padding: 15px;
-    border: 1px solid ${theme.top_menu_bg_color};
+    border: 1px solid ${(props) => props.theme.top_menu_bg_color};
     width: 90%;
     text-overflow: ellipsis;
     overflow: hidden;
     ${(props) =>
         props.ischannelselected === 'true'
             ? `
-color: ${theme.sides_font_color};
+color: ${props.theme.sides_font_color};
 font-size: larger;
-background-color: ${theme.top_menu_bg_color};`
+background-color: ${props.theme.top_menu_bg_color};`
             : `
 color: #999999;
 &:hover {
     cursor: pointer;
-    color: ${theme.sides_font_color};
-    background-color: ${theme.top_menu_bg_color};
+    color: ${props.theme.sides_font_color};
+    background-color: ${props.theme.top_menu_bg_color};
     font-size: large;
 }`}
 

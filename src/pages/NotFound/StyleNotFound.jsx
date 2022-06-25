@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import Mascotte404 from '../../assets/images/404_motivation_not_found500.png'
-import Background404 from '../../assets/images/404_motivation_not_found_bg.png'
-import { theme } from '../../utils/style/colors'
+import Backgrounds404 from '../../assets/images/404_motivation_not_found_bg.png'
 
 const Container = styled.div`
     position: relative;
@@ -24,7 +23,7 @@ const Container = styled.div`
 const Image404 = styled.div`
     position: relative;
     background: no-repeat center url(${Mascotte404}),
-        no-repeat center url(${Background404});
+        no-repeat center url(${Backgrounds404});
     max-height: 500px;
     max-width: 500px;
     width: 500px;
@@ -36,7 +35,7 @@ const Image404 = styled.div`
 `
 
 const NotFoundTitle = styled.div`
-    color: ${theme.font_color};
+    color: ${(props) => props.theme.font_color};
     font-size: 35px;
     font-weight: 600;
     padding: 0 0 10px;
