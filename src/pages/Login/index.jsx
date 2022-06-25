@@ -176,7 +176,11 @@ function Login() {
                             </StyledField>
 
                             <StyledField>
-                                <StyledSubmit onClick={(e) => handleLogin(e)} />
+                                <StyledSubmit
+                                    onClick={(e) => handleLogin(e)}
+                                    value="Valider"
+                                    type={'submit'}
+                                />
                             </StyledField>
                             <StyledField>
                                 Nouveau ?
