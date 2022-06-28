@@ -18,7 +18,7 @@ import NotFound from './/pages/NotFound'
 import GlobalStyle from './/utils/style/GlobalStyle'
 import Join from './/pages/Join'
 import { app } from './/utils/firebase/config'
-import CreateServer from './/pages/CreateServer'
+import Server from './/pages/Create/Server'
 import ResetPassword from './/pages/ResetPassword'
 import Terms from './/pages/Terms'
 import Privacy from './/pages/Privacy'
@@ -28,6 +28,7 @@ import { themeMui } from './/utils/style/colors'
 import IsUserInServer from './/pages/App/IsUserInServer'
 import IsUserInChannel from './/pages/App/IsUserInChannel'
 import { HelmetProvider } from 'react-helmet-async'
+import Organisation from './pages/Create/Organisation'
 
 ReactDOM.render(
     <React.StrictMode>
@@ -88,10 +89,16 @@ ReactDOM.render(
                                                     path="/join"
                                                     element={<Join />}
                                                 />
+
                                                 <Route
-                                                    path="/create"
-                                                    element={<CreateServer />}
+                                                    path="create/server"
+                                                    element={<Server />}
                                                 />
+                                                <Route
+                                                    path="create/organisation"
+                                                    element={<Organisation />}
+                                                />
+
                                                 <Route
                                                     path="/dashboard/:serverid"
                                                     element={<Dashboard />}
