@@ -1,6 +1,6 @@
 import { addDoc, collection, getDocs, where, query } from 'firebase/firestore'
 import React, { useState } from 'react'
-import { db } from '../../utils/firebase/config'
+import { db } from '../../../utils/firebase/config'
 import {
     StyledLoginWrapper,
     StyledForm,
@@ -11,23 +11,23 @@ import {
     StyledSubmit,
     StyleError,
     StyleLink,
-} from '../Login/LoginSignStyle'
+} from '../../Login/LoginSignStyle'
 import { StyledText, StyledTextarea } from './CreateServerStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@mui/system'
-import { theme } from '../../utils/style/colors'
+import { theme } from '../../../utils/style/colors'
 import { useNavigate } from 'react-router-dom'
 import {
     createChannelListFromString,
     createServerStatsField,
     joinServer,
     writeUserRole,
-} from '../../utils/function'
+} from '../../../utils/function'
 import { getAuth } from 'firebase/auth'
-import Backgrounds from '../../components/Backgrounds'
-import Header from '../../components/Header'
+import Backgrounds from '../../../components/Backgrounds'
+import Header from '../../../components/Header'
 import { ThemeProvider } from 'styled-components'
-import { useAuth } from '../../utils/hooks'
+import { useAuth } from '../../../utils/hooks'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
