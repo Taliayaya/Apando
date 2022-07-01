@@ -29,10 +29,13 @@ const AddCollectionDiv = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    max-height: 300px;
+    min-width: 100px;
     cursor: pointer;
     &:hover {
         background-color: ${(props) => props.theme.chat_bg_color};
     }
+    padding: 5px;
 `
 
 const AddRoundedStyle = styled(AddCircleOutlineRounded)`
