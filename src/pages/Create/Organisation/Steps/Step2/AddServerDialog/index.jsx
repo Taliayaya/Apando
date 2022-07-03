@@ -8,6 +8,17 @@ import {
     Button,
 } from '@mui/material'
 
+/**
+ * Split the string to an array of channel
+ *
+ * Separators: , ; | \n - | \s
+ * @param {string} channels string to split
+ * @returns Array of channel
+ */
+const handleChannelToArray = (channels) => {
+    return channels.split(/[\s,;|\/\-\n]+/)
+}
+
 function AddServerDialog({ open, onClose, title, handleAddServer }) {
     const [form, setForm] = React.useState({
         name: '',
@@ -18,7 +29,9 @@ function AddServerDialog({ open, onClose, title, handleAddServer }) {
     })
 
     const handleSubmit = () => {
-        handleAddServer(form)
+        let newServer = form
+        form.channels = handleChannelToArray(form.channels)
+        handleAddServer(newServer)
         onClose()
     }
 
@@ -56,6 +69,7 @@ function AddServerDialog({ open, onClose, title, handleAddServer }) {
                     label="Ajouter des salons"
                     variant="standard"
                     fullWidth
+                    multiline
                     value={form.channels}
                     onChange={(e) =>
                         setForm({
