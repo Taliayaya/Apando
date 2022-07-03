@@ -19,6 +19,7 @@ function AddCollectionDialog({
         name: '',
         description: '',
         subCollection: [],
+        servers: [],
     })
 
     const handleChangeName = (event) => {
