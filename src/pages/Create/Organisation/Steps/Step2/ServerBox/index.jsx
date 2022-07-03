@@ -15,6 +15,7 @@ import {
     ListItemIcon,
     Menu,
     MenuItem,
+    TextField,
     Tooltip,
     Typography,
 } from '@mui/material'
@@ -28,10 +29,17 @@ import {
 import { Add, Delete } from '@mui/icons-material'
 import { ServerIcon } from './StyleServerBox'
 
-function ServerBox({ name, description, handleDelete, channels }) {
+function ServerBox({
+    name,
+    description,
+    handleDelete,
+    channels,
+    handleAddChannelToServer,
+}) {
     const [anchorEl, setAnchorEl] = React.useState(null)
     const [openDialog, setOpenDialog] = React.useState(false)
     const [openAdd, setOpenAdd] = React.useState(false)
+    const [newChannel, setNewChannel] = React.useState('')
 
     const open = Boolean(anchorEl)
     const handleClick = (event) => setAnchorEl(event.currentTarget)
@@ -76,7 +84,7 @@ function ServerBox({ name, description, handleDelete, channels }) {
                     </Grid>
                     <Grid item>
                         <Tooltip title={'Ajouter un salon'}>
-                            <IconButton onClick={() => setOpenAdd(true)}>
+                            <IconButton onClick={() => setOpenDialog(true)}>
                                 <Add fontSize="small" />
                             </IconButton>
                         </Tooltip>
@@ -87,8 +95,8 @@ function ServerBox({ name, description, handleDelete, channels }) {
                     {channels.length > 0 ? (
                         channels.map((params) => (
                             <Chip
-                                label={params.name}
-                                key={params.name}
+                                label={params}
+                                key={params}
                                 style={{ margin: '5px' }}
                             />
                         ))
@@ -107,6 +115,33 @@ function ServerBox({ name, description, handleDelete, channels }) {
                     <Typography variant="inherit">Supprimer</Typography>
                 </MenuItem>
             </Menu>
+            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>Ajouter un salon à {name}</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        variant="standard"
+                        value={newChannel}
+                        onChange={(e) => setNewChannel(e.target.value)}
+                        inputProps={{ maxLength: 20 }}
+                        fullWidth
+                        color="secondary"
+                        label="Nom du salon"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button color="secondary" onClick={handleCloseDialog}>
+                        Annuler
+                    </Button>
+                    <Button
+                        color="inherit"
+                        onClick={() =>
+                            handleAddChannelToServer(name, newChannel)
+                        }
+                    >
+                        Ajouter
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     )
 }
