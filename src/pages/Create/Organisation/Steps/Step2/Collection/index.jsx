@@ -72,10 +72,6 @@ function Collection({
         handleDelete(name)
     }
 
-    const addSubCollection = (subCollec) => {
-        subCollection.push(subCollec)
-    }
-
     return (
         <Container>
             <Box sx={{ my: 3, mx: 2 }}>
