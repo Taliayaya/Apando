@@ -134,9 +134,11 @@ function ServerBox({
                     </Button>
                     <Button
                         color="inherit"
-                        onClick={() =>
+                        onClick={() => {
                             handleAddChannelToServer(name, newChannel)
-                        }
+                            handleCloseDialog()
+                            setNewChannel('')
+                        }}
                     >
                         Ajouter
                     </Button>
