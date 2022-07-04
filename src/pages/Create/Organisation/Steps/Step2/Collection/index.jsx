@@ -28,6 +28,7 @@ import {
 } from './StyleCollection'
 import { Add, Delete } from '@mui/icons-material'
 import AddCollectionDialog from '../AddCollectionDialog'
+import Settings from '@mui/icons-material/Settings'
 
 function Collection({
     name,
@@ -152,6 +153,12 @@ function Collection({
                         <Delete fontSize="small" />
                     </ListItemIcon>
                     <Typography variant="inherit">Supprimer</Typography>
+                </MenuItem>
+                <MenuItem onClick={updateDepth}>
+                    <ListItemIcon>
+                        <Settings fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit">Voir</Typography>
                 </MenuItem>
             </Menu>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
