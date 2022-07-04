@@ -1,6 +1,7 @@
 import { NavigateNext } from '@mui/icons-material'
 import { Breadcrumbs, Typography } from '@mui/material'
 import React from 'react'
+import CustomizedSnackbars from '../../../../../components/CustomizedSnackBar'
 import AddCollectionDialog from './AddCollectionDialog'
 import AddServerDialog from './AddServerDialog'
 import Collection from './Collection'
@@ -48,10 +49,16 @@ const collectionsTest = [
 ]
 
 function Step2({ orgaInfo, setOrgaInfo }) {
-    const [collections, setCollections] = React.useState(collectionsTest)
     const [depth, setDepth] = React.useState([])
     const [open, setOpen] = React.useState(false)
     const [openServerDialog, setOpenServerDialog] = React.useState(false)
+    const [collectionNameTaken, setCollectionNameTaken] = React.useState([])
+    const [serverNameTaken, setServerNameTaken] = React.useState([])
+    const [feedback, setFeedback] = React.useState(null)
+
+    const setCollections = (value) =>
+        setOrgaInfo({ ...orgaInfo, collections: value })
+    const collections = orgaInfo.collections
 
     const handleClose = () => {
         setOpen(false)
@@ -94,6 +101,13 @@ function Step2({ orgaInfo, setOrgaInfo }) {
     const handleDeleteCollection = (name) => {
         const newArray = collections.filter((values) => name !== values.name)
         setCollections(newArray)
+        setFeedback({
+            message: `Collection ${name} supprimée`,
+            severity: 'success',
+        })
+        setCollectionNameTaken(
+            collectionNameTaken.filter((element) => element !== name)
+        )
     }
 
     const handleDeleteSubCollection = (name) => {
@@ -103,6 +117,13 @@ function Step2({ orgaInfo, setOrgaInfo }) {
             (element) => element.name !== name
         )
         setCollections(newCollection)
+        setFeedback({
+            message: `Sous-collection ${name} supprimée de ${sub.name}`,
+            severity: 'success',
+        })
+        setCollectionNameTaken(
+            collectionNameTaken.filter((element) => element !== name)
+        )
     }
 
     const handleDeleteServer = (name) => {
@@ -117,21 +138,41 @@ function Step2({ orgaInfo, setOrgaInfo }) {
             sub.servers.pop()
         }
 
-        console.log('newcollection', newCollection)
         setCollections(newCollection)
+        setFeedback({
+            message: `Serveur ${name} supprimée de ${a.name}`,
+            severity: 'success',
+        })
+        const newServerNameTakenArray = serverNameTaken.filter(
+            (element) => element !== name
+        )
+        console.log(newServerNameTakenArray)
+        setServerNameTaken(newServerNameTakenArray)
     }
 
     const handleAddSubCollection = (newCollection, parent) => {
+        if (collectionNameTaken.includes(newCollection.name)) {
+            setFeedback({
+                message: 'Chaque nom de collection doit être unique',
+                severity: 'error',
+            })
+            return
+        }
         collections
             .find((element) => element.name === parent)
             .subCollection.push(newCollection)
 
-        console.log(collections)
         setCollections(collections)
+        const newArray = collectionNameTaken.push(newCollection.name)
+        setCollectionNameTaken(newArray)
+        console.log(newArray)
+        setFeedback({
+            message: `Sous-collection ${newCollection.name} ajoutée`,
+            severity: 'success',
+        })
     }
 
     const handleAddSubCollectionWithDepth = (newCollection) => {
-        console.log('newcollec', newCollection)
         handleAddSubCollection(newCollection, depth[0])
     }
 
@@ -252,13 +293,31 @@ function Step2({ orgaInfo, setOrgaInfo }) {
                                   )
                             : setCollections
                     }
+                    collectionNameTaken={collectionNameTaken}
+                    setCollectionNameTaken={setCollectionNameTaken}
+                    feedback={feedback}
+                    setFeedback={setFeedback}
                 />
                 <AddServerDialog
                     open={openServerDialog}
                     onClose={handleCloseServerDialog}
                     handleAddServer={handleAddServer}
+                    defaultServerInfo={{
+                        domain: orgaInfo.domain,
+                        jointype: orgaInfo.jointype,
+                        channels: orgaInfo.channels,
+                    }}
+                    serverNameTaken={serverNameTaken}
+                    setServerNameTaken={setServerNameTaken}
+                    feedback={feedback}
+                    setFeedback={setFeedback}
                 />
             </CollectionsContainer>
+            <CustomizedSnackbars
+                open={!!feedback}
+                setOpen={setFeedback}
+                {...feedback}
+            />
         </React.Fragment>
     )
 }
