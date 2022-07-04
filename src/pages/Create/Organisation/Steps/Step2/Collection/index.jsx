@@ -38,6 +38,9 @@ function Collection({
     setDepth,
     handleDelete,
     handleAddSubCollection,
+    collectionNameTaken,
+    setCollectionNameTaken,
+    setFeedback,
 }) {
     const [anchorEl, setAnchorEl] = React.useState(null)
     const [openDialog, setOpenDialog] = React.useState(false)
@@ -187,6 +190,9 @@ function Collection({
                 setCollections={(newCollection) => {
                     handleAddSubCollection(newCollection[0], name)
                 }}
+                collectionNameTaken={collectionNameTaken}
+                setCollectionNameTaken={setCollectionNameTaken}
+                setFeedback={setFeedback}
             />
         </Container>
     )

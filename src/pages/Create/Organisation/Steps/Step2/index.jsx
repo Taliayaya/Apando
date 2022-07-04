@@ -151,21 +151,12 @@ function Step2({ orgaInfo, setOrgaInfo }) {
     }
 
     const handleAddSubCollection = (newCollection, parent) => {
-        if (collectionNameTaken.includes(newCollection.name)) {
-            setFeedback({
-                message: 'Chaque nom de collection doit être unique',
-                severity: 'error',
-            })
-            return
-        }
         collections
             .find((element) => element.name === parent)
             .subCollection.push(newCollection)
 
         setCollections(collections)
-        const newArray = collectionNameTaken.push(newCollection.name)
-        setCollectionNameTaken(newArray)
-        console.log(newArray)
+        const newArray = collectionNameTaken
         setFeedback({
             message: `Sous-collection ${newCollection.name} ajoutée`,
             severity: 'success',
@@ -206,6 +197,8 @@ function Step2({ orgaInfo, setOrgaInfo }) {
 
         setCollections(collections)
     }
+
+    console.log('name taken', collectionNameTaken)
 
     return (
         <React.Fragment>
@@ -248,6 +241,9 @@ function Step2({ orgaInfo, setOrgaInfo }) {
                                 : handleDeleteCollection
                         }
                         handleAddSubCollection={handleAddSubCollection}
+                        collectionNameTaken={collectionNameTaken}
+                        setCollectionNameTaken={setCollectionNameTaken}
+                        setFeedback={setFeedback}
                     />
                 ))}
                 {depth.length > 0 &&
