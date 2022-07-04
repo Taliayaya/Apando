@@ -7,7 +7,7 @@ import StepConnector, {
 const Wrapper = styled.div`
     display: flex;
     background-color: ${(props) => props.theme.sides_bg_color};
-    margin: 0 20%;
+    margin: 1% 20%;
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0px 23px 30px 23px rgba(0, 0, 0, 0.2);
@@ -16,12 +16,16 @@ const Wrapper = styled.div`
     &:hover {
         box-shadow: 0px 23px 30px 23px rgba(0, 0, 0, 0.3);
     }
+    @media screen and (max-width: 480px) {
+        margin: 1% 5%;
+    }
 `
 const Center = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
 `
 
 const Connector = styledMui(StepConnector)(({ theme }) => ({
