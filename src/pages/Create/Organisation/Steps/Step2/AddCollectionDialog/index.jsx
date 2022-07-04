@@ -14,6 +14,9 @@ function AddCollectionDialog({
     collections,
     setCollections,
     message,
+    setFeedback,
+    collectionNameTaken,
+    setCollectionNameTaken,
 }) {
     const [form, setForm] = React.useState({
         name: '',
@@ -38,10 +41,24 @@ function AddCollectionDialog({
     }
 
     const handleSubmit = () => {
+        if (collectionNameTaken.includes(form.name)) {
+            setFeedback({
+                message: 'Chaque collection doit avoir un nom unique !',
+                severity: 'error',
+            })
+            return
+        }
         const newCollections = collections
+        const newArray = collectionNameTaken
         newCollections.push(form)
+        newArray.push(form.name)
+        setCollectionNameTaken(newArray)
         setCollections(newCollections)
         onClose()
+        setFeedback({
+            message: `Collection ${form.name} ajoutée !`,
+        })
+        setForm({ name: '', description: '', subCollection: [], servers: [] })
     }
 
     return (
