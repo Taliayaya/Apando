@@ -15,10 +15,18 @@ import { Center, Connector, Wrapper } from './StyledOrga'
 import StepIcon from './StepIcon'
 import Steps from './Steps'
 
-const steps = ["Nom de l'Organisation", 'Step 2', 'Step 3']
+const steps = [
+    "Paramètres de l'Organisation",
+    'Ajout de collections et de serveurs',
+    'Aperçu et validation',
+]
 
 const info = {
     name: '',
+    domain: '',
+    jointype: 'auto',
+    collections: [],
+    channels: '',
 }
 
 export default () => {
@@ -142,8 +150,7 @@ export default () => {
                                             }}
                                             disabled={
                                                 activeStep === 0 &&
-                                                orgaInfo.name.trim().length ===
-                                                    0
+                                                orgaInfo.name.trim().length <= 3
                                             }
                                         >
                                             {activeStep === steps.length - 1
