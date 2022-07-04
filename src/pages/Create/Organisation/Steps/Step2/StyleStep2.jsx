@@ -30,7 +30,7 @@ const AddCollectionDiv = styled.div`
     align-items: center;
     flex-direction: column;
     max-height: 300px;
-    min-width: 100px;
+    min-width: 300px;
     cursor: pointer;
     &:hover {
         background-color: ${(props) => props.theme.chat_bg_color};
