@@ -28,7 +28,9 @@ import Backgrounds from '../../components/Backgrounds'
 import Header from '../../components/Header'
 import { ThemeProvider } from 'styled-components'
 import { useAuth } from '../../utils/hooks'
+import User from '../../utils/user'
 
+const provider = new GoogleAuthProvider()
 function Signup() {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -41,7 +43,6 @@ function Signup() {
     const [showPassword, setShowPassword] = useState(false)
     const auth = getAuth()
     auth.useDeviceLanguage()
-    const provider = new GoogleAuthProvider()
 
     const googleSignInApi = async () => {
         signInWithPopup(auth, provider).then(async (result) => {
@@ -51,10 +52,7 @@ function Signup() {
                 name: result.user.displayName,
                 avatar: result.user.photoURL,
             }
-            await setDoc(doc(db, 'users', result.user.uid), {
-                data,
-            })
-            await sendEmailVerification(result.user)
+            await User.add(data, result.user)
             navigate('/join')
         })
         // .catch((error) => {
@@ -98,10 +96,7 @@ function Signup() {
                     avatar: userCredential.user.photoURL,
                     email: userCredential.user.email,
                 }
-                await setDoc(doc(db, 'users', userCredential.user.uid), {
-                    data,
-                })
-                await sendEmailVerification(userCredential.user)
+                await User.add(data, userCredential.user)
                 navigate('/join')
             })
             .catch((error) => {
