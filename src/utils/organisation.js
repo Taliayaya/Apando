@@ -14,6 +14,9 @@ import {
 } from 'firebase/firestore'
 import { db } from './firebase/config'
 
+/**
+ * Handle Organisation based client-server api interaction
+ */
 class Organisation {
     /**
      * Add a new organisation and its collections/subcollections/servers
