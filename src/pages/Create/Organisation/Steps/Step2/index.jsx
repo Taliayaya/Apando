@@ -302,6 +302,7 @@ function Step2({ orgaInfo, setOrgaInfo }) {
                         domain: orgaInfo.domain,
                         jointype: orgaInfo.jointype,
                         channels: orgaInfo.channels,
+                        type: "orga"
                     }}
                     serverNameTaken={serverNameTaken}
                     setServerNameTaken={setServerNameTaken}
