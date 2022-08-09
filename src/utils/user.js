@@ -95,6 +95,27 @@ class User {
         const memberRef = ref(db, `roles/${server_id}/` + uid)
         remove(memberRef)
     }
+
+    /**
+     * Check if the user is in the server
+     * @param {string} uid is the user to check
+     * @param {string} server_id is the target server id
+     * @returns a bool whether the user joined or not the target server
+     */
+    static async isInServer(uid, server_id) {
+        const userRef = doc(db, 'users', uid)
+
+        const docSnap = await getDoc(userRef)
+        if (docSnap.exists()) {
+            const serversList = docSnap.data()?.serversid
+            if (serversList) {
+                const isAlreadyIn = serversList.includes(server_id)
+                return isAlreadyIn
+            }
+            return false
+        }
+        return false
+    }
 }
 
 export default User
