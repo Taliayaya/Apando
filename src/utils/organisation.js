@@ -13,9 +13,13 @@ import {
     setDoc,
 } from 'firebase/firestore'
 import { db } from './firebase/config'
+import Server from './server'
 
 /**
  * Handle Organisation based client-server api interaction
+ *
+ * TODO : - verify if the orga name is taken
+ *  - Save draft in a cookie
  */
 class Organisation {
     /**
@@ -33,7 +37,7 @@ class Organisation {
     static async add({ name, domain, jointype, collections, channels }, user) {
         const orgaCollec = collection(db, 'organisations')
         const userRef = doc(db, 'users', user.uid)
-
+        console.log('data', name, collections, domain, jointype, channels)
         // Add the orga data
         const orgaCollecRef = await addDoc(orgaCollec, {
             name,
@@ -59,6 +63,17 @@ class Organisation {
         await updateDoc(userRef, {
             organisation: arrayUnion({ id: orgaCollecRef.id, name: name }),
             organisation_id: arrayUnion(orgaCollecRef.id),
+        })
+
+        // Add the servers
+        console.log(collections)
+        collections.forEach((collec) => {
+            console.log(collec)
+            collec.servers.forEach((server) => Server.add(user, server))
+            collec.subCollection.forEach((subCollec) => {
+                console.log('subserv', subCollec.servers, subCollec)
+                subCollec.servers.forEach((server) => Server.add(user, server))
+            })
         })
     }
 }
