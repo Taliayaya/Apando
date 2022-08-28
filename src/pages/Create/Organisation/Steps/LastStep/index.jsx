@@ -5,7 +5,7 @@ import React from 'react'
 import CustomizedSnackbars from '../../../../../components/CustomizedSnackBar'
 import Organisation from '../../../../../utils/organisation'
 
-function LastStep(orgaInfo) {
+function LastStep({ orgaInfo }) {
     const [feedback, setFeedback] = React.useState(null)
     const [loading, setLoading] = React.useState(false)
     const user = getAuth().currentUser
@@ -19,16 +19,23 @@ function LastStep(orgaInfo) {
         }),
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         if (loading) return
         setLoading(true)
-        setFeedback(null)
-        await Organisation.add(orgaInfo, user)
+        Organisation.add(orgaInfo, user)
+            .then(() => {
+                setFeedback({
+                    message: `L'organisation ${orgaInfo.name} a été créée avec succès !`,
+                    severity: 'success',
+                })
+            })
+            .catch((error) => {
+                setFeedback({
+                    message: `Error : ${error}`,
+                    severity: 'error',
+                })
+            })
         setLoading(false)
-        setFeedback({
-            message: `L'organisation ${orgaInfo.name} a été créée avec succès !`,
-            severity: 'success',
-        })
     }
     return (
         <React.Fragment>
@@ -37,9 +44,11 @@ function LastStep(orgaInfo) {
                     variant="contained"
                     sx={buttonSx}
                     disabled={loading}
-                    onClick={handleSubmit}
+                    onClick={feedback.finished ? '' : handleSubmit}
                 >
-                    Finaliser {orgaInfo.name}
+                    {feedback.finished
+                        ? 'Succès !'
+                        : `Finaliser ${orgaInfo.name}`}
                 </Button>
                 {loading && (
                     <CircularProgress
