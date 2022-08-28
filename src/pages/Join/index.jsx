@@ -195,7 +195,7 @@ const Join = () => {
                             </Collapse>
                             <StyledField>
                                 Pas de code ?{' '}
-                                <StyleLink to="/create">
+                                <StyleLink to="/create/server">
                                     Crée ton serveur
                                 </StyleLink>
                             </StyledField>
