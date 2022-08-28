@@ -44,9 +44,9 @@ function LastStep({ orgaInfo }) {
                     variant="contained"
                     sx={buttonSx}
                     disabled={loading}
-                    onClick={feedback.finished ? '' : handleSubmit}
+                    onClick={feedback?.finished ? '' : handleSubmit}
                 >
-                    {feedback.finished
+                    {feedback?.finished
                         ? 'Succès !'
                         : `Finaliser ${orgaInfo.name}`}
                 </Button>
