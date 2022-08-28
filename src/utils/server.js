@@ -26,13 +26,13 @@ class Server {
      */
     static async add(
         user,
-        { channels, name, code, domain = '', jointype = '' }
+        { channels, name, code, domain = '', jointype = 'auto' }
     ) {
         if (!this.isNameTaken(name))
             throw new Error('Un serveur à ce nom existe déjà.')
         const ref = collection(db, 'servers')
 
-        addDoc(ref, {
+        return addDoc(ref, {
             name: name,
             code: code,
             domain: domain,
@@ -40,6 +40,7 @@ class Server {
         }).then(async (ref) => {
             await User.addRole(user.uid, 'Owner', ref.id)
             channels.forEach((channel) => Channels.add(channel, ref.id))
+            console.log(ref.id)
             return ref.id
         })
     }
@@ -53,7 +54,7 @@ class Server {
      */
     static async addSub(
         user,
-        { channels, name, code, domain = '', jointype = '', orga }
+        { channels, name, code, domain = '', jointype = 'auto', orga }
     ) {
         const ref = collection(db, `orgaServers/${orga}/servers`)
 
@@ -83,32 +84,33 @@ class Server {
         const serverStatsRef = ref(rltdb, `serverstats/${server.id}`)
 
         return new Promise(async (res, rej) => {
-            if (this.isEmailDomainValidated(user, server)) {
-                const alreadyInServer = User.isInServer(user.uid, server.id)
-                if (!alreadyInServer) {
-                    await updateDoc(userDocRef, {
-                        servers: arrayUnion({
-                            id: server.id,
-                            name: server.name,
-                        }),
-                        serversid: arrayUnion(server.id),
-                    })
-                    const updates = {}
-                    updates[`memberCount`] = increment(1)
-                    update(serverStatsRef, updates)
-
-                    res(`Vous avez rejoins ce serveur avec succès !
-                Vous allez maintenant être redirigé vers l'application`)
-                } else {
-                    rej(`Vous avez déjà rejoins ce serveur`)
-                }
-            } else {
+            if (!this.isEmailDomainValidated(user, server)) {
                 rej(
                     "Le serveur que vous essayez de rejoindre n'accepte pas le domaine de votre email. Essayez avec un email autorisé par le server"
                 )
             }
+            const alreadyInServer = await User.isInServer(user.uid, server.id)
+            console.log(alreadyInServer)
+            if (alreadyInServer) {
+                rej(`Vous avez déjà rejoins ce serveur`)
+            }
+            console.log(server)
+            await updateDoc(userDocRef, {
+                servers: arrayUnion({
+                    id: server.id,
+                    name: server.name,
+                }),
+                serversid: arrayUnion(server.id),
+            })
+            const updates = {}
+            updates[`memberCount`] = increment(1)
+            update(serverStatsRef, updates)
+
+            res(`Vous avez rejoins ce serveur avec succès !
+                Vous allez maintenant être redirigé vers l'application`)
         })
     }
+
     /**
      * Verify whether the chosen name is usable or not
      * @param {string} name the server name to verify
