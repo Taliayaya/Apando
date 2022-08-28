@@ -1,34 +1,29 @@
 import {
-    Timestamp,
     doc,
     updateDoc,
-    arrayRemove,
     collection,
     query,
     where,
     getDocs,
     arrayUnion,
-    getDoc,
     addDoc,
-    setDoc,
 } from 'firebase/firestore'
-import {
-    getDatabase,
-    ref,
-    push,
-    set,
-    get,
-    child,
-    remove,
-    increment,
-    update,
-} from 'firebase/database'
+import { getDatabase, ref, increment, update } from 'firebase/database'
 
 import { db } from './firebase/config'
 import User from './user'
 import Channels from './channels'
 
+/**
+ * Handle the servers's API
+ * Allow to Add && Join servers
+ */
 class Server {
+    /**
+     * add is used to create a new server.
+     @param {Object} user the logged-in user information
+     * @param {Object} param1 the server information to create
+     */
     static async add(
         user,
         { channels, name, code, domain = '', jointype = '' }
@@ -36,6 +31,7 @@ class Server {
         if (!this.isNameTaken(name))
             throw new Error('Un serveur à ce nom existe déjà.')
         const ref = collection(db, 'servers')
+
         addDoc(ref, {
             name: name,
             code: code,
@@ -45,6 +41,31 @@ class Server {
             await User.addRole(user.uid, 'Owner', ref.id)
             channels.forEach((channel) => Channels.add(channel, ref.id))
             return ref.id
+        })
+    }
+
+    /**
+     * addSub is used to create a sub server to an organisation.
+     * It doesn't use the add function because it is located appart of
+     * the servers
+     * @param {Object} user the logged-in user information
+     * @param {Object} param1 the sub server information to create
+     */
+    static async addSub(
+        user,
+        { channels, name, code, domain = '', jointype = '', orga }
+    ) {
+        const ref = collection(db, `orgaServers/${orga}/servers`)
+
+        addDoc(ref, {
+            name,
+            code,
+            domain,
+            jointype,
+            orga,
+        }).then(async (ref) => {
+            await User.addRole(user.uid, 'Owner', ref.id)
+            channels.forEach((channel) => Channels.add(channel, ref.id))
         })
     }
 
