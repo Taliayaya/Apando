@@ -12,13 +12,8 @@ import {
     Box,
     Collapse,
     IconButton,
-    InputBase,
-    List,
-    ListItem,
-    Paper,
     Tab,
     Tabs,
-    Typography,
     useTheme,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
@@ -30,8 +25,9 @@ import { ThemeProvider } from 'styled-components'
 import Organisation from '../../utils/organisation'
 import TabPanel from '../../components/TabPanel'
 import SwipeableViews from 'react-swipeable-views'
-import { Search } from '@mui/icons-material'
+
 import JoinServerForm from './JoinServerForm'
+import JoinOrgaForm from './joinOrgaForm'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -68,7 +64,7 @@ const Join = () => {
     const { themeUsed } = useAuth()
     const [tab, setTab] = useState(0)
     const theme = useTheme()
-    const [search, setSearch] = useState('')
+
     const [orgaArray, setOrgaArray] = useState(null)
 
     const handleChangeTab = (event, newValue) => {
@@ -89,18 +85,6 @@ const Join = () => {
         }
     }
 
-    const handleSearchChange = (event) => {
-        setSearch(event.target.value)
-    }
-
-    /**
-     * Filter and search organisation as the name is typed
-     */
-    const filteredSearch =
-        orgaArray !== null &&
-        orgaArray.filter((orga) => {
-            return orga.name.toLowerCase().includes(search.toLocaleLowerCase())
-        })
     return (
         <>
             <Helmet>
@@ -150,50 +134,7 @@ const Join = () => {
                                 index={1}
                                 dir={theme.direction}
                             >
-                                <Paper
-                                    component="form"
-                                    x={{
-                                        display: 'flex',
-                                    }}
-                                >
-                                    <InputBase
-                                        placeholder="Rechercher une Organisation"
-                                        inputProps={{
-                                            'aria-label': 'search organisation',
-                                        }}
-                                        sx={{ width: 260 }}
-                                        value={search}
-                                        onChange={handleSearchChange}
-                                    />
-                                    <IconButton
-                                        type="button"
-                                        sx={{ p: '10px' }}
-                                        aria-label="search"
-                                        onClick={() =>
-                                            search.length > 0 && setSearch('')
-                                        }
-                                    >
-                                        {search.length > 0 ? (
-                                            <CloseIcon />
-                                        ) : (
-                                            <Search />
-                                        )}
-                                    </IconButton>
-                                </Paper>
-
-                                <List>
-                                    {filteredSearch?.length > 0 &&
-                                        search.trim().length > 0 &&
-                                        filteredSearch.map(({ name, id }) => {
-                                            return (
-                                                <ListItem key={id}>
-                                                    <Typography>
-                                                        {name}
-                                                    </Typography>
-                                                </ListItem>
-                                            )
-                                        })}
-                                </List>
+                                <JoinOrgaForm orgaArray={orgaArray} />
                             </TabPanel>
                         </SwipeableViews>
 
