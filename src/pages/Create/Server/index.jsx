@@ -28,6 +28,7 @@ import Backgrounds from '../../../components/Backgrounds'
 import Header from '../../../components/Header'
 import { ThemeProvider } from 'styled-components'
 import { useAuth } from '../../../utils/hooks'
+import Server from '../../../utils/server'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -78,42 +79,27 @@ export default function CreateServer() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (serverName.trim().length > 0) {
-            const serverRef = collection(db, 'servers')
-            const q = query(serverRef, where('name', '==', serverName))
-            const testIfNotExist = await getDocs(q)
-            testIfNotExist.forEach((doc) => {
-                if (doc.exists) {
-                    setError('Un serveur à ce nom existe déjà')
-                }
-            })
-            try {
-                const docRef = await addDoc(serverRef, {
-                    name: serverName,
-                    code: code,
-                    domain: '',
-                    jointype: 'auto',
-                })
-                await writeUserRole(user.uid, 'Owner', docRef.id)
-                createChannelListFromString(channels, docRef.id)
-                await createServerStatsField(docRef.id)
-                await joinServer(user, {
-                    name: serverName,
-                    code: code,
-                    domain: '',
-                    jointype: 'auto',
-                    id: docRef.id,
-                })
-                navigate('/app')
-            } catch (error) {
-                setError(
-                    "Hmmm, il semblerait qu'il y a eu une erreur lors de la création du serveur"
-                )
-            }
-        } else {
+        if (serverName.trim().length === 0) {
             setError('Oups, le nom de serveur est invalide')
+            return
         }
+        const channel_arr = channels.split('\n')
+        Server.add(user, {
+            name: serverName,
+            code,
+            channels: channel_arr,
+        })
+            .then((docRef) => {
+                console.log(docRef)
+                Server.join(user, { id: docRef, name: serverName }).then(() => {
+                    navigate('/app')
+                })
+            })
+            .catch((err) => {
+                setError(err.message)
+            })
     }
+
     return (
         <ThemeProvider theme={themeUsed}>
             <Backgrounds sakura={true}>
