@@ -51,12 +51,17 @@ class Organisation {
             },
         })
         const orgaCollecRoleRef = doc(db, 'orgaUsers', orgaCollecRef.id)
+        const orgaArrayRef = doc(db, 'orgaArray', orgaCollecRef.id)
 
         // Add the owner in the orga user list
         await setDoc(orgaCollecRoleRef, {
             username: user.displayName,
             role: 'owner',
             uid: user.uid,
+        })
+
+        await setDoc(orgaArrayRef, {
+            name,
         })
 
         // Add the organisation in the user data
@@ -81,6 +86,17 @@ class Organisation {
                 })
             })
         })
+    }
+
+    static search() {
+        const ref = collection(db, 'orgaArray')
+        const data = []
+        getDocs(ref).then((snapshot) => {
+            snapshot.forEach((doc) => {
+                data.push({ ...doc.data(), id: doc.id })
+            })
+        })
+        return data
     }
 }
 
