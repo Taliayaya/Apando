@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StyledLoginWrapper, StyledLoginTitle } from '../Login/LoginSignStyle'
-
+import CustomizedSnackbars from '../../components/CustomizedSnackBar'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@mui/system'
 import { theme } from '../../utils/style/colors'
@@ -64,6 +64,7 @@ const Join = () => {
     const { themeUsed } = useAuth()
     const [tab, setTab] = useState(0)
     const theme = useTheme()
+    const [feedback, setFeedback] = useState(null)
 
     const [orgaArray, setOrgaArray] = useState(null)
 
@@ -134,7 +135,10 @@ const Join = () => {
                                 index={1}
                                 dir={theme.direction}
                             >
-                                <JoinOrgaForm orgaArray={orgaArray} />
+                                <JoinOrgaForm
+                                    orgaArray={orgaArray}
+                                    setFeedback={setFeedback}
+                                />
                             </TabPanel>
                         </SwipeableViews>
 
@@ -180,6 +184,12 @@ const Join = () => {
                                 {success}
                             </Alert>
                         </Collapse>
+                        {console.log(feedback, !!feedback)}
+                        <CustomizedSnackbars
+                            open={!!feedback}
+                            setOpen={setFeedback}
+                            {...feedback}
+                        />
                     </StyledLoginWrapper>
                 </Backgrounds>
             </ThemeProvider>
