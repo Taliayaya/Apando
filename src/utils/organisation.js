@@ -98,6 +98,24 @@ class Organisation {
         })
         return data
     }
+
+    static async queryServer(orga, serverName, serverCode) {
+        const ref = collection(db, 'orgaServers', orga, 'servers')
+        const q = query(
+            ref,
+            where('name', '==', serverName),
+            where('code', '==', serverCode)
+        )
+        let server
+        await getDocs(q).then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                server = doc.data()
+                server.id = doc.id
+                return server
+            })
+        })
+        return server
+    }
 }
 
 export default Organisation
