@@ -214,10 +214,12 @@ const MessageInput = ({ currentChannel }) => {
                     success={success}
                 />
                 <form>
-                    <FilesTray
-                        selectedFiles={selectedFiles}
-                        setSelectedFiles={setSelectedFiles}
-                    />
+                    {selectedFiles.length > 0 && (
+                        <FilesTray
+                            selectedFiles={selectedFiles}
+                            setSelectedFiles={setSelectedFiles}
+                        />
+                    )}
                     <StyledChatTextarea
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
