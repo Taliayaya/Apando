@@ -69,10 +69,16 @@ class Organisation {
         console.log(collections)
         collections.forEach((collec) => {
             console.log(collec)
-            collec.servers.forEach((server) => Server.add(user, server))
+            collec.servers.forEach((server) => {
+                server.orga = name
+
+                Server.addSub(user, server)
+            })
             collec.subCollection.forEach((subCollec) => {
-                console.log('subserv', subCollec.servers, subCollec)
-                subCollec.servers.forEach((server) => Server.add(user, server))
+                subCollec.servers.forEach((server) => {
+                    server.orga = name
+                    Server.addSub(user, server)
+                })
             })
         })
     }
