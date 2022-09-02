@@ -86,7 +86,7 @@ class Server {
         return new Promise(async (res, rej) => {
             if (!this.isEmailDomainValidated(user, server)) {
                 rej(
-                    "Le serveur que vous essayez de rejoindre n'accepte pas le domaine de votre email. Essayez avec un email autorisé par le server"
+                    "Le serveur que vous essayez de rejoindre n'accepte pas le domaine de votre email. Essayez avec un email autorisé par le serveur"
                 )
             }
             const alreadyInServer = await User.isInServer(user.uid, server.id)
