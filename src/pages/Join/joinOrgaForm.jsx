@@ -22,6 +22,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close'
 import { CollectionIcon } from './JoinStyle'
 import Organisation from '../../utils/organisation'
+import { getAuth } from 'firebase/auth'
 
 function JoinOrgaForm({ orgaArray }) {
     const [search, setSearch] = React.useState('')
@@ -32,6 +33,7 @@ function JoinOrgaForm({ orgaArray }) {
         code: '',
     })
     const [feedback, setFeedback] = React.useState(null)
+    const user = getAuth().currentUser
 
     const handleClickOpen = (name, id) => {
         setOpen(true)
@@ -54,7 +56,6 @@ function JoinOrgaForm({ orgaArray }) {
             formInput.name,
             formInput.code
         )
-        console.log(feedback, Boolean(feedback))
         if (!value) {
             setFeedback({
                 message: 'Le nom ou le code du serveur est invalide.',
@@ -62,6 +63,20 @@ function JoinOrgaForm({ orgaArray }) {
             })
             return
         }
+        Organisation.joinServer(user, selected.name, value)
+            .then((res) => {
+                setFeedback({
+                    message: res,
+
+                    severity: 'success',
+                })
+            })
+            .catch((error) => {
+                setFeedback({
+                    message: error,
+                    severity: 'error',
+                })
+            })
     }
 
     /**
