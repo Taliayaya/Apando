@@ -1,3 +1,4 @@
+import { getDatabase, increment, ref, update } from 'firebase/database'
 import {
     Timestamp,
     doc,
@@ -14,6 +15,7 @@ import {
 } from 'firebase/firestore'
 import { db } from './firebase/config'
 import Server from './server'
+import User from './user'
 
 /**
  * Handle Organisation based client-server api interaction
@@ -99,6 +101,13 @@ class Organisation {
         return data
     }
 
+    /**
+     * Query in the Organisation a server with the same name & code then retrieve it
+     * @param {String} orga The name of the organisation where to query the server
+     * @param {String} serverName The name of the server to query
+     * @param {String} serverCode The secret code of the server to query
+     * @returns The server information or nothing
+     */
     static async queryServer(orga, serverName, serverCode) {
         const ref = collection(db, 'orgaServers', orga, 'servers')
         const q = query(
@@ -115,6 +124,53 @@ class Organisation {
             })
         })
         return server
+    }
+
+    static async joinServer(user, orga, server) {
+        const userRef = doc(db, 'users', user.uid)
+        const rltdb = getDatabase()
+        const serversStatsRef = ref(rltdb, `serverstats/${server.id}`)
+
+        return new Promise(async (res, rej) => {
+            if (!Server.isEmailDomainValidated(user, server)) {
+                rej(
+                    `Le serveur que vous essayez de rejoindre n'accepte pas le domaine de votre adresse mail. 
+                Essayez avec une adresse mail autorisée par le serveur.`
+                )
+            }
+            if (await User.isInOrgaServer(user.uid, server.id, orga)) {
+                rej(`Vous avez déjà rejoins ce serveur.`)
+            }
+            // Check either if we have to create the whole data,
+            // add the server to the organisation
+            // or create the orga and add the server
+            let currentServerList = await User.get(user.uid)?.orgaServers
+            const serverData = { id: server.id, name: server.name, orga: orga }
+            if (!currentServerList) {
+                currentServerList = [{ name: orga, servers: [serverData] }]
+            } else {
+                const currentOrga = currentServerList.find(
+                    (organisation) => organisation.name === orga
+                )
+                if (currentOrga) {
+                    currentOrga.push(serverData)
+                } else {
+                    currentServerList.push({
+                        name: orga,
+                        servers: [serverData],
+                    })
+                }
+            }
+            await updateDoc(userRef, {
+                orgaServers: currentServerList,
+            })
+            const updates = {}
+            updates[`memberCount`] = increment(1)
+            update(serversStatsRef, updates)
+            res(
+                "Vous avez rejoins ce serveur avec succès !\nVous allez maintenant être redirigé vers l'application"
+            )
+        })
     }
 }
 
