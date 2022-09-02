@@ -49,6 +49,14 @@ class User {
             },
         }).then(() => sendEmailVerification(user))
     }
+
+    static async get(uid) {
+        const userRef = doc(db, 'users', uid)
+
+        return getDoc(userRef).then((docSnap) => {
+            if (docSnap.exists()) return docSnap.data()
+        })
+    }
     /**
      * Change the target user role into a new one.
      * Each role can give specials interactions to the server
@@ -111,6 +119,34 @@ class User {
             if (serversList) {
                 const isAlreadyIn = serversList.includes(server_id)
                 return isAlreadyIn
+            }
+            return false
+        }
+        return false
+    }
+
+    /**
+     * Search if the user is already in this server or not
+     * @param {String} uid The id of the user to analyse
+     * @param {String} server_id The id of the server to analyse
+     * @param {String} orga The name of the organisation containing the servers
+     * @returns A Boolean. True if the user is in, False either.
+     */
+    static async isInOrgaServer(uid, server_id, orga) {
+        const userRef = doc(db, 'users', uid)
+
+        const docSnap = await getDoc(userRef)
+        if (docSnap.exists()) {
+            const orgaArray = docSnap.data().orgaServers
+            const orgaServers = orgaArray?.find(
+                (data) => data.name === orga
+            ).servers
+            if (orgaServers) {
+                const server = orgaServers?.find(
+                    (data) => data.id === server_id
+                )
+
+                return Object.keys(server)?.length !== 0
             }
             return false
         }
