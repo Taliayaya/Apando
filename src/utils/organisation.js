@@ -163,6 +163,7 @@ class Organisation {
             }
             await updateDoc(userRef, {
                 orgaServers: currentServerList,
+                orgaServersId: arrayUnion(server.id),
             })
             const updates = {}
             updates[`memberCount`] = increment(1)

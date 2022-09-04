@@ -11,6 +11,7 @@ import {
     where,
 } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
+import Server from '../../utils/server'
 
 function CategorieUser() {
     const { currentServer, userList, setUserList } = useChannel()
@@ -20,16 +21,7 @@ function CategorieUser() {
         const usersList = async () => {
             if (userList.length === 0 && currentServer?.id) {
                 // On récupère ici la liste des utilisateurs présents dans le server
-                const q = query(
-                    collection(db, 'users'),
-                    where('serversid', 'array-contains', currentServer?.id)
-                )
-                const querySnapshot = await getDocs(q)
-                const queryUserList = []
-                querySnapshot.forEach((doc) => {
-                    const data = { id: doc.id, data: doc.data() }
-                    queryUserList.push(data)
-                })
+                const queryUserList = await Server.getUserList(currentServer)
 
                 if (queryUserList?.length > 0) {
                     // On les trie en fonction de leur différente de temps
@@ -47,17 +39,7 @@ function CategorieUser() {
     useEffect(() => {
         const usersListInterval = setInterval(async () => {
             // On récupère ici la liste des utilisateurs présents dans le server
-            const q = query(
-                collection(db, 'users'),
-                where('serversid', 'array-contains', currentServer?.id)
-            )
-
-            const querySnapshot = await getDocs(q)
-            const queryUserList = []
-            querySnapshot.forEach((doc) => {
-                const data = { id: doc.id, data: doc.data() }
-                queryUserList.push(data)
-            })
+            const queryUserList = await Server.getUserList(currentServer)
             if (queryUserList?.length > 0) {
                 // On les trie en fonction de leur différente de temps
                 const userListSorted = queryUserList.sort((a, b) => {
