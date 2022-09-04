@@ -19,8 +19,8 @@ import DisplayServerList from './DisplayServerList'
 
 function ServerSelection({ serverList, handleServerSelect, orgaServers }) {
     const [open, setOpen] = React.useState(false)
-    const handleSelect = (id, name) => {
-        handleServerSelect(id, name)
+    const handleSelect = (id, name, isSubServer = false) => {
+        handleServerSelect(id, name, isSubServer)
         handleClose()
     }
 
@@ -52,6 +52,7 @@ function ServerSelection({ serverList, handleServerSelect, orgaServers }) {
                                 <DisplayServerList
                                     serverList={servers}
                                     handleSelect={handleSelect}
+                                    isSubServer={true}
                                 />
                             </AccordionDetails>
                         </Accordion>

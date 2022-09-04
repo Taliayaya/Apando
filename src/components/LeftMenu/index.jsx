@@ -63,14 +63,11 @@ const LeftMenu = ({ serverList, setChannelList, orgaServers, setShowMenu }) => {
      * It also update the server id param in the url
      * @param {String} value is the server id and name separated by a space
      */
-    const changeServer = (id, name) => {
-        /** Why §§§§§§§§§§§§$ ? Because server name is 12 chr long
-         * This was written at midnight. Forgive me
-         */
+    const changeServer = (id, name, isSubServer) => {
         setCurrentChannel({})
         setMessageList([])
         setChannelList([])
-        setCurrentServer({ id, name })
+        setCurrentServer({ id, name, isSubServer })
         setUserList([])
         setShowMenu(null)
         navigate(`${id}/${name}`)
