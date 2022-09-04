@@ -148,6 +148,30 @@ class Server {
         }
         return true
     }
+
+    /**
+     * Retrieve all the users who joined the current server
+     * @param {Object} param0 The current server : id, name & isSubServer
+     * @returns The users in this server
+     */
+    static async getUserList({ id, isSubServer }) {
+        const ref = collection(db, 'users')
+        const q = query(
+            ref,
+            where(
+                isSubServer ? 'orgaServersId' : 'serversid',
+                'array-contains',
+                id
+            )
+        )
+        const querySnapshot = await getDocs(q)
+        const queryUserList = []
+        querySnapshot.forEach((doc) => {
+            const data = { id: doc.id, data: doc.data() }
+            queryUserList.push(data)
+        })
+        return queryUserList
+    }
 }
 
 export default Server
