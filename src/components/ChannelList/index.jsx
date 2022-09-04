@@ -17,6 +17,7 @@ import { getUserRole } from '../../utils/function'
 import ChannelName from '../ChannelName'
 import { getDatabase, onValue, ref } from 'firebase/database'
 import { askNotification } from '../../utils/notification'
+import User from '../../utils/user'
 
 /**
  * The left side bar component of the app.
@@ -27,6 +28,7 @@ function ChannelList() {
     const { currentServer, setCurrentServer, channelList, setChannelList } =
         useChannel()
     const [serverList, setServerList] = useState([])
+    const [orgaServers, setOrgaServers] = useState([])
     const { showChannel, setUserRole } = useAuth()
     const auth = getAuth()
     const user = auth.currentUser
@@ -54,19 +56,16 @@ function ChannelList() {
          * Load the server list for the user
          */
         const loadServerList = async () => {
-            if (serverList?.length === 0) {
-                const userRef = doc(db, 'users', user.uid)
-                const userSnap = await getDoc(userRef)
-                if (userSnap.exists()) {
-                    const serverList = userSnap.data().servers
-                    // If the user has joined at least a server
-                    // It will set this one as selected
-                    if (serverList?.length > 0) {
-                        setCurrentServer(serverList[0])
-                        setServerList(serverList)
-                    }
+            if (serverList?.length > 0) return
+            User.get(user.uid).then((data) => {
+                if (data?.servers?.length > 0) {
+                    setCurrentServer(data.servers[0])
+                    setServerList(data.servers)
                 }
-            }
+                if (data?.orgaServers?.length > 0) {
+                    setOrgaServers(data.orgaServers)
+                }
+            })
         }
         loadServerList()
         // firstLoadChannel()
@@ -137,6 +136,8 @@ function ChannelList() {
                 <LeftMenu
                     serverList={serverList}
                     setChannelList={setChannelList}
+                    setShowMenu={setShowMenu}
+                    orgaServers={orgaServers}
                 />
             </Menu>
 
