@@ -29,6 +29,8 @@ import IsUserInServer from './/pages/App/IsUserInServer'
 import IsUserInChannel from './/pages/App/IsUserInChannel'
 import { HelmetProvider } from 'react-helmet-async'
 import Organisation from './pages/Create/Organisation'
+import VerifyServerAuth from './pages/Dashboard/VerifyServerAuth'
+import VerifyOrgaAuth from './pages/Dashboard/VerifyOrgaAuth'
 
 ReactDOM.render(
     <React.StrictMode>
@@ -101,7 +103,19 @@ ReactDOM.render(
 
                                                 <Route
                                                     path="/dashboard/:serverid"
-                                                    element={<Dashboard />}
+                                                    element={
+                                                        <VerifyServerAuth>
+                                                            <Dashboard />
+                                                        </VerifyServerAuth>
+                                                    }
+                                                ></Route>
+                                                <Route
+                                                    path="/dashboard/:serverid/:organame"
+                                                    element={
+                                                        <VerifyOrgaAuth>
+                                                            <Dashboard />
+                                                        </VerifyOrgaAuth>
+                                                    }
                                                 />
                                             </Route>
                                             <Route
