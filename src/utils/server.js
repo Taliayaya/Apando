@@ -53,7 +53,7 @@ class Server {
      */
     static async get(server_id, isSubServer) {
         const serverRef = isSubServer
-            ? doc(db, `orgaServers/${isSubServer}/${server_id}`)
+            ? doc(db, `orgaServers/${isSubServer}/servers/${server_id}`)
             : doc(db, 'servers', server_id)
 
         const docSnap = await getDoc(serverRef)
@@ -184,10 +184,18 @@ class Server {
         const querySnapshot = await getDocs(q)
         const queryUserList = []
         querySnapshot.forEach((doc) => {
-            const data = { id: doc.id, data: doc.data() }
+            const data = { id: doc.id, data: doc.data().data }
             queryUserList.push(data)
         })
         return queryUserList
+    }
+
+    static async update(id_server, newData, isSubServer) {
+        console.log(isSubServer)
+        const serverRef = isSubServer
+            ? doc(db, `orgaServers/${isSubServer}/servers/${id_server}`)
+            : doc(db, 'servers', id_server)
+        await updateDoc(serverRef, { ...newData })
     }
 }
 
