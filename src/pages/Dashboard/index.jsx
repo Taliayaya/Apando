@@ -26,6 +26,8 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { Helmet } from 'react-helmet-async'
 import Backgrounds from '../../components/Backgrounds'
 import { ThemeProvider } from 'styled-components'
+import Server from '../../utils/server'
+import User from '../../utils/user'
 
 // const BootstrapTooltip = styled(({ className, ...props }) => (
 //     <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -64,39 +66,21 @@ const Dashboard = () => {
     const { currentServer } = useChannel()
     const params = useParams()
     let server_id
-    const user = getAuth().currentUser
     const navigate = useNavigate()
     const [serverInfo, setServerInfo] = useState({})
     const [serverStats, setServerStats] = useState({})
     const { themeUsed } = useAuth()
 
-    /**
-     * Verify whether this user is allowed being here or not
-     * (if admins/owner and in the server)
-     * Otherwise, he's redirected.
-     */
-    const checkUser = async () => {
-        const isUserValid = await isUserInTargetServer(user.uid, server_id)
-
-        if (!isUserValid) {
-            navigate('/app')
-        }
-        const userRole = await getUserRole(user.uid, server_id)
-        if (!['Owner', 'Admin'].includes(userRole.role)) {
-            navigate('/app')
-        }
-    }
     if (Object.keys(currentServer).length !== 0) {
         server_id = currentServer?.id
     } else {
         server_id = params.serverid
     }
-    checkUser()
 
     // update info when the server_id change
     useEffect(() => {
         const getServer = async () => {
-            const serverInfo = await getServerInfo(server_id)
+            const serverInfo = await Server.get(server_id)
             setServerInfo(serverInfo)
         }
 
