@@ -26,7 +26,7 @@ function CategorieUser() {
                 if (queryUserList?.length > 0) {
                     // On les trie en fonction de leur différente de temps
                     const userListSorted = queryUserList.sort((a, b) => {
-                        return b.data.data.lastLogin - a.data.data.lastLogin
+                        return b.data.lastLogin - a.data.lastLogin
                     })
                     setUserList(userListSorted)
                 }
@@ -43,7 +43,7 @@ function CategorieUser() {
             if (queryUserList?.length > 0) {
                 // On les trie en fonction de leur différente de temps
                 const userListSorted = queryUserList.sort((a, b) => {
-                    return b.data.data.lastLogin - a.data.data.lastLogin
+                    return b.data.lastLogin - a.data.lastLogin
                 })
                 setUserList(userListSorted)
             }
@@ -60,10 +60,10 @@ function CategorieUser() {
                     // est ce que l'indice précédent était en ligne ?
                     // Oui -> on n'affiche pas la catégorie
                     let lastLogin =
-                        Timestamp.fromDate(new Date()) - data.data.lastLogin
+                        Timestamp.fromDate(new Date()) - data.lastLogin
                     return previousOnline && lastLogin <= 120 ? (
                         <UserStatus
-                            name={data.data.name}
+                            name={data.name}
                             datediff={lastLogin}
                             avatar={data.data.avatar}
                             logged="true"
@@ -76,9 +76,9 @@ function CategorieUser() {
                             {(previousOnline = true)}
                             <StyleCategorie>En ligne</StyleCategorie>
                             <UserStatus
-                                name={data.data.name}
+                                name={data.name}
                                 datediff={lastLogin}
-                                avatar={data.data.avatar}
+                                avatar={data.avatar}
                                 logged="true"
                                 uid={id}
                                 key={id}
@@ -88,9 +88,9 @@ function CategorieUser() {
                     previousOffline ? (
                         // Oui -> on affiche seulement le name
                         <UserStatus
-                            name={data.data.name}
+                            name={data.name}
                             datediff={lastLogin}
-                            avatar={data.data.avatar}
+                            avatar={data.avatar}
                             key={id}
                             uid={id}
                         />
@@ -100,9 +100,9 @@ function CategorieUser() {
                             {(previousOffline = true)}
                             <StyleCategorie>Hors-Ligne</StyleCategorie>
                             <UserStatus
-                                name={data.data.name}
+                                name={data.name}
                                 datediff={lastLogin}
-                                avatar={data.data.avatar}
+                                avatar={data.avatar}
                                 uid={id}
                                 key={id}
                             />
