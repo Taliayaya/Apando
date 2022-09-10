@@ -44,7 +44,7 @@ function ChannelList() {
     useEffect(() => {
         const setRole = async () => {
             if (currentServer) {
-                const role = await getUserRole(user.uid, currentServer?.id)
+                const role = await User.getRole(user.uid, currentServer?.id)
                 setUserRole(role?.role)
             }
         }
