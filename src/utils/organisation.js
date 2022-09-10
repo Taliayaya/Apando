@@ -39,7 +39,6 @@ class Organisation {
     static async add({ name, domain, jointype, collections, channels }, user) {
         const orgaCollec = collection(db, 'organisations')
         const userRef = doc(db, 'users', user.uid)
-        console.log('data', name, collections, domain, jointype, channels)
         // Add the orga data
         const orgaCollecRef = await addDoc(orgaCollec, {
             name,
@@ -73,9 +72,7 @@ class Organisation {
         })
 
         // Add the servers
-        console.log(collections)
         collections.forEach((collec) => {
-            console.log(collec)
             collec.servers.forEach((server) => {
                 server.orga = name
 

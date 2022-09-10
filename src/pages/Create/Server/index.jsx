@@ -90,7 +90,6 @@ export default function CreateServer() {
             channels: channel_arr,
         })
             .then((docRef) => {
-                console.log(docRef)
                 Server.join(user, { id: docRef, name: serverName }).then(() => {
                     navigate('/app')
                 })

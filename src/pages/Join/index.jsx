@@ -76,7 +76,6 @@ const Join = () => {
     }
     const getOrgaArray = () => {
         const orga = Organisation.search()
-        console.log(orga)
         setOrgaArray(orga)
     }
     const handleChangeIndex = (index) => {
@@ -184,7 +183,6 @@ const Join = () => {
                                 {success}
                             </Alert>
                         </Collapse>
-                        {console.log(feedback, !!feedback)}
                         <CustomizedSnackbars
                             open={!!feedback}
                             setOpen={setFeedback}

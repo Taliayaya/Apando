@@ -41,7 +41,6 @@ function AddCollectionDialog({
     }
 
     const handleSubmit = () => {
-        console.log('collectaken', collectionNameTaken)
         if (collectionNameTaken.includes(form.name)) {
             setFeedback({
                 message: 'Chaque collection doit avoir un nom unique !',
@@ -53,7 +52,6 @@ function AddCollectionDialog({
         const newArray = collectionNameTaken
         newCollections.push(form)
         newArray.push(form.name)
-        console.log("newarr'", newArray)
         setCollectionNameTaken(newArray)
         setCollections(newCollections)
         onClose()

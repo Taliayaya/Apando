@@ -56,7 +56,6 @@ const UploadIcon = ({
     const handleChange = (event) => {
         const fileSelected = []
         for (let i = 0; i < event.target.files.length; i++) {
-            console.log(event.target.files[i])
             const fileUploaded = event.target.files[i]
             if (fileUploaded.size > 10 ** 7) {
                 onFileSelectError({ error: fileUploaded.size })
@@ -99,7 +98,6 @@ const FilesTray = ({ selectedFiles, setSelectedFiles }) => {
      *      selectedFiles: the state of the files, a list containing the files
      *      setSelectedFiles: the state selector of the list of files
      * */
-    console.log(selectedFiles)
     return (
         <Stack direction="row" spacing={2}>
             {selectedFiles.map((file) => (

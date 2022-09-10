@@ -41,7 +41,6 @@ class Server {
         }).then(async (ref) => {
             await User.addRole(user.uid, 'Owner', ref.id)
             channels.forEach((channel) => Channels.add(channel, ref.id))
-            console.log(ref.id)
             return ref.id
         })
     }
@@ -107,11 +106,9 @@ class Server {
                 )
             }
             const alreadyInServer = await User.isInServer(user.uid, server.id)
-            console.log(alreadyInServer)
             if (alreadyInServer) {
                 rej(`Vous avez déjà rejoins ce serveur`)
             }
-            console.log(server)
             await updateDoc(userDocRef, {
                 servers: arrayUnion({
                     id: server.id,
@@ -191,7 +188,6 @@ class Server {
     }
 
     static async update(id_server, newData, isSubServer) {
-        console.log(isSubServer)
         const serverRef = isSubServer
             ? doc(db, `orgaServers/${isSubServer}/servers/${id_server}`)
             : doc(db, 'servers', id_server)

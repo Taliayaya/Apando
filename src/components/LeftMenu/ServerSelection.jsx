@@ -27,7 +27,6 @@ function ServerSelection({ serverList, handleServerSelect, orgaServers }) {
     const handleClose = () => {
         setOpen(false)
     }
-    console.log(orgaServers)
 
     return (
         <React.Fragment>

@@ -45,7 +45,6 @@ function AddServerDialog({
                     "Chaque serveur de l'organisation doit avoir un nom unique.",
                 severity: 'error',
             })
-            console.log(serverNameTaken)
             return
         }
         serverNameTaken.push(newServer.name)

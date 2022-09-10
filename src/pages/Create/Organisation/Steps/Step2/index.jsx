@@ -74,7 +74,6 @@ function Step2({ orgaInfo, setOrgaInfo }) {
             (value) => value.name === depth[1]
         )
 
-    console.log(subCollections)
     let display
     switch (depth.length) {
         case 0:
@@ -94,7 +93,6 @@ function Step2({ orgaInfo, setOrgaInfo }) {
 
     const handleBreadcrumbsClick = (index) => {
         const newDepth = depth.slice(0, index)
-        console.log(newDepth)
         setDepth(newDepth)
     }
 
@@ -146,7 +144,6 @@ function Step2({ orgaInfo, setOrgaInfo }) {
         const newServerNameTakenArray = serverNameTaken.filter(
             (element) => element !== name
         )
-        console.log(newServerNameTakenArray)
         setServerNameTaken(newServerNameTakenArray)
     }
 
@@ -178,7 +175,6 @@ function Step2({ orgaInfo, setOrgaInfo }) {
                 .subCollection.find((element) => element.name === depth[1])
                 .servers.push(serverInfo)
         }
-        console.log(collections)
         setCollections(collections)
     }
 
@@ -197,8 +193,6 @@ function Step2({ orgaInfo, setOrgaInfo }) {
 
         setCollections(collections)
     }
-
-    console.log('name taken', collectionNameTaken)
 
     return (
         <React.Fragment>
@@ -302,7 +296,7 @@ function Step2({ orgaInfo, setOrgaInfo }) {
                         domain: orgaInfo.domain,
                         jointype: orgaInfo.jointype,
                         channels: orgaInfo.channels,
-                        type: "orga"
+                        type: 'orga',
                     }}
                     serverNameTaken={serverNameTaken}
                     setServerNameTaken={setServerNameTaken}

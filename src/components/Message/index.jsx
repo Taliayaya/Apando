@@ -128,7 +128,6 @@ const FilesList = ({ filesPath }) => {
         }
         getFiles()
     }, [dirRef, listItems.length])
-    console.log(2)
     return (
         <Stack spacing={1}>
             {listItems?.map((file) => {
