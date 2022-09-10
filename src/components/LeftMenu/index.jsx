@@ -70,7 +70,7 @@ const LeftMenu = ({ serverList, setChannelList, orgaServers, setShowMenu }) => {
         setCurrentServer({ id, name, isSubServer })
         setUserList([])
         setShowMenu(null)
-        navigate(`${id}/${name}`)
+        navigate(`${isSubServer ?? 'default'}/${name}/${id}`)
     }
 
     return (
@@ -167,7 +167,14 @@ const LeftMenu = ({ serverList, setChannelList, orgaServers, setShowMenu }) => {
             of his server. */}
             {hasPower && (
                 <MenuItem
-                    onClick={() => navigate(`/dashboard/${currentServer?.id}`)}
+                    onClick={() => {
+                        navigate(
+                            `/dashboard/${currentServer?.id}/${
+                                currentServer?.isSubServer ?? ''
+                            }`
+                        )
+                        setCurrentChannel({})
+                    }}
                 >
                     <ListItemIcon>
                         <Dashboard />
