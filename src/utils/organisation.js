@@ -170,6 +170,21 @@ class Organisation {
             )
         })
     }
+
+    static async isNameAvailable(name) {
+        const ref = collection(db, 'orgaArray')
+        const q = query(ref, where('name', '==', name))
+        return await getDocs(q).then((querySnapshot) => {
+            let answer = true
+            querySnapshot.forEach((doc) => {
+                if (doc.data()?.name === name) {
+                    answer = false
+                    return false
+                }
+            })
+            return answer
+        })
+    }
 }
 
 export default Organisation

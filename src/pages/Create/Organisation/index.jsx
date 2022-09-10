@@ -14,6 +14,8 @@ import { useAuth } from '../../../utils/hooks'
 import { Center, Connector, Wrapper } from './StyledOrga'
 import StepIcon from './StepIcon'
 import Steps from './Steps'
+import Organisation from '../../../utils/organisation'
+import CustomizedSnackbars from '../../../components/CustomizedSnackBar'
 
 const steps = [
     "Paramètres de l'Organisation",
@@ -33,10 +35,21 @@ export default () => {
     const { themeUsed } = useAuth()
 
     const [orgaInfo, setOrgaInfo] = React.useState(info)
+    const [feedback, setFeedback] = React.useState(null)
 
     const [activeStep, setActiveStep] = React.useState(0)
 
-    const handleNext = () => {
+    const handleNext = async () => {
+        if (activeStep === 0) {
+            const canGoNext = await Organisation.isNameAvailable(orgaInfo?.name)
+            if (!canGoNext) {
+                setFeedback({
+                    message: "Ce nom d'organisation est déjà utilisé.",
+                    severity: 'error',
+                })
+                return
+            }
+        }
         setActiveStep((prevActiveStep) => prevActiveStep + 1)
     }
 
@@ -137,6 +150,11 @@ export default () => {
                                 </Box>
                             </React.Fragment>
                         </Box>
+                        <CustomizedSnackbars
+                            open={!!feedback}
+                            setOpen={setFeedback}
+                            {...feedback}
+                        />
                     </Wrapper>
                 </Center>
             </Backgrounds>
