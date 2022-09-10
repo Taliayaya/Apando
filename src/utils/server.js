@@ -7,6 +7,7 @@ import {
     getDocs,
     arrayUnion,
     addDoc,
+    getDoc,
 } from 'firebase/firestore'
 import { getDatabase, ref, increment, update } from 'firebase/database'
 
@@ -43,6 +44,22 @@ class Server {
             console.log(ref.id)
             return ref.id
         })
+    }
+    /**
+     * Retrieve the current server data,
+     * such as name, id, domain, code, jointype
+     * @param {string} id_server target server id
+     * @returns the target server data
+     */
+    static async get(server_id, isSubServer) {
+        const serverRef = isSubServer
+            ? doc(db, `orgaServers/${isSubServer}/${server_id}`)
+            : doc(db, 'servers', server_id)
+
+        const docSnap = await getDoc(serverRef)
+        const data = docSnap.data()
+        data['id'] = docSnap.id
+        return data
     }
 
     /**
