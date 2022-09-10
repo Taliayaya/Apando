@@ -77,6 +77,7 @@ const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
                 user.uid,
                 id_channel,
                 currentServer.id,
+                currentServer?.isSubServer ?? 'default',
                 lastMessageData.lastMessageImg,
                 lastMessageData.lastMessage,
                 name,
