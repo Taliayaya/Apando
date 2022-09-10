@@ -70,7 +70,7 @@ ReactDOM.render(
                                                     element={<App />}
                                                 >
                                                     <Route
-                                                        path=":server_name/:server_id"
+                                                        path=":organame/:server_name/:server_id"
                                                         element={
                                                             <IsUserInServer />
                                                         }
