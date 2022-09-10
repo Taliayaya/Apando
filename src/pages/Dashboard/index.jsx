@@ -65,27 +65,29 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
 const Dashboard = () => {
     const { currentServer } = useChannel()
     const params = useParams()
-    let server_id
     const navigate = useNavigate()
     const [serverInfo, setServerInfo] = useState({})
     const [serverStats, setServerStats] = useState({})
     const { themeUsed } = useAuth()
 
+    let server_id, organame
     if (Object.keys(currentServer).length !== 0) {
         server_id = currentServer?.id
+        organame = currentServer?.isSubServer
     } else {
         server_id = params.serverid
+        organame = params.organame
     }
 
     // update info when the server_id change
     useEffect(() => {
         const getServer = async () => {
-            const serverInfo = await Server.get(server_id)
+            const serverInfo = await Server.get(server_id, organame)
             setServerInfo(serverInfo)
         }
 
         getServer()
-    }, [server_id])
+    }, [server_id, organame])
 
     // update server states in realtime
     useEffect(() => {
@@ -118,7 +120,9 @@ const Dashboard = () => {
                         </DashboardTitle>
                         <ServerStatsContainer>
                             <MemberCase nb={serverStats?.memberCount} />
-                            <InviteCase nb={serverStats?.currentInviteCount} />
+                            <InviteCase
+                                nb={serverStats?.currentInviteCount ?? 0}
+                            />
                             <MessageCase nb={serverStats?.messageCount} />
                         </ServerStatsContainer>
                         <Row2>
@@ -128,12 +132,14 @@ const Dashboard = () => {
                                 autoJoin={serverInfo?.jointype ?? 'auto'}
                                 domain={serverInfo?.domain ?? ''}
                                 server_id={server_id}
+                                server={serverInfo}
                             />
                             <MemberList
                                 serverName={serverInfo?.name}
                                 server_id={server_id}
                                 server={serverInfo}
                                 joinType={serverInfo?.jointype}
+                                orga={serverInfo?.orga}
                             />
                         </Row2>
                     </DashboardMain>

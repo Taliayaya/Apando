@@ -34,11 +34,11 @@ const IsUserInServer = () => {
 
                 // Retrieve server data and update states
                 const serverData = await Server.get(server_id, organame)
-                console.log(serverData)
                 if (serverData) {
                     setCurrentServer({
                         id: serverData.id,
                         name: serverData.name,
+                        isSubServer: organame,
                     })
                     return
                 }
@@ -54,8 +54,10 @@ const IsUserInServer = () => {
         if (!user.uid) return navigate('/login')
         if (currentServer?.id || params.server_id) {
             checkUser(
-                currentServer?.id ?? params.server_id,
-                currentServer?.isSubServer ?? params.organame
+                params.server_id ?? currentServer?.id,
+                params.organame !== 'default'
+                    ? params.organame
+                    : null ?? currentServer?.isSubServer
             )
         }
         // Else this user isn't in a server, so no verification needed
