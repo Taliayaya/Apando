@@ -157,7 +157,7 @@ const LeftMenu = ({ serverList, setChannelList, orgaServers, setShowMenu }) => {
                 <Typography>Utiliser un code</Typography>
             </MenuItem>
             {/* The menu item to redirect towards /create */}
-            <MenuItem onClick={() => navigate('/create')}>
+            <MenuItem onClick={() => navigate('/create/server')}>
                 <ListItemIcon>
                     <Create />
                 </ListItemIcon>

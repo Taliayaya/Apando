@@ -169,6 +169,14 @@ export default function CreateServer() {
                                 Rejoins un serveur !
                             </StyleLink>
                         </StyledField>
+                        <StyledField>
+                            Beaucoup de potentiels membres ? Regroupe-les dans
+                            de multiples serveurs et gère les facilement en{' '}
+                            <StyleLink to="/create/organisation">
+                                créant une Organisation
+                            </StyleLink>
+                            `
+                        </StyledField>
                     </StyledForm>
                 </StyledLoginWrapper>
             </Backgrounds>
