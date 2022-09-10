@@ -152,6 +152,17 @@ class User {
         }
         return false
     }
+
+    static async banFrom(server_id, uid, isSubServer) {
+        const userRef = doc(db, 'users', uid)
+
+        isSubServer
+            ? await updateDoc(userRef, {
+                  orgaServersId: arrayRemove(server_id),
+              })
+            : await updateDoc(userRef, { serversid: arrayRemove(server_id) })
+        await this.addRole(uid, 'Banned', server_id)
+    }
 }
 
 export default User
