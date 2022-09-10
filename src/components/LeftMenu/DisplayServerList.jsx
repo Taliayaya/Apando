@@ -2,7 +2,7 @@ import { List, ListItem, ListItemText } from '@mui/material'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-function DisplayServerList({ serverList, handleSelect, isSubServer = false }) {
+function DisplayServerList({ serverList, handleSelect, isSubServer = null }) {
     return (
         <List sx={{ pt: 0 }}>
             {serverList.map(({ id, name }) => (
