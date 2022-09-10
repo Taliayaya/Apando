@@ -19,14 +19,7 @@ function VerifyServerAuth({ children }) {
     const checkUser = async () => {
         const isUserValid = await User.isInServer(user.uid, server_id)
         const userRole = await User.getRole(user.uid, server_id)
-        console.log(
-            isUserValid,
-            userRole,
-            !['Owner', 'Admin'].includes(userRole?.role)
-        )
-
         if (!isUserValid || !['Owner', 'Admin'].includes(userRole?.role)) {
-            console.log('redirected')
             navigate('/app')
         }
     }
