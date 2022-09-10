@@ -52,7 +52,7 @@ function ServerSelection({ serverList, handleServerSelect, orgaServers }) {
                                 <DisplayServerList
                                     serverList={servers}
                                     handleSelect={handleSelect}
-                                    isSubServer={true}
+                                    isSubServer={name}
                                 />
                             </AccordionDetails>
                         </Accordion>
