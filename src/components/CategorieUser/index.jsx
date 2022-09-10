@@ -65,7 +65,7 @@ function CategorieUser() {
                         <UserStatus
                             name={data.name}
                             datediff={lastLogin}
-                            avatar={data.data.avatar}
+                            avatar={data.avatar}
                             logged="true"
                             key={id}
                             uid={id}
