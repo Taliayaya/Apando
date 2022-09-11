@@ -43,7 +43,7 @@ function ServerSelection({ serverList, handleServerSelect, orgaServers }) {
                     </Typography>
                     <Divider />
                     {orgaServers.map(({ name, servers }) => (
-                        <Accordion sx={{ marginTop: 2 }}>
+                        <Accordion sx={{ marginTop: 2 }} key={name}>
                             <AccordionSummary expandIcon={<ExpandMore />}>
                                 {name}
                             </AccordionSummary>
