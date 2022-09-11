@@ -134,17 +134,20 @@ class User {
      */
     static async isInOrgaServer(uid, server_id, orga) {
         const userRef = doc(db, 'users', uid)
-
+        console.log(uid, server_id, orga)
         const docSnap = await getDoc(userRef)
         if (docSnap.exists()) {
-            const orgaArray = docSnap.data().orgaServers
-            const orgaServers = orgaArray?.find(
-                (data) => data.name === orga
-            ).servers
+            const orgaArray = docSnap.data()?.orgaServers
+            const orgaServers = orgaArray.find(
+                (data) => data?.name === orga
+            )?.servers
+            if (!orgaArray || orgaArray.length === 0) return false
             if (orgaServers) {
                 const server = orgaServers?.find(
                     (data) => data.id === server_id
                 )
+                console.log(server, !!server)
+                if (!server) return false
 
                 return Object.keys(server)?.length !== 0
             }
