@@ -16,7 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/react": ">=16",
     "firebase": "^9.8.4",
-    "firebase-admin": "^10.0.2",
+    "firebase-admin": "^11.0.1",
     "mui": "^0.0.1",
     "prettier": "^2.5.1",
     "prop-types": "^15.8.1",
