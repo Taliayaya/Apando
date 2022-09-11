@@ -2,12 +2,14 @@ import { Box, Button, CircularProgress } from '@mui/material'
 import { green } from '@mui/material/colors'
 import { getAuth } from 'firebase/auth'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import CustomizedSnackbars from '../../../../../components/CustomizedSnackBar'
 import Organisation from '../../../../../utils/organisation'
 
 function LastStep({ orgaInfo }) {
     const [feedback, setFeedback] = React.useState(null)
     const [loading, setLoading] = React.useState(false)
+    const navigate = useNavigate()
     const user = getAuth().currentUser
 
     const buttonSx = {
@@ -19,10 +21,10 @@ function LastStep({ orgaInfo }) {
         }),
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (loading) return
         setLoading(true)
-        Organisation.add(orgaInfo, user)
+        await Organisation.add(orgaInfo, user)
             .then(() => {
                 setFeedback({
                     message: `L'organisation ${orgaInfo.name} a été créée avec succès !`,
@@ -36,20 +38,21 @@ function LastStep({ orgaInfo }) {
                 })
             })
         setLoading(false)
+        setTimeout(() => navigate('/app'), 1000)
     }
     return (
         <React.Fragment>
             <Box sx={{ m: 1, position: 'relative' }}>
-                <Button
-                    variant="contained"
-                    sx={buttonSx}
-                    disabled={loading}
-                    onClick={feedback?.finished ? '' : handleSubmit}
-                >
-                    {feedback?.finished
-                        ? 'Succès !'
-                        : `Finaliser ${orgaInfo.name}`}
-                </Button>
+                {feedback?.severity !== 'success' && (
+                    <Button
+                        variant="contained"
+                        sx={buttonSx}
+                        disabled={loading}
+                        onClick={handleSubmit}
+                    >
+                        Finaliser {orgaInfo.name}
+                    </Button>
+                )}
                 {loading && (
                     <CircularProgress
                         size={24}
