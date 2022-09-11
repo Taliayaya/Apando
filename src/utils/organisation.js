@@ -71,20 +71,54 @@ class Organisation {
             organisation_id: arrayUnion(orgaCollecRef.id),
         })
 
+        const promises = []
         // Add the servers
         collections.forEach((collec) => {
-            collec.servers.forEach((server) => {
+            collec.servers.forEach(async (server) => {
                 server.orga = name
-
-                Server.addSub(user, server)
+                // We add every promises in an array to execute later
+                promises.push(async () => {
+                    return Server.addSub(user, server).then(async (id) => {
+                        console.log('joining', server.name)
+                        await Organisation.joinServer(
+                            user,
+                            name,
+                            {
+                                ...server,
+                                id: id,
+                            },
+                            true
+                        )
+                    })
+                })
             })
             collec.subCollection.forEach((subCollec) => {
-                subCollec.servers.forEach((server) => {
+                subCollec.servers.forEach(async (server) => {
                     server.orga = name
-                    Server.addSub(user, server)
+                    // We add every promises in an array to execute later
+                    promises.push(async () => {
+                        return Server.addSub(user, server).then(async (id) => {
+                            await Organisation.joinServer(
+                                user,
+                                name,
+                                {
+                                    ...server,
+                                    id: id,
+                                },
+                                true
+                            )
+                        })
+                    })
                 })
             })
         })
+
+        console.log(promises)
+        // We execute all the promises in SERIE
+        for (const promise of promises) {
+            console.log(promise)
+            await promise()
+        }
     }
 
     static search() {
@@ -123,34 +157,39 @@ class Organisation {
         return server
     }
 
-    static async joinServer(user, orga, server) {
+    static async joinServer(user, orga, server, skipVerif = false) {
         const userRef = doc(db, 'users', user.uid)
         const rltdb = getDatabase()
         const serversStatsRef = ref(rltdb, `serverstats/${server.id}`)
 
         return new Promise(async (res, rej) => {
-            if (!Server.isEmailDomainValidated(user, server)) {
+            if (!skipVerif && !Server.isEmailDomainValidated(user, server)) {
                 rej(
                     `Le serveur que vous essayez de rejoindre n'accepte pas le domaine de votre adresse mail. 
                 Essayez avec une adresse mail autorisée par le serveur.`
                 )
             }
-            if (await User.isInOrgaServer(user.uid, server.id, orga)) {
+            if (
+                !skipVerif &&
+                (await User.isInOrgaServer(user.uid, server.id, orga))
+            ) {
                 rej(`Vous avez déjà rejoins ce serveur.`)
             }
             // Check either if we have to create the whole data,
             // add the server to the organisation
             // or create the orga and add the server
-            let currentServerList = await User.get(user.uid)?.orgaServers
+            let currentServerList = (await User.get(user.uid))?.orgaServers
             const serverData = { id: server.id, name: server.name, orga: orga }
-            if (!currentServerList) {
+            if (!currentServerList || currentServerList?.length === 0) {
                 currentServerList = [{ name: orga, servers: [serverData] }]
             } else {
                 const currentOrga = currentServerList.find(
                     (organisation) => organisation.name === orga
                 )
-                if (currentOrga) {
-                    currentOrga.push(serverData)
+                if (currentOrga && Object.keys(currentOrga).length > 0) {
+                    currentServerList
+                        .find((organisation) => organisation.name === orga)
+                        .servers.push(serverData)
                 } else {
                     currentServerList.push({
                         name: orga,
@@ -164,7 +203,8 @@ class Organisation {
             })
             const updates = {}
             updates[`memberCount`] = increment(1)
-            update(serversStatsRef, updates)
+            await update(serversStatsRef, updates)
+
             res(
                 "Vous avez rejoins ce serveur avec succès !\nVous allez maintenant être redirigé vers l'application"
             )
