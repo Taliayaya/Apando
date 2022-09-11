@@ -11,6 +11,7 @@ const StyledSection = styled.section`
     text-align: justify;
     word-spacing: 4px;
     line-height: 2em;
+    color: #000;
 `
 const HomePage = styled.div`
     width: 70%;

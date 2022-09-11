@@ -1,8 +1,9 @@
 import { getAuth } from 'firebase/auth'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getServerInfo, isUserInTargetServer } from '../../utils/function'
 import { useChannel } from '../../utils/hooks'
+import Server from '../../utils/server'
+import User from '../../utils/user'
 
 const IsUserInServer = () => {
     const user = getAuth().currentUser
@@ -16,18 +17,28 @@ const IsUserInServer = () => {
      * Otherwise it updates states according to this server
      */
     useEffect(() => {
-        const checkUser = async (server_id) => {
-            const isUserValid = await isUserInTargetServer(user.uid, server_id)
+        const checkUser = async (server_id, organame) => {
+            let isUserValid
+            if (organame) {
+                isUserValid = await User.isInOrgaServer(
+                    user.uid,
+                    server_id,
+                    organame
+                )
+            } else {
+                isUserValid = await User.isInServer(user.uid, server_id)
+            }
             if (isUserValid) {
                 // The currentServer is as the URL, so no changes needed
                 if (currentServer?.id === server_id) return
 
                 // Retrieve server data and update states
-                const serverData = await getServerInfo(server_id)
+                const serverData = await Server.get(server_id, organame)
                 if (serverData) {
                     setCurrentServer({
                         id: serverData.id,
                         name: serverData.name,
+                        isSubServer: organame,
                     })
                     return
                 }
@@ -42,7 +53,12 @@ const IsUserInServer = () => {
 
         if (!user.uid) return navigate('/login')
         if (currentServer?.id || params.server_id) {
-            checkUser(currentServer?.id ?? params.server_id)
+            checkUser(
+                params.server_id ?? currentServer?.id,
+                params.organame !== 'default'
+                    ? params.organame
+                    : null ?? currentServer?.isSubServer
+            )
         }
         // Else this user isn't in a server, so no verification needed
     }, [

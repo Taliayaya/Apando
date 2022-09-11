@@ -48,6 +48,7 @@ function sendNotificationWeb(
     uid,
     id_channel,
     id_server,
+    organame,
     img,
     message,
     channelName,
@@ -70,8 +71,8 @@ function sendNotificationWeb(
                 // NB : you might have to change the port from 3000 to ...
                 // However, 3000 is the default port in React
                 process.env.NODE_ENV === 'production'
-                    ? `https://apando.fr/app/${serverName}/${id_server}/${id_channel}`
-                    : `http://localhost:3000/app/${serverName}/${id_server}/${id_channel}`
+                    ? `https://apando.fr/app/${organame}/${serverName}/${id_server}/${id_channel}`
+                    : `http://localhost:3000/app/${organame}/${serverName}/${id_server}/${id_channel}`
             )
         }
         // If the user is already on this window, remove the notification

@@ -13,7 +13,7 @@ const HomePageBanner = styled.div`
     height: 100vh;
     width: 100vw;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 `
 
 const HomePagePalmTree = styled.div`

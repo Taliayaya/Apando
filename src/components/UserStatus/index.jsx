@@ -5,14 +5,10 @@ import { styled } from '@mui/material'
 import Badge from '@mui/material/Badge'
 import { theme } from '../../utils/style/colors'
 import { ListItemIcon, Menu, MenuItem, Typography } from '@mui/material'
-import {
-    banUserFromServer,
-    removeUserRole,
-    writeUserRole,
-} from '../../utils/function'
 import { useAuth, useChannel } from '../../utils/hooks'
 import { Add, Block, Remove, VolumeOff } from '@mui/icons-material'
 import PropTypes from 'prop-types'
+import User from '../../utils/user'
 
 const StyledBadge = styled(Badge)((props) => ({
     '& .MuiBadge-badge': {
@@ -108,7 +104,7 @@ function UserStatus({ avatar, datediff, name, logged, uid }) {
                     <MenuItem
                         // Set the clicked user has admin
                         onClick={() => {
-                            writeUserRole(uid, 'Admin', currentServer?.id)
+                            User.addRole(uid, 'Admin', currentServer?.id)
                             handleClose()
                         }}
                     >
@@ -123,7 +119,7 @@ function UserStatus({ avatar, datediff, name, logged, uid }) {
                     <MenuItem
                         // set the clicked user as a representative
                         onClick={() => {
-                            writeUserRole(uid, 'Délégué', currentServer?.id)
+                            User.addRole(uid, 'Délégué', currentServer?.id)
                             handleClose()
                         }}
                     >
@@ -137,7 +133,7 @@ function UserStatus({ avatar, datediff, name, logged, uid }) {
                     <MenuItem
                         // Remove the role for the clicked user
                         onClick={() => {
-                            removeUserRole(uid, currentServer?.id)
+                            User.removeRole(uid, currentServer?.id)
                             handleClose()
                         }}
                         style={{ color: 'red' }}
@@ -153,7 +149,7 @@ function UserStatus({ avatar, datediff, name, logged, uid }) {
                     <MenuItem
                         // Set the clicked user as mute, making him unable to send messages
                         onClick={() => {
-                            writeUserRole(uid, 'Muted', currentServer?.id)
+                            User.addRole(uid, 'Muted', currentServer?.id)
                             handleClose()
                         }}
                         style={{ color: 'red', backgroundColor: '#ffe0e0' }}
@@ -169,7 +165,11 @@ function UserStatus({ avatar, datediff, name, logged, uid }) {
                         // Ban the user from the server, this is pretty violent, so
                         // I recommend using mute first !
                         onClick={() => {
-                            banUserFromServer(currentServer?.id, uid)
+                            User.banFrom(
+                                currentServer?.id,
+                                uid,
+                                currentServer?.isSubServer
+                            )
                             handleClose()
                         }}
                         style={{ color: 'red', backgroundColor: '#ffe0e0' }}

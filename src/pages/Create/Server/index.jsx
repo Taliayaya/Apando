@@ -1,6 +1,6 @@
 import { addDoc, collection, getDocs, where, query } from 'firebase/firestore'
 import React, { useState } from 'react'
-import { db } from '../../utils/firebase/config'
+import { db } from '../../../utils/firebase/config'
 import {
     StyledLoginWrapper,
     StyledForm,
@@ -11,23 +11,24 @@ import {
     StyledSubmit,
     StyleError,
     StyleLink,
-} from '../Login/LoginSignStyle'
+} from '../../Login/LoginSignStyle'
 import { StyledText, StyledTextarea } from './CreateServerStyle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@mui/system'
-import { theme } from '../../utils/style/colors'
+import { theme } from '../../../utils/style/colors'
 import { useNavigate } from 'react-router-dom'
 import {
     createChannelListFromString,
     createServerStatsField,
     joinServer,
     writeUserRole,
-} from '../../utils/function'
+} from '../../../utils/function'
 import { getAuth } from 'firebase/auth'
-import Backgrounds from '../../components/Backgrounds'
-import Header from '../../components/Header'
+import Backgrounds from '../../../components/Backgrounds'
+import Header from '../../../components/Header'
 import { ThemeProvider } from 'styled-components'
-import { useAuth } from '../../utils/hooks'
+import { useAuth } from '../../../utils/hooks'
+import Server from '../../../utils/server'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -78,42 +79,26 @@ export default function CreateServer() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (serverName.trim().length > 0) {
-            const serverRef = collection(db, 'servers')
-            const q = query(serverRef, where('name', '==', serverName))
-            const testIfNotExist = await getDocs(q)
-            testIfNotExist.forEach((doc) => {
-                if (doc.exists) {
-                    setError('Un serveur à ce nom existe déjà')
-                }
-            })
-            try {
-                const docRef = await addDoc(serverRef, {
-                    name: serverName,
-                    code: code,
-                    domain: '',
-                    jointype: 'auto',
-                })
-                await writeUserRole(user.uid, 'Owner', docRef.id)
-                createChannelListFromString(channels, docRef.id)
-                await createServerStatsField(docRef.id)
-                await joinServer(user, {
-                    name: serverName,
-                    code: code,
-                    domain: '',
-                    jointype: 'auto',
-                    id: docRef.id,
-                })
-                navigate('/app')
-            } catch (error) {
-                setError(
-                    "Hmmm, il semblerait qu'il y a eu une erreur lors de la création du serveur"
-                )
-            }
-        } else {
+        if (serverName.trim().length === 0) {
             setError('Oups, le nom de serveur est invalide')
+            return
         }
+        const channel_arr = channels.split('\n')
+        Server.add(user, {
+            name: serverName,
+            code,
+            channels: channel_arr,
+        })
+            .then((docRef) => {
+                Server.join(user, { id: docRef, name: serverName }).then(() => {
+                    navigate('/app')
+                })
+            })
+            .catch((err) => {
+                setError(err.message)
+            })
     }
+
     return (
         <ThemeProvider theme={themeUsed}>
             <Backgrounds sakura={true}>
@@ -183,6 +168,14 @@ export default function CreateServer() {
                             <StyleLink to="/join">
                                 Rejoins un serveur !
                             </StyleLink>
+                        </StyledField>
+                        <StyledField>
+                            Beaucoup de potentiels membres ? Regroupe-les dans
+                            de multiples serveurs et gère les facilement en{' '}
+                            <StyleLink to="/create/organisation">
+                                créant une Organisation
+                            </StyleLink>
+                            `
                         </StyledField>
                     </StyledForm>
                 </StyledLoginWrapper>

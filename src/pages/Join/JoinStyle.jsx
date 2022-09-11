@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Icon } from '../Login/LoginSignStyle'
 import { Link } from 'react-router-dom'
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark'
 
 const StyledText = styled.p`
     color: #999;
@@ -28,5 +29,8 @@ const StyledTitleLink = styled(Link)`
     color: #fff;
     z-index: 0;
 `
+const CollectionIcon = styled(CollectionsBookmarkIcon)`
+    color: #000;
+`
 
-export { WaveJoin, StyledText, StyledTitleLink }
+export { WaveJoin, StyledText, StyledTitleLink, CollectionIcon }

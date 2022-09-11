@@ -24,6 +24,7 @@ import { useEffect, useState } from 'react'
 import { Close } from '@mui/icons-material'
 import { getServerInfo, setServerChanges } from '../../utils/function'
 import PropTypes from 'prop-types'
+import Server from '../../utils/server'
 
 /**
  * Widget that allows owners/admins to change their server params.
@@ -31,7 +32,14 @@ import PropTypes from 'prop-types'
  * - Code to enter the server
  * - Join type (auto or manual)
  */
-const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
+const ServerParams = ({
+    domain,
+    serverName,
+    code,
+    autoJoin,
+    server_id,
+    server,
+}) => {
     const [isEditing, setIsEditing] = useState(false)
     const [joinType, setJoinType] = useState('')
     const [domainValue, setDomainValue] = useState('')
@@ -65,21 +73,22 @@ const ServerParams = ({ domain, serverName, code, autoJoin, server_id }) => {
     const validChanges = async () => {
         setSuccess(null)
         setError(null)
-        if (codeValue.trim().length === 0) {
-            setError('Le code du serveur ne doit pas être vide')
-            return
-        }
         try {
             setQuery('progress')
-            await setServerChanges(server_id, domainValue, codeValue, joinType)
+            await Server.update(
+                server_id,
+                { domain: domainValue, code: codeValue, jointype: joinType },
+                server?.orga
+            )
             setQuery('idle')
             setSuccess('Modifications enregistrées')
             editParams()
-            const servInfo = await getServerInfo(server_id)
+            const servInfo = await Server.get(server_id, server?.orga)
             setServerInfo(servInfo)
         } catch (e) {
             console.error(e)
             setError(`Il y a eu une erreur, veuillez réessayer : ${e}`)
+            setQuery('idle')
         }
     }
 

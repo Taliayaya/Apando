@@ -36,6 +36,9 @@ import {
 } from './DashboardStyle'
 import RemoveIcon from '@mui/icons-material/Remove'
 import PropTypes from 'prop-types'
+import User from '../../utils/user'
+import Server from '../../utils/server'
+import Organisation from '../../utils/organisation'
 
 /**
  * Widget that allows admins and owners to manage their members.
@@ -47,17 +50,19 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
     const [requestArray, setRequestArray] = useState({})
 
     const serverInfo = { ...server, id: server_id }
-
     /**
      * Get the member list of this server
      */
     useEffect(() => {
         const getUsersArray = async () => {
-            const userArray = await getServerUserList(server_id)
+            const userArray = await Server.getUserList({
+                id: server_id,
+                isSubServer: server?.orga,
+            })
             setUsersArray(userArray)
         }
         getUsersArray()
-    }, [server_id, requestArray])
+    }, [server_id, requestArray, server?.orga])
 
     /**
      * Show in realtime users asking to show this server (nothing is displayed if
@@ -86,10 +91,15 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
      * Accept all requests at once (if join type is manual)
      */
     const acceptAllRequests = () => {
-        requestArray.forEach((user) => {
-            joinServer(user, serverInfo).then(() => {
-                removeJoinRequest(user.uid, server_id)
-            })
+        requestArray.forEach(async (user) => {
+            serverInfo.orga
+                ? await Organisation.joinServer(
+                      user,
+                      serverInfo.orga,
+                      serverInfo
+                  )
+                : await Server.join(user, serverInfo)
+            removeJoinRequest(user.uid, server_id)
         })
     }
 
@@ -148,13 +158,7 @@ const MemberList = ({ serverName, server_id, server, joinType }) => {
 MemberList.propTypes = {
     serverName: PropTypes.string,
     server_id: PropTypes.string,
-    server: PropTypes.exact({
-        name: PropTypes.string,
-        jointype: PropTypes.string,
-        code: PropTypes.string,
-        domain: PropTypes.string,
-        id: PropTypes.string,
-    }),
+    server: PropTypes.object,
     joinType: PropTypes.string,
 }
 
@@ -164,7 +168,6 @@ MemberList.propTypes = {
  */
 const UserCase = ({ avatar, name, email, invite, server, id }) => {
     const [contextMenu, setContextMenu] = useState(null)
-
     // Right click menu
     const handleContextMenu = (event) => {
         event.preventDefault()
@@ -194,10 +197,11 @@ const UserCase = ({ avatar, name, email, invite, server, id }) => {
     const handleBan = () => {
         banUserFromServer(server.id, user.uid)
     }
-    const acceptJoinRequest = () => {
-        joinServer(user, server).then(() => {
-            removeJoinRequest(user.uid, server.id)
-        })
+    const acceptJoinRequest = async () => {
+        server?.orga
+            ? await Organisation.joinServer(user, server?.orga, server)
+            : await Server.join(user, server)
+        removeJoinRequest(user.uid, server.id)
     }
 
     const refuseJoinRequest = () => {
@@ -313,13 +317,7 @@ UserCase.propTypes = {
     name: PropTypes.string,
     email: PropTypes.string,
     invite: PropTypes.string,
-    server: PropTypes.exact({
-        name: PropTypes.string,
-        jointype: PropTypes.string,
-        code: PropTypes.string,
-        domain: PropTypes.string,
-        id: PropTypes.string,
-    }),
+    server: PropTypes.objectOf(PropTypes.string),
     id: PropTypes.string,
 }
 

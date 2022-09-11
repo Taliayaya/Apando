@@ -9,10 +9,8 @@ const StyledFooterLink = styled(Link)`
     &:active,
     &:focus,
     &:hover {
-         {
-            color: #3366cc;
-            text-decoration: none;
-        }
+        color: #3366cc;
+        text-decoration: none;
     }
 `
 
@@ -25,7 +23,7 @@ export default function Footer() {
                 <address>
                     <a
                         className="footer__btn"
-                        href="mailto:pando.contact.mayeux@gmail.com"
+                        href="mailto:apando.contact@gmail.com"
                     >
                         Nous contacter
                     </a>

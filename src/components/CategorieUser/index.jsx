@@ -11,6 +11,7 @@ import {
     where,
 } from 'firebase/firestore'
 import { db } from '../../utils/firebase/config'
+import Server from '../../utils/server'
 
 function CategorieUser() {
     const { currentServer, userList, setUserList } = useChannel()
@@ -20,21 +21,12 @@ function CategorieUser() {
         const usersList = async () => {
             if (userList.length === 0 && currentServer?.id) {
                 // On récupère ici la liste des utilisateurs présents dans le server
-                const q = query(
-                    collection(db, 'users'),
-                    where('serversid', 'array-contains', currentServer?.id)
-                )
-                const querySnapshot = await getDocs(q)
-                const queryUserList = []
-                querySnapshot.forEach((doc) => {
-                    const data = { id: doc.id, data: doc.data() }
-                    queryUserList.push(data)
-                })
+                const queryUserList = await Server.getUserList(currentServer)
 
                 if (queryUserList?.length > 0) {
                     // On les trie en fonction de leur différente de temps
                     const userListSorted = queryUserList.sort((a, b) => {
-                        return b.data.data.lastLogin - a.data.data.lastLogin
+                        return b.data.lastLogin - a.data.lastLogin
                     })
                     setUserList(userListSorted)
                 }
@@ -47,21 +39,11 @@ function CategorieUser() {
     useEffect(() => {
         const usersListInterval = setInterval(async () => {
             // On récupère ici la liste des utilisateurs présents dans le server
-            const q = query(
-                collection(db, 'users'),
-                where('serversid', 'array-contains', currentServer?.id)
-            )
-
-            const querySnapshot = await getDocs(q)
-            const queryUserList = []
-            querySnapshot.forEach((doc) => {
-                const data = { id: doc.id, data: doc.data() }
-                queryUserList.push(data)
-            })
+            const queryUserList = await Server.getUserList(currentServer)
             if (queryUserList?.length > 0) {
                 // On les trie en fonction de leur différente de temps
                 const userListSorted = queryUserList.sort((a, b) => {
-                    return b.data.data.lastLogin - a.data.data.lastLogin
+                    return b.data.lastLogin - a.data.lastLogin
                 })
                 setUserList(userListSorted)
             }
@@ -78,12 +60,12 @@ function CategorieUser() {
                     // est ce que l'indice précédent était en ligne ?
                     // Oui -> on n'affiche pas la catégorie
                     let lastLogin =
-                        Timestamp.fromDate(new Date()) - data.data.lastLogin
+                        Timestamp.fromDate(new Date()) - data.lastLogin
                     return previousOnline && lastLogin <= 120 ? (
                         <UserStatus
-                            name={data.data.name}
+                            name={data.name}
                             datediff={lastLogin}
-                            avatar={data.data.avatar}
+                            avatar={data.avatar}
                             logged="true"
                             key={id}
                             uid={id}
@@ -94,9 +76,9 @@ function CategorieUser() {
                             {(previousOnline = true)}
                             <StyleCategorie>En ligne</StyleCategorie>
                             <UserStatus
-                                name={data.data.name}
+                                name={data.name}
                                 datediff={lastLogin}
-                                avatar={data.data.avatar}
+                                avatar={data.avatar}
                                 logged="true"
                                 uid={id}
                                 key={id}
@@ -106,9 +88,9 @@ function CategorieUser() {
                     previousOffline ? (
                         // Oui -> on affiche seulement le name
                         <UserStatus
-                            name={data.data.name}
+                            name={data.name}
                             datediff={lastLogin}
-                            avatar={data.data.avatar}
+                            avatar={data.avatar}
                             key={id}
                             uid={id}
                         />
@@ -118,9 +100,9 @@ function CategorieUser() {
                             {(previousOffline = true)}
                             <StyleCategorie>Hors-Ligne</StyleCategorie>
                             <UserStatus
-                                name={data.data.name}
+                                name={data.name}
                                 datediff={lastLogin}
-                                avatar={data.data.avatar}
+                                avatar={data.avatar}
                                 uid={id}
                                 key={id}
                             />

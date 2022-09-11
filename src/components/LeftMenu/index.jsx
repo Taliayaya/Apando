@@ -19,6 +19,7 @@ import { Add, Create, Dashboard } from '@mui/icons-material'
 import { addNewChannel } from '../../utils/function'
 import { Done } from '@mui/icons-material'
 import PropTypes from 'prop-types'
+import ServerSelection from './ServerSelection'
 
 /**
  * The Top Left menu of the App.
@@ -26,7 +27,7 @@ import PropTypes from 'prop-types'
  * It can redirects to the /join and /create pages to create or join a server.
  * For admins only or more, it can also redirects to /dashboard.
  */
-const LeftMenu = ({ serverList, setChannelList }) => {
+const LeftMenu = ({ serverList, setChannelList, orgaServers, setShowMenu }) => {
     const [newChannelName, setNewChannelName] = useState('')
     const [error, setError] = useState(null)
 
@@ -62,17 +63,14 @@ const LeftMenu = ({ serverList, setChannelList }) => {
      * It also update the server id param in the url
      * @param {String} value is the server id and name separated by a space
      */
-    const changeServer = (value) => {
-        /** Why §§§§§§§§§§§§$ ? Because server name is 12 chr long
-         * This was written at midnight. Forgive me
-         */
-        const server = value.split('§§§§§§§§§§§§§')
+    const changeServer = (id, name, isSubServer) => {
         setCurrentChannel({})
         setMessageList([])
         setChannelList([])
-        setCurrentServer({ id: server[0], name: server[1] })
+        setCurrentServer({ id, name, isSubServer })
         setUserList([])
-        navigate(`${server[1]}/${server[0]}`)
+        setShowMenu(null)
+        navigate(`${isSubServer ?? 'default'}/${name}/${id}`)
     }
 
     return (
@@ -119,7 +117,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
             Users can change their current server here
             */}
             <MenuItem>
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id="server-select-label">
                         Serveur actuel
                     </InputLabel>
@@ -144,7 +142,12 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                             ))}
                     </Select>
                     <FormHelperText>Change de serveur ici</FormHelperText>
-                </FormControl>
+                            </FormControl>*/}
+                <ServerSelection
+                    serverList={serverList}
+                    handleServerSelect={changeServer}
+                    orgaServers={orgaServers}
+                />
             </MenuItem>
             {/* The menu item to redirect towards /join */}
             <MenuItem onClick={() => navigate('/join')}>
@@ -154,7 +157,7 @@ const LeftMenu = ({ serverList, setChannelList }) => {
                 <Typography>Utiliser un code</Typography>
             </MenuItem>
             {/* The menu item to redirect towards /create */}
-            <MenuItem onClick={() => navigate('/create')}>
+            <MenuItem onClick={() => navigate('/create/server')}>
                 <ListItemIcon>
                     <Create />
                 </ListItemIcon>
@@ -164,7 +167,14 @@ const LeftMenu = ({ serverList, setChannelList }) => {
             of his server. */}
             {hasPower && (
                 <MenuItem
-                    onClick={() => navigate(`/dashboard/${currentServer?.id}`)}
+                    onClick={() => {
+                        navigate(
+                            `/dashboard/${currentServer?.id}/${
+                                currentServer?.isSubServer ?? ''
+                            }`
+                        )
+                        setCurrentChannel({})
+                    }}
                 >
                     <ListItemIcon>
                         <Dashboard />

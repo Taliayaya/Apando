@@ -1,28 +1,33 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-    StyledLoginWrapper,
-    StyledForm,
-    StyledLoginTitle,
-    StyledFieldInput,
-    StyledField,
-    StyledFieldLabel,
-    StyledSubmit,
-    StyleLink,
-} from '../Login/LoginSignStyle'
-import { StyledText } from './JoinStyle'
+import { StyledLoginWrapper, StyledLoginTitle } from '../Login/LoginSignStyle'
+import CustomizedSnackbars from '../../components/CustomizedSnackBar'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { styled } from '@mui/system'
 import { theme } from '../../utils/style/colors'
 import { getAuth } from 'firebase/auth'
-import { getServer, joinServer, requestJoin } from '../../utils/function'
-import { Alert, Collapse, IconButton } from '@mui/material'
+
+import {
+    Alert,
+    Box,
+    Collapse,
+    IconButton,
+    Tab,
+    Tabs,
+    useTheme,
+} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Helmet } from 'react-helmet-async'
 import Backgrounds from '../../components/Backgrounds'
 import Header from '../../components/Header'
 import { useAuth } from '../../utils/hooks'
 import { ThemeProvider } from 'styled-components'
+import Organisation from '../../utils/organisation'
+import TabPanel from '../../components/TabPanel'
+import SwipeableViews from 'react-swipeable-views'
+
+import JoinServerForm from './JoinServerForm'
+import JoinOrgaForm from './joinOrgaForm'
 
 const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
     color: '#fff',
@@ -43,51 +48,43 @@ const StyledExitToAppIcon = styled(ExitToAppIcon)(() => ({
 
     position: 'relative',
 }))
+function allyProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    }
+}
 
 const Join = () => {
-    const [code, setCode] = useState('')
-    const [serverName, setServerName] = useState('')
     const navigate = useNavigate()
     const [error, setError] = useState(null)
     const auth = getAuth()
     const user = auth.currentUser
     const [success, setSuccess] = useState(null)
     const { themeUsed } = useAuth()
+    const [tab, setTab] = useState(0)
+    const theme = useTheme()
+    const [feedback, setFeedback] = useState(null)
 
-    const handleCode = async (e) => {
-        e.preventDefault()
-        setError(null)
-        if (code.length > 0) {
-            const server = await getServer(serverName, code)
-            if (server.name) {
-                if (server?.jointype === 'manual') {
-                    requestJoin(user, server.id)
-                        .then(() => {
-                            setSuccess(
-                                "Votre demande d'adhésion a bien été envoyée. Vous pourrez rejoindre le serveur une fois la demande acceptée."
-                            )
-                        })
-                        .catch((e) => {
-                            setError(e.message)
-                        })
-                } else {
-                    joinServer(user, server)
-                        .then((res) => {
-                            setSuccess(res)
-                            setError(null)
-                            setTimeout(() => {
-                                navigate('/app')
-                            }, 3000)
-                        })
-                        .catch((err) => {
-                            setError(err)
-                        })
-                }
-            } else {
-                setError('Oups, le code ou le nom semble invalide')
-            }
+    const [orgaArray, setOrgaArray] = useState(null)
+
+    const handleChangeTab = (event, newValue) => {
+        setTab(newValue)
+        if (newValue === 1 && orgaArray === null) {
+            getOrgaArray()
         }
     }
+    const getOrgaArray = () => {
+        const orga = Organisation.search()
+        setOrgaArray(orga)
+    }
+    const handleChangeIndex = (index) => {
+        setTab(index)
+        if (index === 1 && orgaArray === null) {
+            getOrgaArray()
+        }
+    }
+
     return (
         <>
             <Helmet>
@@ -104,19 +101,45 @@ const Join = () => {
                                 onClick={() => navigate('/app')}
                             />
                         </StyledLoginTitle>
-                        <StyledText>
-                            Ici tu peux rentrer le code que ton enseignant(e),
-                            ton ami(e) ou tes camarades t'ont donné.
-                        </StyledText>
-                        <StyledText>
-                            Courage c'est la dernière étape avant de les
-                            rejoindre !
-                        </StyledText>
-                        <StyledText>
-                            Dans le cadre de la beta, tu peux utiliser comme nom
-                            et code <b>beta</b> pour rejoindre le serveur de la
-                            beta et obtenir un avant-goût de Apando !
-                        </StyledText>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <Tabs
+                                value={tab}
+                                onChange={handleChangeTab}
+                                indicatorColor="secondary"
+                                textColor="inherit"
+                                variant="fullWidth"
+                            >
+                                <Tab label="Serveurs" {...allyProps(0)} />
+                                <Tab label="Organisations" {...allyProps(1)} />
+                            </Tabs>
+                        </Box>
+                        <SwipeableViews
+                            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                            index={tab}
+                            onChangeIndex={handleChangeIndex}
+                        >
+                            <TabPanel
+                                value={tab}
+                                index={0}
+                                dir={theme.direction}
+                            >
+                                <JoinServerForm
+                                    setError={setError}
+                                    user={user}
+                                    setSuccess={setSuccess}
+                                />
+                            </TabPanel>
+                            <TabPanel
+                                value={tab}
+                                index={1}
+                                dir={theme.direction}
+                            >
+                                <JoinOrgaForm
+                                    orgaArray={orgaArray}
+                                    setFeedback={setFeedback}
+                                />
+                            </TabPanel>
+                        </SwipeableViews>
 
                         {/*
                 ===============
@@ -142,64 +165,29 @@ const Join = () => {
                             </Alert>
                         </Collapse>
 
-                        <StyledForm action="#">
-                            <StyledField>
-                                <StyledFieldInput
-                                    type="text"
-                                    name="serverName"
-                                    value={serverName}
-                                    onChange={(e) =>
-                                        setServerName(e.target.value)
-                                    }
-                                    required
-                                />
-                                <StyledFieldLabel htmlFor="mycode">
-                                    Entrer le nom du serveur
-                                </StyledFieldLabel>
-                            </StyledField>
-                            <StyledField>
-                                <StyledFieldInput
-                                    type="text"
-                                    name="mycode"
-                                    value={code}
-                                    onChange={(e) => setCode(e.target.value)}
-                                    required
-                                />
-                                <StyledFieldLabel htmlFor="mycode">
-                                    Entrer mon code
-                                </StyledFieldLabel>
-                            </StyledField>
-                            <StyledField>
-                                <StyledSubmit
-                                    type="submit"
-                                    onClick={(e) => handleCode(e)}
-                                />
-                            </StyledField>
-                            <Collapse in={Boolean(success)}>
-                                <Alert
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => setError(null)}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 2 }}
-                                    severity="success"
-                                >
-                                    {success}
-                                </Alert>
-                            </Collapse>
-                            <StyledField>
-                                Pas de code ?{' '}
-                                <StyleLink to="/create">
-                                    Crée ton serveur
-                                </StyleLink>
-                            </StyledField>
-                        </StyledForm>
+                        <Collapse in={Boolean(success)}>
+                            <Alert
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => setError(null)}
+                                    >
+                                        <CloseIcon fontSize="inherit" />
+                                    </IconButton>
+                                }
+                                sx={{ mb: 2 }}
+                                severity="success"
+                            >
+                                {success}
+                            </Alert>
+                        </Collapse>
+                        <CustomizedSnackbars
+                            open={!!feedback}
+                            setOpen={setFeedback}
+                            {...feedback}
+                        />
                     </StyledLoginWrapper>
                 </Backgrounds>
             </ThemeProvider>

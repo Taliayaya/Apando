@@ -50,7 +50,10 @@ const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
             setCurrentChannel({ id: id_channel, name: name })
             // Reset the message list, so that new messages can be loaded
             setMessageList([])
-            navigate(`${currentServer.name}/${currentServer.id}/${id_channel}`)
+            let isOrga = currentServer?.isSubServer ?? 'default'
+            navigate(
+                `${isOrga}/${currentServer.name}/${currentServer.id}/${id_channel}`
+            )
         }
     }
 
@@ -74,6 +77,7 @@ const ChannelName = ({ id_channel, name, seen, lastMessageData }) => {
                 user.uid,
                 id_channel,
                 currentServer.id,
+                currentServer?.isSubServer ?? 'default',
                 lastMessageData.lastMessageImg,
                 lastMessageData.lastMessage,
                 name,
