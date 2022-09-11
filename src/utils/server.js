@@ -74,7 +74,7 @@ class Server {
     ) {
         const ref = collection(db, `orgaServers/${orga}/servers`)
 
-        addDoc(ref, {
+        return addDoc(ref, {
             name,
             code,
             domain,
@@ -83,6 +83,7 @@ class Server {
         }).then(async (ref) => {
             await User.addRole(user.uid, 'Owner', ref.id)
             channels.forEach((channel) => Channels.add(channel, ref.id))
+            return ref.id
         })
     }
 
