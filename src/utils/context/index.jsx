@@ -23,26 +23,26 @@ export const AuthProvider = ({ children }) => {
         defaultTheme = spring // Winter not yet defined
     } else if (
         date.getMonth() < 5 ||
-        (date.getMonth() === 5 && date.getDate()) < 21 ||
+        (date.getMonth() === 5 && date.getDate() < 21) ||
         ctheme === 'spring'
-    )
+    ) {
         defaultTheme = spring
-    else if (
+    } else if (
         date.getMonth() < 8 ||
         (date.getMonth() === 8 && date.getDate() < 23) ||
-        ctheme === ' summer'
-    )
+        ctheme === 'summer'
+    ) {
         defaultTheme = summer
-    else if (
+    } else if (
         date.getMonth() < 11 ||
         (date.getMonth() === 11 && date.getDate() < 21) ||
-        ctheme === 'winter'
-    )
-        defaultTheme = summer // Fall not yet defined
+        ctheme === 'autumn'
+    ) {
+        defaultTheme = summer
+    } // Fall not yet defined
     else {
         defaultTheme = spring
     } // Winter not yet defined
-
     const [themeUsed, setThemeUsed] = useState({
         ...defaultTheme.palette,
         name: defaultTheme.name,
