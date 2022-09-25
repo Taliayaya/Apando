@@ -26,10 +26,13 @@ const HomePageBanner = styled.div`
     height: 100vh;
     width: auto;
     overflow-x: hidden;
+    position: relative;
 `
 
 const HomePageTreeBelow = styled.div`
-    background: no-repeat right bottom url(${branchBelow});
+    background: no-repeat url(${branchBelow});
+    background-size: 150vh;
+    background-position: bottom right;
     height: 100vh;
     width: auto;
 `
@@ -37,6 +40,7 @@ const HomePageTreeBelow = styled.div`
 const HomePageTreeAbove = styled.div`
     background: no-repeat right bottom url(${branchAbove}),
         no-repeat right bottom url(${mascotto});
+    background-size: 150vh;
     height: 100vh;
     width: auto;
 `
