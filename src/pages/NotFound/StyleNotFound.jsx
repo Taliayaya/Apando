@@ -24,6 +24,7 @@ const Image404 = styled.div`
     position: relative;
     background: no-repeat center url(${Mascotte404}),
         no-repeat center url(${Backgrounds404});
+    background-size: 100%;
     max-height: 500px;
     max-width: 500px;
     width: 500px;
